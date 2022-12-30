@@ -10,10 +10,12 @@ import java.awt.event.ActionListener;
 public class AccountType extends JFrame implements ActionListener{
      Random random;
      long accountNumber;
-     String accountNumberS, ifsccodes="CEGB3147000",micrcodes="110015317";
+    static String accountNumberS, ifsccodes="CEGB3147000",micrcodes="110015317";
      JPanel jpanel1;
-     JLabel jacNo, jAccountNumber, JIfscCode, JMicrCode;
+     JLabel jacNo, jAccountNumber, JIfscCode, JMicrCode, JService,JNetbanking, JmobileBanking, JchequeBook, JAtmCard;
      JTextField JacNumT, jAccountNumberT, JIfscCodeT, JMicrCodeT;
+     JRadioButton JnetYes, JnetNo, JmobYes, JmobNo, Jcheque25,Jcheque50,Jcheque100,JchequeNo, JAtmYes,JAtmNo ;
+     ButtonGroup JNetbankingG, JMobilebankingG, JchequeG, JAtmG;
      JButton jClearB, jsubmit;
      
      
@@ -35,7 +37,6 @@ public class AccountType extends JFrame implements ActionListener{
        // accountNumber = Math.abs(random.nextInt());      firstL zero should be less than 3 of last-3147L zero 
        accountNumber = (long)Math.abs((random.nextDouble()* 100000L) + 314700000000L); 
         accountNumberS = Long.toString(accountNumber);
-        
      /*   ifscCode = Math.abs(random.nextInt());  
         ifsccodeS = Integer.toString(ifscCode);
         String ifsc= "CEGB"+ifsccodeS;
@@ -47,7 +48,7 @@ public class AccountType extends JFrame implements ActionListener{
         
         jacNo = new JLabel("Application Number");
         jacNo.setBounds(20, 20, 150, 30);
-        jacNo.setFont(new Font("verdana", Font.BOLD, 12));
+        jacNo.setFont(new Font("verdana", Font.BOLD, 14));
         jpanel1.add(jacNo);
         JacNumT = new JTextField();
         JacNumT.setBounds(200, 20, 200, 30);
@@ -64,39 +65,109 @@ public class AccountType extends JFrame implements ActionListener{
         jpanel1.add(Imagelabel);
         
         jAccountNumber = new JLabel("Account Number");
-        jAccountNumber.setBounds(20, 70, 150, 30);
+        jAccountNumber.setBounds(20, 60, 150, 30);
         jAccountNumber.setFont(new Font("verdana", Font.BOLD, 14));
         jpanel1.add(jAccountNumber);
         jAccountNumberT = new JTextField();
-        jAccountNumberT.setBounds(200, 70, 200, 30);
+        jAccountNumberT.setBounds(200, 60, 200, 30);
         jAccountNumberT.setFont(new Font("verdana", Font.BOLD, 14));
         jAccountNumberT.setEditable(false); 
         jAccountNumberT.setText(accountNumberS);
         jpanel1.add(jAccountNumberT);
         
         JIfscCode = new JLabel("IFSC Code");
-        JIfscCode.setBounds(20, 120, 150, 30);
+        JIfscCode.setBounds(20, 100, 150, 30);
         JIfscCode.setFont(new Font("verdana", Font.BOLD, 14));
         jpanel1.add(JIfscCode);
         JIfscCodeT = new JTextField();
-        JIfscCodeT.setBounds(200, 120, 200, 30);
+        JIfscCodeT.setBounds(200, 100, 200, 30);
         JIfscCodeT.setFont(new Font("verdana", Font.BOLD, 14));
         JIfscCodeT.setEditable(false); 
         JIfscCodeT.setText(ifsccodes);
         jpanel1.add(JIfscCodeT);
         
         JMicrCode = new JLabel("MICR Code");
-        JMicrCode.setBounds(20, 170, 150, 30);
+        JMicrCode.setBounds(20, 140, 150, 30);
         JMicrCode.setFont(new Font("verdana", Font.BOLD, 14));
         jpanel1.add(JMicrCode);
         JMicrCodeT = new JTextField();
-        JMicrCodeT.setBounds(200, 170, 200, 30);
+        JMicrCodeT.setBounds(200, 140, 200, 30);
         JMicrCodeT.setFont(new Font("verdana", Font.BOLD, 14));
         JMicrCodeT.setEditable(false); 
         JMicrCodeT.setText(micrcodes);
         jpanel1.add(JMicrCodeT);  
-
-
+        
+        JService = new JLabel("Services for better banking facilities:");
+        JService.setBounds(20, 180, 300, 40);
+        JService.setFont(new Font("verdana", Font.BOLD, 14));
+        jpanel1.add(JService);
+        
+        JNetbanking= new JLabel("Net Banking");
+        JNetbanking.setFont(new Font("verdana", Font.BOLD, 16)); 
+        JNetbanking.setBounds(20, 210, 150, 40);
+        jpanel1.add(JNetbanking);
+        JnetYes = new JRadioButton("YES");
+        JnetYes.setBounds(200, 210, 90, 40);
+        JnetYes.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(JnetYes);        
+        JnetNo = new JRadioButton("NO");
+        JnetNo.setBounds(310, 210, 90, 40);
+        JnetNo.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(JnetNo);  
+        JNetbankingG = new ButtonGroup();
+        JNetbankingG.add(JnetYes);
+        JNetbankingG.add(JnetNo);
+        
+        JmobileBanking = new JLabel("Mobile Banking");
+        JmobileBanking.setFont(new Font("verdana", Font.BOLD, 16)); 
+        JmobileBanking.setBounds(20, 250, 150, 40);
+        jpanel1.add(JmobileBanking);
+        JmobYes = new JRadioButton("YES");
+        JmobYes.setBounds(200, 250, 90, 40);
+        JmobYes.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(JmobYes);        
+        JmobNo = new JRadioButton("NO");
+        JmobNo.setBounds(310, 250, 90, 40);
+        JmobNo.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(JmobNo);  
+        JMobilebankingG = new ButtonGroup();
+        JMobilebankingG.add(JmobYes);
+        JMobilebankingG.add(JmobNo);
+        
+        JchequeBook = new JLabel("Cheque Book");
+        JchequeBook.setFont(new Font("verdana", Font.BOLD, 16)); 
+        JchequeBook.setBounds(20, 290, 150, 40);
+        jpanel1.add(JchequeBook);
+        Jcheque25 = new JRadioButton("25 pages");
+        Jcheque25.setBounds(200, 290, 100, 40);
+        Jcheque25.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(Jcheque25);
+        Jcheque50 = new JRadioButton("50 pages");
+        Jcheque50.setBounds(320, 290, 100, 40);
+        Jcheque50.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(Jcheque50);
+        Jcheque100 = new JRadioButton("100 pages");
+        Jcheque100.setBounds(450, 290, 120, 40);
+        Jcheque100.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(Jcheque100);
+        JchequeNo = new JRadioButton("NO");
+        JchequeNo.setBounds(600, 290, 100, 40);
+        JchequeNo.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(JchequeNo);
+       
+        JAtmCard = new JLabel("ATM Card");
+        JAtmCard.setFont(new Font("verdana", Font.BOLD, 16)); 
+        JAtmCard.setBounds(20, 330, 150, 40);
+        jpanel1.add(JAtmCard);
+        JAtmYes = new JRadioButton("YES");
+        JAtmYes.setBounds(200, 250, 90, 40);
+        JmobYes.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(JAtmYes);        
+        JAtmNo = new JRadioButton("NO");
+        JAtmNo.setBounds(310, 250, 90, 40);
+        JAtmNo.setFont(new Font("verdana", Font.BOLD, 13)); 
+        jpanel1.add(JAtmNo);  
+        
 
         
         

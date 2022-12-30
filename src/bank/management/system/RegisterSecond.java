@@ -10,8 +10,9 @@ public class RegisterSecond extends JFrame implements ActionListener{
      String acnum;
      JPanel jpanel1;
      JLabel jacNo,jFlateNo, jStreet, jLandmark,jPincode,jDistrict,jCity,jState,jCountry;
-     JTextField JacNum,jFlateNoT,jStreetT, jLandmarkT,jPincodeT,jDistrictT,jCityT,jStateT,jCountryT;
+     JTextField JacNum,jFlateNoT,jStreetT, jLandmarkT,jPincodeT,jDistrictT,jCityT,jStateT,jCountryT;         
      JButton jNextB, jClearB;
+     
      
     RegisterSecond( String acNum){       
         setResizable(false);
