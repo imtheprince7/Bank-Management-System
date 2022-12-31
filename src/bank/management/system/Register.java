@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.util.Random;
 public class Register extends JFrame implements ActionListener{
      Random random ;
+     String [] userData ={"","","","","","","","","","","","",""};
     int first4 ; String applicationNumber;
     JButton jexit, jclear,jnext;
     JPanel jpanel1;
@@ -57,7 +58,7 @@ public class Register extends JFrame implements ActionListener{
         
         ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("icons/banklogo.png"));
         Image img1 = img.getImage().getScaledInstance(450, 100, Image.SCALE_DEFAULT);
-        ImageIcon img2 = new ImageIcon(img1);        
+        ImageIcon img2 = new ImageIcon(img1); 
         JLabel Imagelabel = new JLabel(img2);
         Imagelabel.setBounds(450, 0, 500, 100);
         jpanel1.add(Imagelabel);
@@ -219,7 +220,10 @@ public class Register extends JFrame implements ActionListener{
          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          setVisible(true);
     }
-    
+    void assignData(){
+        userData[0] = JacNum.getText();
+          
+    }
   
 
     @Override
@@ -243,6 +247,7 @@ public class Register extends JFrame implements ActionListener{
           jemailt.setText("");
           jmobile.setText("");
        }       
+       
         if(e.getActionCommand()== "NEXT"){
             dispose();
 //           Users u = new Users();
