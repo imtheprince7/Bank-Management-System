@@ -1,5 +1,6 @@
 package bank.management.system;
 
+import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.Font;
 import java.awt.Image;
@@ -13,8 +14,11 @@ public class RegisterSecond extends JFrame implements ActionListener{
      JTextField JacNum,jFlateNoT,jStreetT, jLandmarkT,jPincodeT,jDistrictT,jCityT,jStateT,jCountryT;         
      JButton jNextB, jClearB;
      
+     ArrayList<String> user = new ArrayList<>();
      
-    RegisterSecond( String acNum){       
+     
+    RegisterSecond( String acNum, ArrayList<String> us){  
+        user =us;
         setResizable(false);
         setLayout(null);
         setSize(900,500);
@@ -129,7 +133,7 @@ public class RegisterSecond extends JFrame implements ActionListener{
         jNextB.addActionListener(this);
         jpanel1.add(jNextB);
         
-        
+       
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);    
@@ -140,10 +144,28 @@ public class RegisterSecond extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
    if(e.getActionCommand()=="NEXT"){
+       
+       userDetails(user);
        dispose();
-       new AccountType(acnum);
+       new AccountType(acnum, user);
    }
        
     }  // @OVERIRDE METHOD END HERE
+    
+    
+           
+ public ArrayList<String> userDetails(ArrayList<String> user)
+    {
+            user.add(jFlateNoT.getText());
+            user.add(jStreetT.getText());
+            user.add(jLandmarkT.getText());
+            user.add(jPincodeT.getText());
+            user.add(jDistrictT.getText());
+            user.add(jCityT.getText());
+            user.add(jStateT.getText());
+            user.add(jCountryT.getText());          
+            return user;
+    }
+    // ArrayList userDetails method end Here///
     
 } // MAIN CLASS END HERE

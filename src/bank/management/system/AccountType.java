@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class AccountType extends JFrame implements ActionListener{
      Random random;
@@ -19,7 +20,10 @@ public class AccountType extends JFrame implements ActionListener{
      JButton jClearB, jsubmit;
      
      
-    AccountType( String acNum){
+     ArrayList<String> user = new ArrayList<>();
+     
+    AccountType( String acNum,  ArrayList<String> us){
+        user = us;
         setTitle("Account Registration || Account Type (3/3)");
         setLayout(null);
     // Disable Maximize Click
@@ -154,20 +158,27 @@ public class AccountType extends JFrame implements ActionListener{
         JchequeNo.setBounds(600, 290, 100, 40);
         JchequeNo.setFont(new Font("verdana", Font.BOLD, 13)); 
         jpanel1.add(JchequeNo);
+        JchequeG = new ButtonGroup();
+        JchequeG.add(Jcheque25);
+        JchequeG.add(Jcheque50);
+        JchequeG.add(Jcheque100);
+        JchequeG.add(JchequeNo);
        
         JAtmCard = new JLabel("ATM Card");
         JAtmCard.setFont(new Font("verdana", Font.BOLD, 16)); 
         JAtmCard.setBounds(20, 330, 150, 40);
         jpanel1.add(JAtmCard);
         JAtmYes = new JRadioButton("YES");
-        JAtmYes.setBounds(200, 250, 90, 40);
+        JAtmYes.setBounds(200, 330, 90, 40);
         JmobYes.setFont(new Font("verdana", Font.BOLD, 13)); 
         jpanel1.add(JAtmYes);        
         JAtmNo = new JRadioButton("NO");
-        JAtmNo.setBounds(310, 250, 90, 40);
+        JAtmNo.setBounds(310, 330, 90, 40);
         JAtmNo.setFont(new Font("verdana", Font.BOLD, 13)); 
         jpanel1.add(JAtmNo);  
-        
+        JAtmG = new ButtonGroup();
+        JAtmG.add(JAtmYes);
+        JAtmG.add(JAtmNo);
 
         
         
@@ -181,6 +192,17 @@ public class AccountType extends JFrame implements ActionListener{
         jsubmit.setBounds(750,400,100,40);
         jsubmit.addActionListener(this);
         jpanel1.add(jsubmit);
+        
+        
+        
+        
+         // Printint ArrayList Element
+         System.out.println("ArraList Element from first Page:");
+           for (String str : us)
+	      { 		      
+	           System.out.println(str); 		
+	      }
+        
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);  
@@ -200,16 +222,30 @@ public class AccountType extends JFrame implements ActionListener{
                  
                  "THANK YOU ❤️", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
          if(response==JOptionPane.YES_OPTION){
-            dispose();
+            
+             userDetails(user);
+             dispose();
             new Login();
           }
          if(response==JOptionPane.NO_OPTION){
           
           }
-       }
-    
+       }    
     
     }      // OVERRIDE METHOD CLOSE HERE
      
+     public ArrayList<String> userDetails(ArrayList<String> user)
+    {   // jAccountNumberT, JIfscCodeT, JMicrCodeT;
+            user.add(jAccountNumberT.getText());
+            user.add(JIfscCodeT.getText());
+            user.add(JMicrCodeT.getText());
+//            user.add( );
+//            user.add( );
+//            user.add( );
+//            user.add( );
+        return user;
+    }
+    
+    
 
 }    // MAIN CLASS END HERE

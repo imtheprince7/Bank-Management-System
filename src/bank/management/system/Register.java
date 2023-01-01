@@ -1,24 +1,23 @@
 package bank.management.system;
 //import com.toedter.Calendar.JDateChooser; 
 import java.awt.Font;import java.awt.Image;
-;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Random;
 public class Register extends JFrame implements ActionListener{
      Random random ;
-     String [] userData ={"","","","","","","","","","","","",""};
+    // String [] userData ={"","","","","","","","","","","","",""};
     int first4 ; String applicationNumber;
     JButton jexit, jclear,jnext;
     JPanel jpanel1;
-    JLabel jfname, jlname,jacNo, jfaname,jmaname, jdob,jgender,jmartial,jemail,jmob,jaadharLabel,jpanCardLabel;
-    JTextField jtname, jtlname,JacNum, jfatname,jmotname, jemailt, jmobile,jaadharText,jpanCardText;
+    JLabel jUsername,jfname, jlname,jacNo, jfaname,jmaname, jdob,jgender,jmartial,jemail,jmob,jaadharLabel,jpanCardLabel;
+    JTextField jUsernameT,jtname, jtlname,JacNum, jfatname,jmotname, jemailt, jmobile,jaadharText,jpanCardText;
     JRadioButton jmale,jfemale, jother, jmarried, junmarried, jdivorce;
     ButtonGroup genderGroup,martialStas;
+    ArrayList<String> us = new ArrayList<>();
     
-   
-   
     
 //    HashMap<String, String> variableValue = new HashMap<String, String>();
     Register()
@@ -63,6 +62,14 @@ public class Register extends JFrame implements ActionListener{
         Imagelabel.setBounds(450, 0, 500, 100);
         jpanel1.add(Imagelabel);
         
+        jUsername = new JLabel("Username");
+        jUsername.setBounds(20, 60, 150, 40);
+        jUsername.setFont(new Font("verdana", Font.BOLD, 16));
+        jpanel1.add(jUsername);
+        jUsernameT = new JTextField();
+        jUsernameT.setBounds(200, 60, 200, 40);
+        jUsernameT.setFont(new Font("verdana", Font.ITALIC, 14));
+        jpanel1.add(jUsernameT);
         
         jfname = new JLabel("First Name");
         jfname.setBounds(20, 110, 150, 40);
@@ -220,10 +227,6 @@ public class Register extends JFrame implements ActionListener{
          setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          setVisible(true);
     }
-    void assignData(){
-        userData[0] = JacNum.getText();
-          
-    }
   
 
     @Override
@@ -249,22 +252,46 @@ public class Register extends JFrame implements ActionListener{
        }       
        
         if(e.getActionCommand()== "NEXT"){
-            dispose();
-//           Users u = new Users();
+            
+//           Users u = new Users( JacNum.getText(),jUsernameT.getText(),jtname.getText(),jtlname.getText(),jfname.getText(),jmotname.getText(),"dob",genderGroup.getSelection().toString(), "marriageS",jemailt.getText(),jmobile.getText(),jpanCardText.getText(), jaadharText.getText());
 //           u.setApplicationNumber(JacNum.getText());
+//           u.setUserName(jUsernameT.getText());
 //           u.setFirstName(jtname.getText());
 //           u.setLastName(jtlname.getText());
 //           u.setFatherName(jfname.getText());
 //           u.setMotherName(jmotname.getText());
 //          // u.setDateOfBirth(dateOfBirth);
 //           u.setGender(genderGroup.getSelection().toString());
+//         //u.setMartialStatus(martialStatus);
 //           u.setEmailId(jemailt.getText());
-           new RegisterSecond(applicationNumber);
+//           u.setMobileNumber(jmobile.getText());
+//           u.setPancardNo(jpanCardText.getText());
+//           u.setAadharCard(jaadharText.getText());
            
-        
+            userDetails(us);
+            dispose();
+           new RegisterSecond(applicationNumber, us);        
        }
         
-        
     }
-    
+    // Event -Listener Method CLose here:---
+
+    public ArrayList<String> userDetails(ArrayList<String> us)
+    {
+            us.add(JacNum.getText());
+            us.add(jUsernameT.getText());
+            us.add(jtname.getText());
+            us.add(jtlname.getText());
+            us.add(jfname.getText());
+            us.add(jmotname.getText());
+            us.add("dateOfBirth");
+            us.add("gender");
+            us.add("martialStatus");
+            us.add(jemailt.getText());
+            us.add(jmobile.getText());
+            us.add(jpanCardText.getText());
+            us.add(jaadharText.getText());
+            
+            return us;
+    }
 }
