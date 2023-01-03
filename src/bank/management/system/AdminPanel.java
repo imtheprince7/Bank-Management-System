@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,7 +17,8 @@ public class AdminPanel extends JFrame implements ActionListener {
     JLabel jName,jInfo, jUsername, JFullName, JMobile, JEmail, JType, JPassword, JCPassword;
     JTextField jUsernameT, JFullNameT, JMobileT, JEmailT, JTypeT,JPasswordT, JCPasswordT;
     JButton jCreate, JClear, Jcheckusers,JLogOut, JBack;
-    String Name;
+    String Name;    
+    JComboBox jroleType;
     AdminPanel(String name){
         Name = name;
         setResizable(false);
@@ -94,11 +96,12 @@ public class AdminPanel extends JFrame implements ActionListener {
         JType = new JLabel("Account Type");
         JType.setBounds(20, 255, 150, 40);
         JType.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(JType);
-        JTypeT = new JTextField();
-        JTypeT.setBounds(200, 255, 200, 40);
-        JTypeT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(JTypeT);
+       jpanel1.add(JType);
+        String s1[] = { "Select Role","Admin", "Manager","Staff"};
+        jroleType = new JComboBox(s1);
+        jroleType.setBounds(200, 255, 200, 30);
+        jroleType.setFont(new Font("verdana", Font.ITALIC, 14));
+        jpanel1.add(jroleType);
         
         JPassword = new JLabel("Password");
         JPassword.setBounds(20, 300, 150, 40);

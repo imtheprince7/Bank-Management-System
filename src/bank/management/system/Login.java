@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.sql.*;
 
 /**
  *
@@ -85,7 +86,9 @@ public class Login extends JFrame implements ActionListener {
     }
     
    public static void main(String [] args){
-     //  Conn con = new Conn();
+       Connection newcon=cp.createCon();
+       new Database(newcon);
+      
       new Login();      
    }
 

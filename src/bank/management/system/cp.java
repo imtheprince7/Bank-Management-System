@@ -1,19 +1,20 @@
 package bank.management.system;
 import java.sql.*;
- public  class Conn {
-   static Connection connec = null;
-    Statement st ;
-    public Conn(){
+ public  class cp {
+    public static Connection con;
+
+    public static Connection  createCon(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connec = DriverManager.getConnection("jdbc:mysql://bankManagementSystem", "root","admin");
+            con = DriverManager.getConnection("jdbc:mysql://bankManagementSystem", "root","admin");
             // st = connec.createStatement();
-            
+            System.out.println("Con done");
         }
         catch(Exception e)
         {
             System.out.println(e);
         }
+        return con;
        
     }
     

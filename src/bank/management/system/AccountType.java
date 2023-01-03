@@ -18,8 +18,6 @@ public class AccountType extends JFrame implements ActionListener{
      JRadioButton JnetYes, JnetNo, JmobYes, JmobNo, Jcheque25,Jcheque50,Jcheque100,JchequeNo, JAtmYes,JAtmNo ;
      ButtonGroup JNetbankingG, JMobilebankingG, JchequeG, JAtmG;
      JButton jClearB, jsubmit;
-     
-     
      ArrayList<String> user = new ArrayList<>();
      
     AccountType( String acNum,  ArrayList<String> us){
@@ -197,12 +195,13 @@ public class AccountType extends JFrame implements ActionListener{
         
         
          // Printint ArrayList Element
-         System.out.println("ArraList Element from first Page:");
-           for (String str : us)
-	      { 		      
-	           System.out.println(str); 		
-	      }
-        
+//         
+//         System.out.println("ArrayList Element from first Page:");
+//           for (String str : us)
+//	      { 		      
+//	           System.out.println(str); 		
+//	      }
+//        
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);  
@@ -222,8 +221,8 @@ public class AccountType extends JFrame implements ActionListener{
                  
                  "THANK YOU ❤️", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
          if(response==JOptionPane.YES_OPTION){
-            
-             userDetails(user);
+            Database db = new Database();
+            db.saveData(user);
              dispose();
             new Login();
           }
