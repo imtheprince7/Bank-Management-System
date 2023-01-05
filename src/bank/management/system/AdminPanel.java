@@ -17,14 +17,14 @@ public class AdminPanel extends JFrame implements ActionListener {
     JLabel jName,jInfo, jUsername, JFullName, JMobile, JEmail, JType, JPassword, JCPassword;
     JTextField jUsernameT, JFullNameT, JMobileT, JEmailT, JTypeT,JPasswordT, JCPasswordT;
     JButton jCreate, JClear, Jcheckusers,JLogOut, JBack;
-    String Name;    
     JComboBox jroleType;
-    AdminPanel(String name){
-        Name = name;
+    
+    AdminPanel()
+    {
         setResizable(false);
         setLayout(null);
         setSize(1000,500);
-        setLocation(250,150);
+        setLocation(200,10);
         setTitle("Admin Panel");
         
         jpanel3 = new JPanel();
@@ -47,7 +47,7 @@ public class AdminPanel extends JFrame implements ActionListener {
         jpanel3.add(jpanel1);
         jpanel3.add(jpanel2);
         
-        jName = new JLabel("Welcome \t Mr."+" "+Name);
+        jName = new JLabel("Welcome \t Mr.");
         jName.setBounds(10, 5, 550, 30);
         jName.setFont(new Font("verdana", Font.BOLD, 13));
         jpanel3.add(jName);

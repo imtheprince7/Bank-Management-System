@@ -6,233 +6,229 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
+
+import javax.swing.JFormattedTextField.AbstractFormatter;
+import org.jdatepicker.impl.DateComponentFormatter;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
+
 public class Register extends JFrame implements ActionListener{
-     Random random ;
-    // String [] userData ={"","","","","","","","","","","","",""};
-    int first4 ; String applicationNumber;
-    JButton jexit, jclear,jnext;
-    JPanel jpanel1;
-    JLabel jUsername,jfname, jlname,jacNo, jfaname,jmaname, jdob,jgender,jmartial,jemail,jmob,jaadharLabel,jpanCardLabel;
-    JTextField jUsernameT,jtname, jtlname,JacNum, jfatname,jmotname, jemailt, jmobile,jaadharText,jpanCardText;
-    JRadioButton jmale,jfemale, jother, jmarried, junmarried, jdivorce;
-    ButtonGroup genderGroup,martialStas;
+    Random random ;
+    String formNumber;   
+   
+    JPanel PanelMain;
+    JLabel applicationNoLabel, usernameLabel,firstNameLabel, lastNameLabel,fatherNameLabel,
+            motherNameLabel, dobLabel,genderLabel,martialStatusLabel,emailIdLabel,mobileNoLabel,
+            aadharcardLabel,panCardLabel;
+    JTextField applicationNoField, usernameField,firstNameField, lastNameField,fatherNameField,
+            motherNameField, emailidField, mobileNoField,aadharcardField,panCardField;
+    JRadioButton genderMale,genderFemale, genderOther, buttonMarried, buttonUnmarried, buttonDivorce;
+    ButtonGroup genderGroup,martialStatusGroup;
+    JButton exitButton, clearButton,nextButton;
+    JDatePanelImpl datePanel;
+    JDatePickerImpl datePicker;
     ArrayList<String> us = new ArrayList<>();
     
     
-//    HashMap<String, String> variableValue = new HashMap<String, String>();
     Register()
     {
+        random = new Random();
+        formNumber =Integer.toString( Math.abs(random.nextInt()));
+        
         setTitle("Account Registration ||  Personal Details (1/3)");
         setResizable(false);
         setLayout(null);
         setSize(900,550);
         setLocation(300,100);
         
-        random = new Random();
-        first4 = Math.abs(random.nextInt());
-      //  long first14 = (long)(rng.nextDouble() * 1000000000000L) + 14000000000000L;
-         String num = Integer.toString(first4);
-        //System.out.println("14 Numbers For account"+ " "+first14);
-        //System.out.println("4 Numbers or Application Form "+ " "+first4);
-
-        jpanel1= new JPanel();
-        jpanel1.setBounds(0, 0,900,550);
-        add(jpanel1);  
-        jpanel1.setLayout(null);
+        PanelMain= new JPanel();
+        PanelMain.setBounds(0, 0,900,550);
+        add(PanelMain);  
+        PanelMain.setLayout(null);
         
-       
-        jacNo = new JLabel("Application Number");
-        jacNo.setBounds(20, 10, 150, 30);
-        jacNo.setFont(new Font("verdana", Font.BOLD, 12));
-        jpanel1.add(jacNo); 
-        JacNum = new JTextField();
-        JacNum.setBounds(200, 10, 200, 30);
-        JacNum.setFont(new Font("verdana", Font.ITALIC, 14));
-        JacNum.setEditable(false); 
-        JacNum.setText(num);
-        jpanel1.add(JacNum);
-        applicationNumber= JacNum.getText();
-        
-        
-        
+        // IMAGE ICON LOADER
         ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("icons/banklogo.png"));
         Image img1 = img.getImage().getScaledInstance(450, 100, Image.SCALE_DEFAULT);
         ImageIcon img2 = new ImageIcon(img1); 
         JLabel Imagelabel = new JLabel(img2);
         Imagelabel.setBounds(450, 0, 500, 100);
-        jpanel1.add(Imagelabel);
+        PanelMain.add(Imagelabel);
         
-        jUsername = new JLabel("Username");
-        jUsername.setBounds(20, 60, 150, 40);
-        jUsername.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(jUsername);
-        jUsernameT = new JTextField();
-        jUsernameT.setBounds(200, 60, 200, 40);
-        jUsernameT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jUsernameT);
         
-        jfname = new JLabel("First Name");
-        jfname.setBounds(20, 110, 150, 40);
-        jfname.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(jfname);
-        jtname = new JTextField();
-        jtname.setBounds(200, 110, 200, 40);
-        jtname.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jtname);
+        
+        applicationNoLabel = new JLabel("Application Number");
+        applicationNoField =  new JTextField();
+        applicationNoField.setEditable(false); 
+        applicationNoField.setText(formNumber);
+        
+        
+        usernameLabel = new JLabel("Username");      
+        usernameField = new JTextField();
+        
+        firstNameLabel = new JLabel("First Name"); 
+        firstNameField = new JTextField();
+        
+        lastNameLabel = new JLabel("Last Name");
+        lastNameField = new JTextField();
        
-        
-        jlname = new JLabel("Last Name");
-        jlname.setBounds(450, 110, 150, 40);
-        jlname.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(jlname);
-        jtlname = new JTextField();
-        jtlname.setBounds(650, 110, 200, 40);
-        jtlname.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jtlname);
-        
-        jfaname = new JLabel("Father Name");
-        jfaname.setFont(new Font("verdana", Font.BOLD, 16));    
-        jfaname.setBounds(20, 160, 150, 40);
-        jpanel1.add(jfaname);
-        jfatname = new JTextField();
-        jfatname.setBounds(200, 160, 200, 40);
-        jfatname.setFont(new Font("verdana", Font.BOLD, 14));
-        jpanel1.add(jfatname);
-       
-        
-        jmaname = new JLabel("Mother Name");
-        jmaname.setFont(new Font("verdana", Font.BOLD, 16));    
-        jmaname.setBounds(450, 160, 150, 40);
-        jpanel1.add(jmaname);
-        jmotname = new JTextField();
-        jmotname.setBounds(650, 160, 200, 40);
-        jmotname.setFont(new Font("verdana", Font.BOLD, 14));
-        jpanel1.add(jmotname);
-      
-        jdob = new JLabel("D.O.B.");
-        jdob.setBounds(20,210, 150, 40);
-        jdob.setFont(new Font("verdana", Font.BOLD, 16));  
-        jpanel1.add(jdob);
-       
-//        JDateChooser dateChoser = new JDateChooser();
-//        dateChoser.setBounds(450, 120, 150, 40);
-        
-        jgender= new JLabel("Gender");
-        jgender.setFont(new Font("verdana", Font.BOLD, 16)); 
-        jgender.setBounds(450, 210, 150, 40);
-        jpanel1.add(jgender);
-        jmale = new JRadioButton("MALE");
-        jmale.setBounds(570, 210, 70, 40);
-        jmale.setFont(new Font("verdana", Font.BOLD, 13)); 
-        jpanel1.add(jmale);        
-        jfemale = new JRadioButton("FEMALE");
-        jfemale.setBounds(670, 210, 100, 40);
-        jfemale.setFont(new Font("verdana", Font.BOLD, 13)); 
-        jpanel1.add(jfemale);        
-        jother = new JRadioButton("OTHER");
-        jother.setBounds(770, 210, 100, 40);
-        jother.setFont(new Font("verdana", Font.BOLD, 13)); 
-        jpanel1.add(jother);
-        
-        genderGroup = new ButtonGroup(); 
-        genderGroup.add(jmale);
-        genderGroup.add(jfemale);
-        genderGroup.add(jother);
-         
+        fatherNameLabel = new JLabel("Father Name");
+        fatherNameField = new JTextField();
           
-        jmartial = new JLabel("Martial Status");
-        jmartial.setBounds(20,260, 150, 40);
-        jmartial.setFont(new Font("verdana", Font.BOLD, 16));  
-        jpanel1.add(jmartial);        
-        jmarried = new JRadioButton("MARRIED");
-        jmarried.setBounds(200, 260, 150, 40);
-        jmarried.setFont(new Font("verdana", Font.BOLD, 13));  
-        jpanel1.add(jmarried);        
-        junmarried = new JRadioButton("UNMARRIED");
-        junmarried.setBounds(350, 260, 150, 40);
-        junmarried.setFont(new Font("verdana", Font.BOLD, 13));  
-        jpanel1.add(junmarried);        
-        jdivorce = new JRadioButton("DIVORCE");
-        jdivorce.setBounds(520, 260, 150, 40);
-        jdivorce.setFont(new Font("verdana", Font.BOLD, 13));  
-        jpanel1.add(jdivorce);        
-        jother = new JRadioButton("OTHER");
-        jother.setBounds(680, 260, 150, 40);
-        jother.setFont(new Font("verdana", Font.BOLD, 13));  
-        jpanel1.add(jother);
-        
-        martialStas = new ButtonGroup();
-        martialStas.add(jmarried);
-        martialStas.add(junmarried);
-        martialStas.add(jdivorce);
-        martialStas.add(jother);
-           
-        jemail = new JLabel("Email ID");
-        jemail.setBounds(20, 310, 150, 40);
-        jemail.setFont(new Font("verdana", Font.BOLD, 16));  
-        jpanel1.add(jemail);        
-        jemailt  = new JTextField();
-        jemailt.setBounds(200, 310, 200, 40);
-        jemailt.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jemailt);
-       
-        jmob = new JLabel("Mobile Number");
-        jmob.setBounds(450, 310, 150, 40);
-        jmob.setFont(new Font("verdana", Font.BOLD, 16));  
-        jpanel1.add(jmob);             
-        jmobile  = new JTextField();
-        jmobile.setBounds(650, 310, 200, 40);
-        jmobile.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jmobile);
-        
-        
-        jpanCardLabel = new JLabel("PAN CARD NO");
-        jpanCardLabel.setBounds(20, 360, 150, 40);
-        jpanCardLabel.setFont(new Font("verdana", Font.BOLD, 14));  
-        jpanel1.add(jpanCardLabel);        
-        jpanCardText  = new JTextField();
-        jpanCardText.setBounds(200, 360, 200, 40);
-        jpanCardText.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jpanCardText);
+        motherNameLabel = new JLabel("Mother Name");
+        motherNameField = new JTextField();
       
-        jaadharLabel = new JLabel("Aadhar Number");
-        jaadharLabel.setBounds(450, 360, 150, 40);
-        jaadharLabel.setFont(new Font("verdana", Font.BOLD, 16));  
-        jpanel1.add(jaadharLabel);               
-        jaadharText  = new JTextField();
-        jaadharText.setBounds(650, 360, 200, 40);
-        jaadharText.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jaadharText);
+        dobLabel = new JLabel("D.O.B.");
+       /*Adding JDatePicker date picker*/
+        UtilDateModel model = new UtilDateModel();
+        model.setDate(1999, 01, 02);
+        model.setSelected(true);
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        datePanel = new JDatePanelImpl(model, p);
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        /*End Date picker*/
+        
+        genderLabel= new JLabel("Gender");
+        genderMale = new JRadioButton("MALE", true);
+        genderFemale = new JRadioButton("FEMALE");
+        genderOther = new JRadioButton("OTHER");
+        genderGroup.add(genderMale);
+        genderGroup.add(genderFemale);
+        genderGroup.add(genderOther);
+        
+        martialStatusLabel = new JLabel("Martial Status");
+        buttonMarried = new JRadioButton("MARRIED");
+        buttonUnmarried = new JRadioButton("UNMARRIED");
+        buttonDivorce = new JRadioButton("DIVORCE");
+        martialStatusGroup.add(buttonMarried);
+        martialStatusGroup.add(buttonUnmarried);
+        martialStatusGroup.add(buttonDivorce);
        
+        emailIdLabel = new JLabel("Email ID");
+        emailidField = new JTextField();
+        
+        mobileNoLabel = new JLabel("Mobile Number");
+        mobileNoField = new JTextField();
+
+        panCardLabel = new JLabel("PANCARD NO");
+        panCardField = new JTextField();        
+              
+        aadharcardLabel = new JLabel("Aadhar Number");
+        aadharcardField = new JTextField();
         
         
+        exitButton = new JButton("EXIT");
+        exitButton.addActionListener(this);
         
-        
-        jexit= new JButton("EXIT");
-        jexit.setBounds(450,440,100,40);
-        jexit.addActionListener(this);
-        jpanel1.add(jexit);
-        
-        jclear = new JButton("CLEAR");
-        jclear.setBounds(600,440,100,40);
-        jclear.addActionListener(this);
-        jpanel1.add(jclear);
+        clearButton= new JButton("CLEAR");
+        clearButton.addActionListener(this);
             
-        jnext = new JButton("NEXT");
-        jnext.setBounds(750,440,100,40);
-        jnext.addActionListener(this);
-        jpanel1.add(jnext);
+        nextButton = new JButton("NEXT");
+        nextButton.addActionListener(this);
         
-          
-         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         setVisible(true);
+        
+        setFont();
+        setBound();
+        addComponent();
+        
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);        
     }
-  
+    
+    public void addComponent(){
+        PanelMain.add(applicationNoLabel);
+        PanelMain.add(applicationNoField);
+        PanelMain.add(usernameLabel);
+        PanelMain.add(usernameField);
+        PanelMain.add(firstNameLabel);
+        PanelMain.add(firstNameField);
+        PanelMain.add(lastNameLabel);
+        PanelMain.add(lastNameField);
+        PanelMain.add(fatherNameLabel);
+        PanelMain.add(fatherNameField);
+        PanelMain.add(motherNameLabel);
+        PanelMain.add(motherNameField);
+        PanelMain.add(dobLabel);
+        PanelMain.add(datePicker);
+        PanelMain.add(genderLabel);
+        PanelMain.add(genderMale);
+        PanelMain.add(genderFemale);
+        PanelMain.add(genderOther);
+        PanelMain.add(martialStatusLabel);
+        PanelMain.add(buttonMarried);
+        PanelMain.add(buttonUnmarried);
+        PanelMain.add(buttonDivorce);
+        PanelMain.add(emailIdLabel);
+        PanelMain.add(emailidField);
+        PanelMain.add(mobileNoLabel);
+        PanelMain.add(mobileNoField);
+        PanelMain.add(panCardLabel);
+        PanelMain.add(panCardField);
+        PanelMain.add(aadharcardLabel);
+        PanelMain.add(aadharcardField);
+        PanelMain.add(exitButton);
+        PanelMain.add(clearButton);
+        PanelMain.add(nextButton);
+    }
+    public void setFont(){       
+        applicationNoLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        applicationNoField.setFont(new Font("verdana", Font.BOLD, 12));
+        usernameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        usernameField.setFont(new Font("verdana", Font.BOLD, 16));
+        firstNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        lastNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        fatherNameLabel.setFont(new Font("verdana", Font.BOLD, 16));  
+        motherNameLabel.setFont(new Font("verdana", Font.BOLD, 16)); 
+        dobLabel.setFont(new Font("verdana", Font.BOLD, 16));  
+        genderLabel.setFont(new Font("verdana", Font.BOLD, 16)); 
+        genderMale.setFont(new Font("verdana", Font.BOLD, 13));    
+        genderFemale.setFont(new Font("verdana", Font.BOLD, 13));  
+        genderOther.setFont(new Font("verdana", Font.BOLD, 13)); 
+        martialStatusLabel.setFont(new Font("verdana", Font.BOLD, 16));  
+        buttonDivorce.setFont(new Font("verdana", Font.BOLD, 13));  
+        buttonMarried.setFont(new Font("verdana", Font.BOLD, 13));  
+        buttonUnmarried.setFont(new Font("verdana", Font.BOLD, 13));  
+        emailIdLabel.setFont(new Font("verdana", Font.BOLD, 16)); 
+        mobileNoLabel.setFont(new Font("verdana", Font.BOLD, 16));  
+        panCardLabel.setFont(new Font("verdana", Font.BOLD, 14)); 
+        panCardLabel.setFont(new Font("verdana", Font.ITALIC, 14));
+        aadharcardLabel.setFont(new Font("verdana", Font.BOLD, 16));  
+        aadharcardField.setFont(new Font("verdana", Font.ITALIC, 14));      
+    }
+    
+    public void setBound(){
+        applicationNoField.setBounds(200, 10, 200, 30);
+        usernameField.setBounds(200, 60, 200, 40);
+        firstNameField.setBounds(200, 110, 200, 40);
+        lastNameField.setBounds(650, 110, 200, 40);
+        fatherNameField.setBounds(200, 160, 200, 40);
+        motherNameField.setBounds(650, 160, 200, 40);
+        datePicker.setBounds(130, 210, 200, 30);
+        genderLabel.setBounds(450, 210, 150, 40);
+        buttonMarried.setBounds(200, 260, 150, 40);
+        buttonUnmarried.setBounds(400, 260, 150, 40);
+        buttonDivorce.setBounds(600, 260, 150, 40);
+        emailIdLabel.setBounds(20, 310, 150, 40);
+        mobileNoLabel.setBounds(450, 310, 150, 40);
+        mobileNoField.setBounds(650, 310, 200, 40);
+        panCardLabel.setBounds(20, 360, 150, 40);
+        panCardField.setBounds(200, 360, 200, 40);
+        aadharcardLabel.setBounds(450, 360, 150, 40);
+        aadharcardField.setBounds(650, 360, 200, 40);
+        exitButton.setBounds(450,440,100,40); 
+        clearButton.setBounds(600,440,100,40);
+        nextButton.setBounds(750,440,100,40);
+
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-       
     
        if(e.getActionCommand()== "EXIT")
        {
@@ -241,57 +237,63 @@ public class Register extends JFrame implements ActionListener{
             dispose();
             new Login();
           }
-       }
-       
+       }       
        if(e.getActionCommand()== "CLEAR"){
-          jtname.setText("");
-          jtlname.setText("");
-          jmotname.setText("");
-          jemailt.setText("");
-          jmobile.setText("");
+         applicationNoField.setText("");usernameField.setText("");
+         firstNameField.setText("");   lastNameField.setText("");
+         fatherNameField.setText("");  motherNameField.setText("");
+         emailidField.setText("");     mobileNoField.setText("");
+         aadharcardField.setText("");  panCardField.setText("");
        }       
        
         if(e.getActionCommand()== "NEXT"){
-            
-//           Users u = new Users( JacNum.getText(),jUsernameT.getText(),jtname.getText(),jtlname.getText(),jfname.getText(),jmotname.getText(),"dob",genderGroup.getSelection().toString(), "marriageS",jemailt.getText(),jmobile.getText(),jpanCardText.getText(), jaadharText.getText());
-//           u.setApplicationNumber(JacNum.getText());
-//           u.setUserName(jUsernameT.getText());
-//           u.setFirstName(jtname.getText());
-//           u.setLastName(jtlname.getText());
-//           u.setFatherName(jfname.getText());
-//           u.setMotherName(jmotname.getText());
-//          // u.setDateOfBirth(dateOfBirth);
-//           u.setGender(genderGroup.getSelection().toString());
-//         //u.setMartialStatus(martialStatus);
-//           u.setEmailId(jemailt.getText());
-//           u.setMobileNumber(jmobile.getText());
-//           u.setPancardNo(jpanCardText.getText());
-//           u.setAadharCard(jaadharText.getText());
-           
             userDetails(us);
             dispose();
-           new RegisterSecond(applicationNumber, us);        
+           new RegisterSecond(formNumber,us);
        }
-        
     }
     // Event -Listener Method CLose here:---
 
     public ArrayList<String> userDetails(ArrayList<String> us)
     {
-            us.add(JacNum.getText());
-            us.add(jUsernameT.getText());
-            us.add(jtname.getText());
-            us.add(jtlname.getText());
-            us.add(jfname.getText());
-            us.add(jmotname.getText());
+            us.add(applicationNoField.getText());
+            us.add(usernameField.getText());
+            us.add(firstNameField.getText());
+            us.add(lastNameField.getText());
+            us.add(fatherNameField.getText());
+            us.add(motherNameField.getText());
             us.add("dateOfBirth");
             us.add("gender");
             us.add("martialStatus");
-            us.add(jemailt.getText());
-            us.add(jmobile.getText());
-            us.add(jpanCardText.getText());
-            us.add(jaadharText.getText());
+            us.add(emailidField.getText());
+            us.add(mobileNoField.getText());
+            us.add(panCardField.getText());
+            us.add(aadharcardField.getText());
             
             return us;
     }
+    
+    
+     
+    /*JDate Picker drop down*/
+    public class DateLabelFormatter extends AbstractFormatter {
+ 
+        private String datePattern = "yyyy-MM-dd";
+        private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+ 
+        @Override
+        public Object stringToValue(String text) throws ParseException {
+            return dateFormatter.parseObject(text);
+        }
+ 
+        @Override
+        public String valueToString(Object value) throws ParseException {
+            if (value != null) {
+                Calendar cal = (Calendar) value;
+                return dateFormatter.format(cal.getTime());
+            }
+ 
+            return "";
+        }
+ 
 }

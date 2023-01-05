@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class ForgetPassword extends JFrame implements ActionListener
 {
     JPanel jpanel1, jpanel2, jpanel3;
-    JLabel jemail, juname, jor, jinfo, jinfos,juname2,jpassword,jcpassword, jmobile;
+    JLabel Imagelabel, jemail, juname, jor, jinfo, jinfos,juname2,jpassword,jcpassword, jmobile;
     JTextField jemailId,jufiled,jufiled2,jpswrd, jcpswrd, jmobiles;
     JButton jexit,jsearch, jback, jclear, jclear2, jsubmit;
     ForgetPassword() {
@@ -26,7 +26,7 @@ public class ForgetPassword extends JFrame implements ActionListener
         ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("icons/forgetImage.png"));
         Image img1 = img.getImage().getScaledInstance(400, 500, Image.SCALE_DEFAULT);
         ImageIcon img2 = new ImageIcon(img1);        
-        JLabel Imagelabel = new JLabel(img2);
+        Imagelabel = new JLabel(img2);
         Imagelabel.setBounds(0, 0, 250, 500);
         jpanel1.add(Imagelabel);
        

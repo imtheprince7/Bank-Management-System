@@ -5,96 +5,99 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import java.sql.*;
 
 /**
  *
- * @author princ
+ * @author prince kumar singh
  */
 public class Login extends JFrame implements ActionListener {
-    JButton jregister,jlogin,jfpassword;
-    JLabel jImagelabel, jtext,juname,jpswd;
-    JTextField jufiled,jpfilled;
-    String name;
+    
+    JPanel panelImage, panelContent;
+    JLabel imageLabel, messgaeLabel,usernameLabel,passwordLabel;
+    JTextField usernameFiled,passwordFiled;
+    JButton registerButton,loginButton,forgetpassowrdButton;
     
     Login(){
         setLayout(null);
-    // Disable Maximize Click
         setResizable(false);
         setSize(900,500);
         setLocation(300,150);
+        setTitle("HOME PAGE"); 
+        
+        panelImage = new JPanel();
+        panelImage.setBounds(0, 0,350,500);
+        add(panelImage); 
+        panelImage.setLayout(null);        
+        
+        ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("icons/bank.png"));
+        Image img1 = img.getImage().getScaledInstance(350, 500, Image.SCALE_DEFAULT);
+        ImageIcon img2 = new ImageIcon(img1);        
+        imageLabel = new JLabel(img2);
+        imageLabel.setBounds(0, 0, 350, 500);
+        panelImage.add(imageLabel);       
+        
+        panelContent = new JPanel();
+        panelContent.setBounds(355, 0,500,500);
+        add(panelContent);
+        panelContent.setLayout(null);
         
         
-        setTitle("Home");
-        ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("icons/bank.jpg"));
-        Image img1 = img.getImage().getScaledInstance(250, 500, Image.SCALE_DEFAULT);
-        ImageIcon img2 = new ImageIcon(img1);
+        messgaeLabel = new JLabel("Welcome To CEGians Bank");
+        usernameLabel = new JLabel("Username");
+        usernameFiled = new JTextField();
         
-        jImagelabel = new JLabel(img2);
-        jImagelabel.setBounds(0, 0, 250, 500);
-        add(jImagelabel);
+        passwordLabel = new JLabel("Password");
+        passwordFiled = new JTextField();
         
-        
-    // Welcome Text
-        jtext = new JLabel("Welcome TO CEGians Bank");
-        jtext.setFont(new Font("verdana", Font.BOLD, 28));
-        jtext.setBounds(350,40,450,40);
-        add(jtext);
-    //userName Text & textField
-        juname = new JLabel("Username");
-        juname.setFont(new Font("verdana", Font.BOLD, 14));
-        juname.setBounds(350,120,100,50);
-        add(juname);
-        jufiled = new JTextField();
-        jufiled.setBounds(500, 125, 250, 40);
-        jufiled.setFont(new Font("verdana", Font.ITALIC, 14));
-        add(jufiled);
-        name = jufiled.getText();
-        
-        
-    //password Text & textField
-        jpswd = new JLabel("Password");
-        jpswd.setFont(new Font("verdana", Font.BOLD, 14));
-        jpswd.setBounds(350,200,250,20);
-        add(jpswd);
-        jpfilled = new JTextField();
-        jpfilled.setBounds(500, 190, 250, 40);
-        jpfilled.setFont(new Font("verdana", Font.BOLD, 14));
-        add(jpfilled);
-     
-    //SignIn Button
-        jlogin = new JButton("Sign In");
-        jlogin.setBounds(500,255,100,30);
-        jlogin.addActionListener(this);
-        add(jlogin);
-      
-      //Register Button
-        jregister = new JButton("Register");
-        jregister.setBounds(650,255,100,30);
-        jregister.addActionListener(this);
-        add(jregister);
-        
-        
-    //ForgetPassword Button
-        jfpassword = new JButton("Forget password");
-        jfpassword.setBounds(550,310,150,30);
-        jfpassword.addActionListener(this);
-        add(jfpassword);
+        loginButton = new JButton("Sign In");
+        loginButton.addActionListener(this);        
+        registerButton = new JButton("Register");
+        registerButton.addActionListener(this);
+        forgetpassowrdButton = new JButton("Forget password");
+        forgetpassowrdButton.addActionListener(this);
+                
+        setFont();
+        setBound();
+        addComponent();
         
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
        setVisible(true);
     }
     
-   public static void main(String [] args){
-       Connection newcon=cp.createCon();
-       new Database(newcon);
-      
-      new Login();      
+    public void setFont(){
+        messgaeLabel.setFont(new Font("verdana", Font.BOLD, 28));        
+        usernameLabel.setFont(new Font("verdana", Font.BOLD, 14));
+        usernameFiled.setFont(new Font("verdana", Font.ITALIC, 14));
+        passwordLabel.setFont(new Font("verdana", Font.BOLD, 14));
+        passwordFiled.setFont(new Font("verdana", Font.BOLD, 14));
+    }
+    public void setBound(){        
+        messgaeLabel.setBounds(50,50,450,40);     
+        usernameLabel.setBounds(40,150,100,50);        
+        usernameFiled.setBounds(150, 150, 250, 40);
+        passwordLabel.setBounds(40, 225,250,20);        
+        passwordFiled.setBounds(150, 220, 250, 40);
+        loginButton.setBounds(150,300,100,35);      
+        registerButton.setBounds(300,300,100,35); 
+        forgetpassowrdButton.setBounds(210,360,150,35);
+    }
+    public void addComponent(){
+        panelContent.add(messgaeLabel);     panelContent.add(usernameLabel);
+        panelContent.add(usernameFiled);    panelContent.add(passwordLabel);
+        panelContent.add(passwordFiled);    panelContent.add(loginButton);
+        panelContent.add(registerButton);   panelContent.add(forgetpassowrdButton);
+    }
+        
+    
+   public static void main(String [] args)
+   {
+   
+       new Login();      
    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        //throw new UnsupportedOperationException("Not supported yet.");
        if(e.getActionCommand()== "Forget password")
        {
            dispose();
@@ -109,12 +112,13 @@ public class Login extends JFrame implements ActionListener {
         
          if(e.getActionCommand()== "Sign In")
        {
-           if(jufiled.getText().equals("admin") && jpfilled.getText().equals("admin"))
+           if(usernameFiled.getText().equals("admin") && passwordFiled.getText().equals("admin"))
            {
                // Genreating Multiple Message on POP-UP
-            JOptionPane.showMessageDialog(null,"userType:"+" "+jufiled.getText()+"\n"+" Password:"+" "+jpfilled.getText()+" ");
+            JOptionPane.showMessageDialog(null,"userType:"+" "+usernameFiled.getText()+"\n"+" Password:"+" "+
+                    passwordFiled.getText()+" ");
               dispose();
-              new AdminPanel(name);
+              new AdminPanel();
            }
            else
            {
