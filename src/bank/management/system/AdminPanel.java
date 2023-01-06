@@ -13,157 +13,138 @@ import javax.swing.JTextField;
 
 
 public class AdminPanel extends JFrame implements ActionListener {
-    JPanel jpanel1, jpanel2, jpanel3;
-    JLabel jName,jInfo, jUsername, JFullName, JMobile, JEmail, JType, JPassword, JCPassword;
-    JTextField jUsernameT, JFullNameT, JMobileT, JEmailT, JTypeT,JPasswordT, JCPasswordT;
-    JButton jCreate, JClear, Jcheckusers,JLogOut, JBack;
-    JComboBox jroleType;
+    JPanel mainPanel, adminPanel, showPanel;
+    JLabel welcomeLabel,infoLabel, usernameLabel, fullNameLabel, mobileLabel, emailLabel, userTypeLabel, passwordLabel, cpasswordLabel;
+    JTextField usernameField, fullNameField, mobileField, emailField, userTypeField,passwordField, cpasswordField;
+    JButton createButton, clearButton, checkUsersButton,logoutButton, backButton;
+    JComboBox roleTypeBox;
     
     AdminPanel()
     {
         setResizable(false);
         setLayout(null);
         setSize(1000,500);
-        setLocation(200,10);
+        setLocation(200,100);
         setTitle("Admin Panel");
         
-        jpanel3 = new JPanel();
-        jpanel3.setBounds(0, 0,1000,500);
-        add(jpanel3);  
-        jpanel3.setLayout(null);  
+        mainPanel = new JPanel();
+        mainPanel.setBounds(0, 0,1000,500);
+        add(mainPanel);  
+        mainPanel.setLayout(null);  
         
         
-        jpanel1 = new JPanel();
-        jpanel1.setBounds(250, 15,1000,500);
-        add(jpanel1);  
-        jpanel1.setLayout(null);   
+        adminPanel = new JPanel();
+        adminPanel.setBounds(250, 15,1000,500);
+        add(adminPanel);  
+        adminPanel.setLayout(null);   
        
-        jpanel2 = new JPanel();
-        jpanel2.setBounds(0, 0,1000,500);
-        add(jpanel2);  
-        jpanel2.setBackground(Color.red);
-        jpanel2.setLayout(null);
-        jpanel2.setVisible(false);
-        jpanel3.add(jpanel1);
-        jpanel3.add(jpanel2);
+        showPanel = new JPanel();
+        showPanel.setBounds(0, 0,1000,500);
+        add(showPanel);  
+        showPanel.setBackground(Color.red);
+        showPanel.setLayout(null);
+        showPanel.setVisible(false);
+        mainPanel.add(showPanel);
+        mainPanel.add(adminPanel);
         
-        jName = new JLabel("Welcome \t Mr.");
-        jName.setBounds(10, 5, 550, 30);
-        jName.setFont(new Font("verdana", Font.BOLD, 13));
-        jpanel3.add(jName);
+//        jName = new JLabel("Welcome \t Mr.");
+//        jName.setBounds(10, 5, 550, 30);
+//        jName.setFont(new Font("verdana", Font.BOLD, 13));
+//        jpanel3.add(jName);
         
-        jInfo = new JLabel("Create New Users ||  Admins");
-        jInfo.setBounds(100, 25, 250, 50);
-        jInfo.setFont(new Font("verdana", Font.BOLD, 12));
-        jpanel1.add(jInfo);
+        infoLabel = new JLabel("Create New Users ||  Admins");        
+        usernameLabel = new JLabel("UserName");
+        usernameField = new JTextField();            
+        fullNameLabel = new JLabel("Full Name");
+        fullNameField = new JTextField();       
         
-        jUsername = new JLabel("UserName");
-        jUsername.setBounds(20, 75, 150, 40);
-        jUsername.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(jUsername);
-        jUsernameT = new JTextField();
-        jUsernameT.setBounds(200, 75, 200, 40);
-        jUsernameT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jUsernameT);
+        mobileLabel = new JLabel("Mobile No");
+        mobileField = new JTextField();        
+        emailLabel= new JLabel("Email Id");
+        emailField = new JTextField();
         
-        JFullName = new JLabel("Full Name");
-        JFullName.setBounds(20, 120, 150, 40);
-        JFullName.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(JFullName);
-        JFullNameT = new JTextField();
-        JFullNameT.setBounds(200, 120, 200, 40);
-        JFullNameT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(JFullNameT);
-        
-        JMobile = new JLabel("Mobile No");
-        JMobile.setBounds(20, 165, 160, 40);
-        JMobile.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(JMobile);
-        JMobileT = new JTextField();
-        JMobileT.setBounds(200, 165, 200, 40);
-        JMobileT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(JMobileT);
-        
-        JEmail = new JLabel("Email Id");
-        JEmail.setBounds(20,210, 200, 40);
-        JEmail.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(JEmail);
-        JEmailT = new JTextField();
-        JEmailT.setBounds(200, 210, 200, 40);
-        JEmailT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(JEmailT);
-        
-        JType = new JLabel("Account Type");
-        JType.setBounds(20, 255, 150, 40);
-        JType.setFont(new Font("verdana", Font.BOLD, 16));
-       jpanel1.add(JType);
+        userTypeLabel = new JLabel("Account Type");
         String s1[] = { "Select Role","Admin", "Manager","Staff"};
-        jroleType = new JComboBox(s1);
-        jroleType.setBounds(200, 255, 200, 30);
-        jroleType.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(jroleType);
+        roleTypeBox = new JComboBox(s1);
         
-        JPassword = new JLabel("Password");
-        JPassword.setBounds(20, 300, 150, 40);
-        JPassword.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(JPassword);
-        JPasswordT = new JTextField();
-        JPasswordT.setBounds(200, 300, 200, 40);
-        JPasswordT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(JPasswordT);
+        passwordLabel = new JLabel("Password");
+        passwordField = new JTextField();
+        cpasswordLabel = new JLabel("Confirm Password");
+        cpasswordField = new JTextField();
         
-        JCPassword = new JLabel("Confirm Password");
-        JCPassword.setBounds(20, 345, 180, 40);
-        JCPassword.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel1.add(JCPassword);
-        JCPasswordT = new JTextField();
-        JCPasswordT.setBounds(200, 345, 200, 40);
-        JCPasswordT.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel1.add(JCPasswordT);
+        clearButton = new JButton("CLEAR"); 
+        clearButton.addActionListener(this);        
+        createButton = new JButton("Create User");              
+        createButton.addActionListener(this);  
+        checkUsersButton = new JButton("Check Users");     
+        checkUsersButton.addActionListener(this); 
+        logoutButton = new JButton("LOGOUT");               
+        logoutButton.addActionListener(this);
+        backButton = new JButton("BACK");
+        backButton.addActionListener(this);
         
-        JClear = new JButton("CLEAR");
-        JClear.setBounds(20,405,80,30);
-        JClear.addActionListener(this);
-        jpanel1.add(JClear);
-        
-        jCreate = new JButton("Create User");
-        jCreate.setBounds(130,405,120,30);
-        jCreate.addActionListener(this);
-        jpanel1.add(jCreate);
-        
-        Jcheckusers = new JButton("Check Users");
-        Jcheckusers.setBounds(280,405,120,30);
-        Jcheckusers.addActionListener(this);
-        jpanel1.add(Jcheckusers);
-        
-        JLogOut = new JButton("LOGOUT");
-        JLogOut.setBounds(895,0,90,25);
-        JLogOut.addActionListener(this);
-        jpanel3.add(JLogOut);
-        
-        JBack = new JButton("BACK");
-        JBack.setBounds(890,435,90,25);
-        JBack.addActionListener(this);        
-        jpanel2.add(JBack);
-        
-        
-        
-        
-       
-        
-        
-        
-        
+        setFont();
+        setBound();
+        addComponent();          
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);        
     }
     // Constructor CLose Here...!!
     
+    public void setFont(){
+        
+    }
+    public void setBound(){
+        infoLabel.setBounds(100, 25, 250, 50);
+        usernameLabel.setBounds(20, 75, 150, 40);
+        usernameField.setBounds(200, 75, 200, 40);
+        fullNameLabel.setBounds(20, 120, 150, 40);
+        fullNameField.setBounds(200, 120, 200, 40); 
+        
+        mobileLabel.setBounds(20, 165, 160, 40);
+        mobileField.setBounds(200, 165, 200, 40);
+        emailLabel.setBounds(20,210, 200, 40);
+        emailField.setBounds(200, 210, 200, 40);
+        userTypeLabel.setBounds(20, 255, 150, 40);
+        roleTypeBox.setBounds(200, 255, 200, 30);
+        passwordLabel.setBounds(20, 300, 150, 40);
+        passwordField.setBounds(200, 300, 200, 40);
+        cpasswordLabel.setBounds(20, 345, 180, 40);
+        cpasswordField.setBounds(200, 345, 200, 40);
+        clearButton.setBounds(20,405,80,30);
+        createButton.setBounds(130,405,120,30);
+        checkUsersButton.setBounds(280,405,120,30);
+        logoutButton.setBounds(895,0,90,25);
+        backButton.setBounds(890,435,90,25);  
+    }
+    public void addComponent(){
+        adminPanel.add(infoLabel);               
+        adminPanel.add(usernameLabel);
+        adminPanel.add(usernameField);
+        adminPanel.add(fullNameLabel);
+        adminPanel.add(fullNameField);
+        adminPanel.add(mobileLabel);
+        adminPanel.add(mobileField);
+        adminPanel.add(emailLabel);
+        adminPanel.add(emailField);  
+        adminPanel.add(userTypeLabel);
+        adminPanel.add(roleTypeBox);
+        adminPanel.add(passwordLabel);        
+        adminPanel.add(passwordField);
+        adminPanel.add(cpasswordLabel);
+        adminPanel.add(cpasswordField);
+        adminPanel.add(clearButton);
+        adminPanel.add(createButton);
+        adminPanel.add(checkUsersButton);  
+        mainPanel.add(logoutButton);
+        showPanel.add(backButton);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       // throw new UnsupportedOperationException("Not supported yet."); 
+
     
        if(e.getActionCommand()=="LOGOUT"){
         int response = JOptionPane.showConfirmDialog(this, "Do You Want to Logout ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -171,21 +152,13 @@ public class AdminPanel extends JFrame implements ActionListener {
             dispose();
             new Login();
         }
-//        else if(response==JOptionPane.NO_OPTION){
-//            new AdminPanel();
-//        }
-//        else{
-//           new AdminPanel();   
-//        }
+        
     }
        if(e.getActionCommand()=="CLEAR"){
-           jUsernameT.setText("");
-           JFullNameT.setText("");
-           JMobileT.setText("");
-           JEmailT.setText("");
-           JTypeT.setText("");
-           JPasswordT.setText("");
-           JCPasswordT.setText("");
+           userTypeField.setText("");   fullNameField.setText("");
+           mobileField.setText("");     emailField.setText("");
+           userTypeField.setText("");   passwordField.setText("");
+           cpasswordField.setText("");
            
        }
        if(e.getActionCommand()=="Create User"){
@@ -193,13 +166,13 @@ public class AdminPanel extends JFrame implements ActionListener {
        }
        
        if(e.getActionCommand()=="Check Users"){
-          jpanel2.setVisible(true);
-          jpanel1.setVisible(false);
+          showPanel.setVisible(true);
+          adminPanel.setVisible(false);
        }
        
        if(e.getActionCommand()=="BACK"){
-           jpanel2.setVisible(false);
-           jpanel1.setVisible(true);
+           showPanel.setVisible(false);
+           adminPanel.setVisible(true);
            
        }
            

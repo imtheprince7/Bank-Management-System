@@ -21,7 +21,7 @@ public class Login extends JFrame implements ActionListener {
         setLayout(null);
         setResizable(false);
         setSize(900,500);
-        setLocation(300,150);
+        setLocation(200,100);
         setTitle("HOME PAGE"); 
         
         panelImage = new JPanel();

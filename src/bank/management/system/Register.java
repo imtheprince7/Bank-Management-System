@@ -1,18 +1,11 @@
 package bank.management.system;
-//import com.toedter.Calendar.JDateChooser; 
+
 import java.awt.Font;import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.swing.JFormattedTextField.AbstractFormatter;
-import org.jdatepicker.impl.DateComponentFormatter;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-
 
 public class Register extends JFrame implements ActionListener{
     Random random ;
@@ -21,14 +14,13 @@ public class Register extends JFrame implements ActionListener{
     JPanel PanelMain;
     JLabel applicationNoLabel, usernameLabel,firstNameLabel, lastNameLabel,fatherNameLabel,
             motherNameLabel, dobLabel,genderLabel,martialStatusLabel,emailIdLabel,mobileNoLabel,
-            aadharcardLabel,panCardLabel;
+            panCardLabel,aadharcardLabel;
     JTextField applicationNoField, usernameField,firstNameField, lastNameField,fatherNameField,
-            motherNameField, emailidField, mobileNoField,aadharcardField,panCardField;
+            motherNameField, emailidField, mobileNoField,panCardField,aadharcardField;
     JRadioButton genderMale,genderFemale, genderOther, buttonMarried, buttonUnmarried, buttonDivorce;
     ButtonGroup genderGroup,martialStatusGroup;
     JButton exitButton, clearButton,nextButton;
-    JDatePanelImpl datePanel;
-    JDatePickerImpl datePicker;
+    
     ArrayList<String> us = new ArrayList<>();
     
     
@@ -41,7 +33,7 @@ public class Register extends JFrame implements ActionListener{
         setResizable(false);
         setLayout(null);
         setSize(900,550);
-        setLocation(300,100);
+        setLocation(200,100);
         
         PanelMain= new JPanel();
         PanelMain.setBounds(0, 0,900,550);
@@ -60,8 +52,8 @@ public class Register extends JFrame implements ActionListener{
         
         applicationNoLabel = new JLabel("Application Number");
         applicationNoField =  new JTextField();
-        applicationNoField.setEditable(false); 
         applicationNoField.setText(formNumber);
+        applicationNoField.setEditable(false); 
         
         
         usernameLabel = new JLabel("Username");      
@@ -80,33 +72,23 @@ public class Register extends JFrame implements ActionListener{
         motherNameField = new JTextField();
       
         dobLabel = new JLabel("D.O.B.");
-       /*Adding JDatePicker date picker*/
-        UtilDateModel model = new UtilDateModel();
-        model.setDate(1999, 01, 02);
-        model.setSelected(true);
-        Properties p = new Properties();
-        p.put("text.today", "Today");
-        p.put("text.month", "Month");
-        p.put("text.year", "Year");
-        datePanel = new JDatePanelImpl(model, p);
-        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        /*End Date picker*/
+       
         
         genderLabel= new JLabel("Gender");
         genderMale = new JRadioButton("MALE", true);
         genderFemale = new JRadioButton("FEMALE");
         genderOther = new JRadioButton("OTHER");
-        genderGroup.add(genderMale);
-        genderGroup.add(genderFemale);
-        genderGroup.add(genderOther);
+//        genderGroup.add(genderMale);
+//        genderGroup.add(genderFemale);
+//        genderGroup.add(genderOther);
         
         martialStatusLabel = new JLabel("Martial Status");
         buttonMarried = new JRadioButton("MARRIED");
         buttonUnmarried = new JRadioButton("UNMARRIED");
         buttonDivorce = new JRadioButton("DIVORCE");
-        martialStatusGroup.add(buttonMarried);
-        martialStatusGroup.add(buttonUnmarried);
-        martialStatusGroup.add(buttonDivorce);
+//        martialStatusGroup.add(buttonMarried);
+//        martialStatusGroup.add(buttonUnmarried);
+//        martialStatusGroup.add(buttonDivorce);
        
         emailIdLabel = new JLabel("Email ID");
         emailidField = new JTextField();
@@ -128,52 +110,35 @@ public class Register extends JFrame implements ActionListener{
         clearButton.addActionListener(this);
             
         nextButton = new JButton("NEXT");
-        nextButton.addActionListener(this);
-        
+        nextButton.addActionListener(this);        
         
         setFont();
         setBound();
-        addComponent();
-        
+        addComponent();        
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);        
     }
     
     public void addComponent(){
-        PanelMain.add(applicationNoLabel);
-        PanelMain.add(applicationNoField);
-        PanelMain.add(usernameLabel);
-        PanelMain.add(usernameField);
-        PanelMain.add(firstNameLabel);
-        PanelMain.add(firstNameField);
-        PanelMain.add(lastNameLabel);
-        PanelMain.add(lastNameField);
-        PanelMain.add(fatherNameLabel);
-        PanelMain.add(fatherNameField);
-        PanelMain.add(motherNameLabel);
-        PanelMain.add(motherNameField);
+        PanelMain.add(applicationNoLabel);  PanelMain.add(applicationNoField);
+        PanelMain.add(usernameLabel);       PanelMain.add(usernameField);
+        PanelMain.add(firstNameLabel);      PanelMain.add(firstNameField);
+        PanelMain.add(lastNameLabel);       PanelMain.add(lastNameField);
+        PanelMain.add(fatherNameLabel);     PanelMain.add(fatherNameField);
+        PanelMain.add(motherNameLabel);     PanelMain.add(motherNameField);
         PanelMain.add(dobLabel);
-        PanelMain.add(datePicker);
-        PanelMain.add(genderLabel);
-        PanelMain.add(genderMale);
-        PanelMain.add(genderFemale);
-        PanelMain.add(genderOther);
-        PanelMain.add(martialStatusLabel);
-        PanelMain.add(buttonMarried);
-        PanelMain.add(buttonUnmarried);
-        PanelMain.add(buttonDivorce);
-        PanelMain.add(emailIdLabel);
-        PanelMain.add(emailidField);
-        PanelMain.add(mobileNoLabel);
-        PanelMain.add(mobileNoField);
-        PanelMain.add(panCardLabel);
-        PanelMain.add(panCardField);
-        PanelMain.add(aadharcardLabel);
-        PanelMain.add(aadharcardField);
-        PanelMain.add(exitButton);
-        PanelMain.add(clearButton);
-        PanelMain.add(nextButton);
+        PanelMain.add(genderLabel);         PanelMain.add(genderMale);
+        PanelMain.add(genderFemale);        PanelMain.add(genderOther);
+        PanelMain.add(martialStatusLabel);  PanelMain.add(buttonMarried);
+        PanelMain.add(buttonUnmarried);     PanelMain.add(buttonDivorce);
+        PanelMain.add(emailIdLabel);        PanelMain.add(emailidField);
+        PanelMain.add(mobileNoLabel);       PanelMain.add(mobileNoField);
+        PanelMain.add(panCardLabel);        PanelMain.add(panCardField);
+        PanelMain.add(aadharcardLabel);     PanelMain.add(aadharcardField);
+        PanelMain.add(exitButton);          PanelMain.add(clearButton);
+        PanelMain.add(nextButton);          
+        
     }
     public void setFont(){       
         applicationNoLabel.setFont(new Font("verdana", Font.BOLD, 12));
@@ -194,26 +159,35 @@ public class Register extends JFrame implements ActionListener{
         buttonMarried.setFont(new Font("verdana", Font.BOLD, 13));  
         buttonUnmarried.setFont(new Font("verdana", Font.BOLD, 13));  
         emailIdLabel.setFont(new Font("verdana", Font.BOLD, 16)); 
-        mobileNoLabel.setFont(new Font("verdana", Font.BOLD, 16));  
-        panCardLabel.setFont(new Font("verdana", Font.BOLD, 14)); 
-        panCardLabel.setFont(new Font("verdana", Font.ITALIC, 14));
+        mobileNoLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        panCardLabel.setFont(new Font("verdana", Font.BOLD, 16));
         aadharcardLabel.setFont(new Font("verdana", Font.BOLD, 16));  
         aadharcardField.setFont(new Font("verdana", Font.ITALIC, 14));      
     }
     
     public void setBound(){
+        applicationNoLabel.setBounds(20, 10, 150, 40);
         applicationNoField.setBounds(200, 10, 200, 30);
-        usernameField.setBounds(200, 60, 200, 40);
+        usernameLabel.setBounds(20, 60, 150, 40);
+        usernameField.setBounds(200, 60, 200, 40);        
+        firstNameLabel.setBounds(20, 110, 150, 40);
         firstNameField.setBounds(200, 110, 200, 40);
+        lastNameLabel.setBounds(450, 110, 150, 40);
         lastNameField.setBounds(650, 110, 200, 40);
+        fatherNameLabel.setBounds(20, 160, 150, 40);
         fatherNameField.setBounds(200, 160, 200, 40);
+        motherNameLabel.setBounds(450, 160, 150, 40);
         motherNameField.setBounds(650, 160, 200, 40);
-        datePicker.setBounds(130, 210, 200, 30);
+        dobLabel.setBounds(20, 210, 150, 40);
         genderLabel.setBounds(450, 210, 150, 40);
+        genderMale.setBounds(650, 210, 100, 40);
+        genderFemale.setBounds(770, 210, 150, 40);
+        martialStatusLabel.setBounds(20, 260, 150, 40);
         buttonMarried.setBounds(200, 260, 150, 40);
         buttonUnmarried.setBounds(400, 260, 150, 40);
         buttonDivorce.setBounds(600, 260, 150, 40);
         emailIdLabel.setBounds(20, 310, 150, 40);
+        emailidField.setBounds(200, 310, 200, 40);
         mobileNoLabel.setBounds(450, 310, 150, 40);
         mobileNoField.setBounds(650, 310, 200, 40);
         panCardLabel.setBounds(20, 360, 150, 40);
@@ -239,7 +213,7 @@ public class Register extends JFrame implements ActionListener{
           }
        }       
        if(e.getActionCommand()== "CLEAR"){
-         applicationNoField.setText("");usernameField.setText("");
+        usernameField.setText("");
          firstNameField.setText("");   lastNameField.setText("");
          fatherNameField.setText("");  motherNameField.setText("");
          emailidField.setText("");     mobileNoField.setText("");
@@ -249,7 +223,7 @@ public class Register extends JFrame implements ActionListener{
         if(e.getActionCommand()== "NEXT"){
             userDetails(us);
             dispose();
-           new RegisterSecond(formNumber,us);
+           new RegisterSecond(us);
        }
     }
     // Event -Listener Method CLose here:---
@@ -271,29 +245,5 @@ public class Register extends JFrame implements ActionListener{
             us.add(aadharcardField.getText());
             
             return us;
-    }
-    
-    
-     
-    /*JDate Picker drop down*/
-    public class DateLabelFormatter extends AbstractFormatter {
- 
-        private String datePattern = "yyyy-MM-dd";
-        private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
- 
-        @Override
-        public Object stringToValue(String text) throws ParseException {
-            return dateFormatter.parseObject(text);
-        }
- 
-        @Override
-        public String valueToString(Object value) throws ParseException {
-            if (value != null) {
-                Calendar cal = (Calendar) value;
-                return dateFormatter.format(cal.getTime());
-            }
- 
-            return "";
-        }
- 
+    }    
 }

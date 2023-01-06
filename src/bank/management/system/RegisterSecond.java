@@ -8,24 +8,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RegisterSecond extends JFrame implements ActionListener{
-     String formNumber;
+
      JPanel mainPanel;
      JLabel applicationNoLabel, flateNoLabel, streetLabel, landmarkLabel,pincodeLabel,districtLabel,cityLabel,
-             stateLabel,countryLabel;
+            stateLabel,countryLabel;
      JTextField applicationNoField,flateNoField,streetField, landmarkField,pincodeField,districtField,
-             cityField,stateField,countryField;         
+                cityField,stateField,countryField;         
      JButton nextButton, clearButton;
      
      ArrayList<String> user = new ArrayList<>();
      
      
-    RegisterSecond( String formnum,ArrayList<String> us){  
-        user =us;
-        formNumber =formnum; 
+    RegisterSecond(ArrayList<String> us){  
+        user = us;
         setResizable(false);
         setLayout(null);
-        setSize(900,500);
-        setLocation(300,150); 
+        setSize(900,510);
+        setLocation(200,100); 
         setTitle("Account Registration || Address Details (2/3)");
         
         mainPanel= new JPanel();
@@ -43,7 +42,7 @@ public class RegisterSecond extends JFrame implements ActionListener{
         applicationNoLabel = new JLabel("Application Number");
         applicationNoField = new JTextField();
         applicationNoField.setEditable(false); 
-        applicationNoField.setText(formNumber);     
+        applicationNoField.setText(user.get(0));     
         
         flateNoLabel = new JLabel("Flat No.");
         flateNoField = new JTextField();            
@@ -92,18 +91,30 @@ public class RegisterSecond extends JFrame implements ActionListener{
     }
     
     public void setBound(){
-        applicationNoField.setBounds(20, 20, 150, 30);
-        flateNoField.setBounds(20, 70, 150, 30);
-        streetField.setBounds(20, 120, 150, 30);
-        landmarkField.setBounds(20, 170, 150, 30);
-        pincodeField.setBounds(20, 220, 150, 30);
-        districtField.setBounds(20, 270, 150, 30);
-        cityField.setBounds(20, 320, 150, 30);
-        stateField.setBounds(20, 370, 150, 30);
-        countryField.setBounds(20, 420, 150, 30);
+        applicationNoLabel.setBounds(20, 20, 200, 30);
+        applicationNoField.setBounds(200, 20, 200, 40);
+        flateNoLabel.setBounds(20, 70, 200, 40);
+        flateNoField.setBounds(200, 70, 200, 40);
+        streetLabel.setBounds(20, 120, 200, 40);
+        streetField.setBounds(200, 120, 200, 40);
+        landmarkLabel.setBounds(20, 170, 200, 40);
+        landmarkField.setBounds(200, 170, 200, 40);
+        pincodeLabel.setBounds(20, 220, 200, 40);
+        pincodeField.setBounds(200, 220, 200, 40);
+        districtLabel.setBounds(20, 270, 200, 40);
+        districtField.setBounds(200, 270, 200, 40);
+        cityLabel.setBounds(20, 320, 200, 40);
+        cityField.setBounds(200, 320, 200, 40);
+        stateLabel.setBounds(20, 370, 200, 40);
+        stateField.setBounds(200, 370, 200, 40);
+        countryLabel.setBounds(20, 420, 200, 40);
+        countryField.setBounds(200, 420, 200, 40);
+        clearButton.setBounds(600, 400, 100 , 40); 
+        nextButton.setBounds(750, 400, 100, 40);
    }
     
    public void addComponent(){
+       
         mainPanel.add(applicationNoLabel);  mainPanel.add(applicationNoField);
         mainPanel.add(flateNoLabel);        mainPanel.add(flateNoField);
         mainPanel.add(streetLabel);         mainPanel.add(streetField);
@@ -136,7 +147,7 @@ public class RegisterSecond extends JFrame implements ActionListener{
        
        userDetails(user);
        dispose();
-       new AccountType(formNumber, user);
+       new RegisterThird(user);
      }
      
     }  // @OVERIRDE METHOD END HERE
