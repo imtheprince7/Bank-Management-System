@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
-public class BankOperation  extends JFrame implements ActionListener{
-    BankOperation(){
+public class AccountFacilities  extends JFrame implements ActionListener{
+    AccountFacilities(){
         setResizable(false);
         setLayout(null);
         setSize(900,500);
@@ -30,7 +30,8 @@ public class BankOperation  extends JFrame implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // throw new UnsupportedOperationException("Not supported yet."); 
+
         
         
     }

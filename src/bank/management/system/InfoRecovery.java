@@ -2,196 +2,170 @@ package bank.management.system;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-public class ForgetPassword extends JFrame implements ActionListener
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
+
+public class InfoRecovery extends JFrame implements ActionListener
 {
-    JPanel jpanel1, jpanel2, jpanel3;
-    JLabel Imagelabel, jemail, juname, jor, jinfo, jinfos,juname2,jpassword,jcpassword, jmobile;
-    JTextField jemailId,jufiled,jufiled2,jpswrd, jcpswrd, jmobiles;
-    JButton jexit,jsearch, jback, jclear, jclear2, jsubmit;
-    ForgetPassword() {
+    JPanel imagePanel, searchPanel, recoveryPanel;
+    JLabel imageLabel, emailLabel, userNameLabel, orLabel, infoLabel, resetLabel,userName2Label,passwordLabel,cpasswordLabel, mobileLabel;
+    JTextField emailIdField,userNameField,UserName2Field,passowrdField, cpasswordField, mobileField;
+    JButton exitButton, searchButton, clearButton, clear2Button, submitButton;
+    
+    InfoRecovery() {
         setResizable(false);
         setLayout(null);
         setSize(900,500);
-        setLocation(300,150);
+        setLocation(200,100);
         setTitle("Forget Password Recovery");
         
         
-        jpanel1= new JPanel();
-        jpanel1.setBounds(0, 0,400,500);
-        add(jpanel1);       
+        imagePanel= new JPanel();       
+        add(imagePanel);       
         
         ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("icons/forgetImage.png"));
         Image img1 = img.getImage().getScaledInstance(400, 500, Image.SCALE_DEFAULT);
         ImageIcon img2 = new ImageIcon(img1);        
-        Imagelabel = new JLabel(img2);
-        Imagelabel.setBounds(0, 0, 250, 500);
-        jpanel1.add(Imagelabel);
+        imageLabel = new JLabel(img2);
        
-        jpanel2= new JPanel();
-        jpanel2.setBounds(401, 0,500,500);
-        jpanel2.setBackground(Color.blue);
-        jpanel2.setLayout(null);
-        add(jpanel2);
+        searchPanel= new JPanel();        
+        searchPanel.setBackground(Color.blue);
+        searchPanel.setLayout(null);
+        add(searchPanel);
         
-        jinfo = new JLabel("Search Yourself BY Given Options");
-        jinfo.setBounds(120, 70, 300, 30);
-        jinfo.setFont(new Font("verdana", Font.BOLD, 14));
-        jpanel2.add(jinfo);
+        infoLabel = new JLabel("Search Yourself BY Given Options");
+        emailLabel = new JLabel("Email Id");       
+        emailIdField = new JTextField();
+        orLabel = new JLabel("OR");
         
-  //Search Section by UserName || MobileNumber || EmailID:
-        jemail = new JLabel("Email Id");
-        jemail.setFont(new Font("verdana", Font.BOLD, 14));
-        jemail.setBounds(20, 125, 80, 30);
-        jpanel2.add(jemail);        
-        jemailId = new JTextField();
-        jemailId.setBounds(130, 120, 200, 40);
-        jpanel2.add(jemailId);
-       
-        jor = new JLabel("OR");
-        jor.setBounds(200, 162, 30, 30);
-        jor.setFont(new Font("verdana", Font.BOLD, 12));
-        jpanel2.add(jor);
+        userNameLabel = new JLabel("Username");
+        userNameField = new JTextField();
+        orLabel = new JLabel("OR");  
+        mobileLabel = new JLabel("Mobile");
+        mobileField = new JTextField();        
         
-        juname = new JLabel("Username");
-        juname.setFont(new Font("verdana", Font.BOLD, 14));
-        juname.setBounds(20,190,80,30);
-        jpanel2.add(juname);
-        jufiled = new JTextField();
-        jufiled.setBounds(130, 190, 200, 40);
-        jufiled.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel2.add(jufiled);
-        
-        jor = new JLabel("OR");
-        jor.setBounds(200, 235, 30, 30);
-        jor.setFont(new Font("verdana", Font.BOLD, 12));
-        jpanel2.add(jor);
-        
-        jmobile = new JLabel("Mobile");
-        jmobile.setFont(new Font("verdana", Font.BOLD, 14));
-        jmobile.setBounds(20,265,80,30);
-        jpanel2.add(jmobile);
-        jmobiles = new JTextField();
-        jmobiles.setBounds(130, 265, 200, 40);
-        jmobiles.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel2.add(jmobiles);
-        
-//BUTTON in PANEL:-2
-        //Search Button
-        jsearch = new JButton("SEARCH");
-        jsearch.setBounds(350,125,100,30);
-        jsearch.addActionListener(this);
-        jpanel2.add(jsearch); 
-   
-        //CLEAR Button
-        jclear = new JButton("CLEAR");
-        jclear.setBounds(350,193,100,30);
-        jclear.addActionListener(this);
-        jpanel2.add(jclear);
-        
-        //EXIT Button 
-        jexit = new JButton("EXIT");
-        jexit.setBounds(350,267,100,30);
-        jexit.addActionListener(this);
-        jpanel2.add(jexit);
-      
-      
-// PANEL 3:- For RESET PASSWORD SECTION
+        searchButton = new JButton("SEARCH");       
+        searchButton.addActionListener(this);   
+        clearButton = new JButton("CLEAR");
+        clearButton.addActionListener(this);        
+        exitButton = new JButton("EXIT");
+        exitButton.addActionListener(this);
     
-        jpanel3= new JPanel();
-        jpanel3.setBounds(401, 0,500,500);
-        add(jpanel3);
-        jpanel3.setLayout(null);
-        jpanel3.setVisible(false);
-             
-//         ImageIcon panel3 = new ImageIcon(ClassLoader.getSystemResource("icons/background.png"));
-//         Image panel3a = panel3.getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT);
-//         ImageIcon panel3b = new ImageIcon(panel3a);
-//         JLabel imgLable = new JLabel(panel3b);
-//         imgLable.setBounds(0,0,500,500);
-//         jpanel3.add(imgLable);
-//         
         
-        jinfos = new JLabel("Reset Your Password");
-        jinfos.setBounds(150, 80, 300, 30);
-        jinfos.setFont(new Font("verdana", Font.BOLD, 16));
-        jpanel3.add(jinfos);
+        recoveryPanel= new JPanel();        
+        add(recoveryPanel);
+        recoveryPanel.setLayout(null);
+        recoveryPanel.setVisible(false);
         
-        juname2 = new JLabel("Username");
-        juname2.setFont(new Font("verdana", Font.BOLD, 14));
-        juname2.setBounds(30,140,80,30);
-        jpanel3.add(juname2);
-        jufiled2 = new JTextField();
-        jufiled2.setEditable(false);
-        jufiled2.setBounds(180, 140, 220, 40);
-        jufiled2.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel3.add(jufiled2);
+        resetLabel = new JLabel("Reset Your Password");        
+        userName2Label = new JLabel("Username"); 
+        UserName2Field = new JTextField();
+        UserName2Field.setEditable(false);
+       
+        passwordLabel = new JLabel("Password");
+        passowrdField = new JTextField();
+        cpasswordLabel = new JLabel("Confirm Password");
+        cpasswordField = new JTextField();   
         
-        jpassword = new JLabel("Password");
-        jpassword.setFont(new Font("verdana", Font.BOLD, 14));
-        jpassword.setBounds(30,200,80,30);
-        jpanel3.add(jpassword);
-        jpswrd = new JTextField();
-        jpswrd.setBounds(180, 200, 220, 40);
-        jpswrd.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel3.add(jpswrd);
-        
-        jcpassword = new JLabel("Confirm Password");
-        jcpassword.setFont(new Font("verdana", Font.BOLD, 14));
-        jcpassword.setBounds(30,260,180,30);
-        jpanel3.add(jcpassword);
-        jcpswrd = new JTextField();        
-        jcpswrd.setBounds(180, 260, 220, 40);
-        jcpswrd.setFont(new Font("verdana", Font.ITALIC, 14));
-        jpanel3.add(jcpswrd);
-        
-        jclear2= new JButton("CLEAR");
-        jclear2.setBounds(180,350,100,40);
-        jclear2.addActionListener(this);
-        jpanel3.add(jclear2);        
-        
-        jsubmit= new JButton("SUBMIT");
-        jsubmit.setBounds(300,350,100,40);
-        jsubmit.addActionListener(this);
-        jpanel3.add(jsubmit);
+        clear2Button= new JButton("CLEAR");
+        clear2Button.addActionListener(this);           
+        submitButton= new JButton("SUBMIT");
+        submitButton.addActionListener(this);     
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        setFont();
+        setBound();
+        addComponent(); 
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
     
-//    public static void main(String[] args) {
-//         new  ForgetPassword().setVisible(true);
-//    }
-
+    public void setFont(){
+        infoLabel.setFont(new Font("verdana", Font.BOLD, 14));
+        emailLabel.setFont(new Font("verdana", Font.BOLD, 14));
+        orLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        userNameLabel.setFont(new Font("verdana", Font.BOLD, 14));         
+        userNameField.setFont(new Font("verdana", Font.ITALIC, 14));
+        orLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        mobileLabel.setFont(new Font("verdana", Font.BOLD, 14));
+        mobileField.setFont(new Font("verdana", Font.ITALIC, 14));         
+        resetLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        userName2Label.setFont(new Font("verdana", Font.BOLD, 14));       
+        UserName2Field.setFont(new Font("verdana", Font.ITALIC, 14));        
+        passwordLabel.setFont(new Font("verdana", Font.BOLD, 14));        
+        passowrdField.setFont(new Font("verdana", Font.ITALIC, 14));
+        cpasswordLabel.setFont(new Font("verdana", Font.BOLD, 14));
+        cpasswordField.setFont(new Font("verdana", Font.ITALIC, 14));        
+    }
+    
+    public void setBound(){
+        imagePanel.setBounds(0, 0,400,500);
+        recoveryPanel.setBounds(401, 0,500,500);
+        searchPanel.setBounds(401, 0,500,500);
+        infoLabel.setBounds(120, 70, 300, 30);
+        emailLabel.setBounds(20, 125, 80, 30);
+        emailIdField.setBounds(130, 120, 200, 40);
+        orLabel.setBounds(200, 162, 30, 30);
+        userNameLabel.setBounds(20,190,80,30);
+        userNameField.setBounds(130, 190, 200, 40);
+        orLabel.setBounds(200, 235, 30, 30);
+        mobileLabel.setBounds(20,265,80,30);
+        mobileField.setBounds(130, 265, 200, 40);
+        searchButton.setBounds(350,125,100,30);
+        clearButton.setBounds(350,193,100,30);
+        exitButton.setBounds(350,267,100,30);        
+        imageLabel.setBounds(0, 0, 250, 500);        
+        resetLabel.setBounds(150, 80, 300, 30);
+        userName2Label.setBounds(30,140,80,30);
+        UserName2Field.setBounds(180, 140, 220, 40);
+        passwordLabel.setBounds(30,200,80,30);
+        passowrdField.setBounds(180, 200, 220, 40);        
+        cpasswordLabel.setBounds(30,260,180,30);  
+        cpasswordField.setBounds(180, 260, 220, 40);
+        clear2Button.setBounds(180,350,100,40);
+        submitButton.setBounds(300,350,100,40);
+    }
+    
+    public void addComponent(){
+        searchPanel.add(infoLabel);     searchPanel.add(emailLabel);  
+        searchPanel.add(emailIdField);  searchPanel.add(orLabel);
+        searchPanel.add(userNameLabel); searchPanel.add(userNameField);
+        searchPanel.add(orLabel);       searchPanel.add(mobileLabel);
+        searchPanel.add(mobileField);   searchPanel.add(searchButton);         
+        recoveryPanel.add(resetLabel);  recoveryPanel.add(userName2Label);
+        recoveryPanel.add(UserName2Field); recoveryPanel.add(passwordLabel);
+        recoveryPanel.add(passowrdField);  recoveryPanel.add(cpasswordLabel);        
+        recoveryPanel.add(cpasswordField); imagePanel.add(imageLabel);
+        searchPanel.add(clearButton);      searchPanel.add(exitButton);
+        recoveryPanel.add(clear2Button);   recoveryPanel.add(submitButton);   
+    }    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-      //  throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+      //  throw new UnsupportedOperationException("Not supported yet."); 
+
           
      if(e.getActionCommand() == "SEARCH")
        {
-          jpanel2.setVisible(false);
-          jpanel3.setVisible(true);          
+          searchPanel.setVisible(false);
+          recoveryPanel.setVisible(true);          
        }     
      if(e.getActionCommand() == "CLEAR")
        {
-                 jemailId.setText("");
-                 jufiled.setText("");
-                 jmobiles.setText("");
-                 jpswrd.setText("");
-                 jcpswrd.setText("");
+                 emailIdField.setText("");
+                 userNameField.setText("");
+                 mobileField.setText("");
+                 passowrdField.setText("");
+                 cpasswordField.setText("");
                  
        }
      if(e.getActionCommand()== "EXIT")

@@ -1,12 +1,20 @@
 package bank.management.system;
 
-import javax.swing.*;
+import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+import javax.swing.JOptionPane;
 
 
 public class RegisterThird extends JFrame implements ActionListener{
@@ -205,9 +213,7 @@ public class RegisterThird extends JFrame implements ActionListener{
                  
                  "THANK YOU ❤️", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
          if(response==JOptionPane.YES_OPTION){
-            Database db = new Database();
-            db.saveData(user);
-             dispose();
+            dispose();
             new Login();
           }
          if(response==JOptionPane.NO_OPTION){

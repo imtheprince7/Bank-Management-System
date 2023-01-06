@@ -101,7 +101,7 @@ public class Login extends JFrame implements ActionListener {
        if(e.getActionCommand()== "Forget password")
        {
            dispose();
-           new ForgetPassword();          
+           new InfoRecovery();          
        }
         if(e.getActionCommand()== "Register")
        {
