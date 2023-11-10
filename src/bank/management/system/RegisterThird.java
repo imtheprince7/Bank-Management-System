@@ -24,8 +24,8 @@ public class RegisterThird extends JFrame implements ActionListener{
      static String accountNumber, ifsccodes="CEGB3147000",micrcodes="110015317";
      JPanel mainPanel;
      JLabel applicationNoLabel, accountNumberLabel, ifscCodeLabel, micrCodeLabel, serviceLabel,netbankingLabel,
-            mobileBankingLabel, chequeBookLabel, atmCardLabel;
-     JTextField applicationNoField, accountNumberField, ifscCodeField, micrCodeField;
+            mobileBankingLabel, chequeBookLabel, atmCardLabel, accountType;
+     JTextField applicationNoField, accountNumberField, ifscCodeField, micrCodeField, accountTypeField;
      JRadioButton netbankingYes, netbankingNo, mobileBankingYes, mobileBankingNo, chequeBook25,
                   chequeBook50,chequeBook100,chequeBookNo, atmCardYes,atmCardNo ;
      ButtonGroup netbankingGroup , mobileBankingGroup, chequeBookGroup, atmCardGroup;
@@ -44,7 +44,7 @@ public class RegisterThird extends JFrame implements ActionListener{
         setTitle("Account Registration || Account Type (3/3)");
         setLayout(null);
         setResizable(false);
-        setSize(900,500);
+        setSize(900,600);
         setLocation(200,100);
         
         mainPanel= new JPanel();
@@ -76,7 +76,9 @@ public class RegisterThird extends JFrame implements ActionListener{
         micrCodeLabel = new JLabel("MICR Code");        
         micrCodeField = new JTextField();
         micrCodeField.setEditable(false); 
-        micrCodeField.setText(micrcodes);        
+        micrCodeField.setText(micrcodes);
+
+
         
         serviceLabel = new JLabel("Services for better banking facilities:");       
         

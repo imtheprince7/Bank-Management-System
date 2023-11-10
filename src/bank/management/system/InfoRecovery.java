@@ -17,8 +17,8 @@ public class InfoRecovery extends JFrame implements ActionListener
 {
     JPanel imagePanel, searchPanel, recoveryPanel;
     JLabel imageLabel, emailLabel, userNameLabel, orLabel, infoLabel, resetLabel,userName2Label,passwordLabel,cpasswordLabel, mobileLabel;
-    JTextField emailIdField,userNameField,UserName2Field,passowrdField, cpasswordField, mobileField;
-    JButton exitButton, searchButton, clearButton, clear2Button, submitButton;
+    JTextField emailIdField,userNameField,UserName2Field,passowrdField, cpasswordField, mobileField, errorMessage;
+    JButton exitButton, searchButton, clearButton, clear2Button, submitButton,search2Button;
     
     InfoRecovery() {
         setResizable(false);
@@ -42,7 +42,11 @@ public class InfoRecovery extends JFrame implements ActionListener
         add(searchPanel);
         
         infoLabel = new JLabel("Search Yourself BY Given Options");
-        emailLabel = new JLabel("Email Id");       
+        errorMessage = new JTextField();
+        errorMessage.setVisible(false);
+        errorMessage.setEditable(false);
+
+        emailLabel = new JLabel("Email Id");
         emailIdField = new JTextField();
         orLabel = new JLabel("OR");
         
@@ -50,10 +54,14 @@ public class InfoRecovery extends JFrame implements ActionListener
         userNameField = new JTextField();
         orLabel = new JLabel("OR");  
         mobileLabel = new JLabel("Mobile");
-        mobileField = new JTextField();        
+        mobileField = new JTextField();
+
         
-        searchButton = new JButton("SEARCH");       
-        searchButton.addActionListener(this);   
+        searchButton = new JButton("SEARCH 1");
+        searchButton.addActionListener(this);
+        search2Button  = new JButton("SEARCH 2");
+        search2Button.addActionListener(this);
+
         clearButton = new JButton("CLEAR");
         clearButton.addActionListener(this);        
         exitButton = new JButton("EXIT");
@@ -90,39 +98,44 @@ public class InfoRecovery extends JFrame implements ActionListener
     }
     
     public void setFont(){
+        errorMessage.setFont(new Font("verdana", Font.BOLD, 14));
         infoLabel.setFont(new Font("verdana", Font.BOLD, 14));
         emailLabel.setFont(new Font("verdana", Font.BOLD, 14));
-        orLabel.setFont(new Font("verdana", Font.BOLD, 12));
-        userNameLabel.setFont(new Font("verdana", Font.BOLD, 14));         
-        userNameField.setFont(new Font("verdana", Font.ITALIC, 14));
-        orLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        userNameLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        userNameField.setFont(new Font("verdana", Font.ITALIC, 10));
+        orLabel.setFont(new Font("verdana", Font.BOLD, 14));
         mobileLabel.setFont(new Font("verdana", Font.BOLD, 14));
         mobileField.setFont(new Font("verdana", Font.ITALIC, 14));         
         resetLabel.setFont(new Font("verdana", Font.BOLD, 16));
-        userName2Label.setFont(new Font("verdana", Font.BOLD, 14));       
+
+        userName2Label.setFont(new Font("verdana", Font.BOLD, 12));
         UserName2Field.setFont(new Font("verdana", Font.ITALIC, 14));        
         passwordLabel.setFont(new Font("verdana", Font.BOLD, 14));        
         passowrdField.setFont(new Font("verdana", Font.ITALIC, 14));
         cpasswordLabel.setFont(new Font("verdana", Font.BOLD, 14));
-        cpasswordField.setFont(new Font("verdana", Font.ITALIC, 14));        
-    }
+        cpasswordField.setFont(new Font("verdana", Font.ITALIC, 14));
+      }
     
     public void setBound(){
         imagePanel.setBounds(0, 0,400,500);
         recoveryPanel.setBounds(401, 0,500,500);
         searchPanel.setBounds(401, 0,500,500);
+        errorMessage.setBounds(100, 20, 330, 30);
         infoLabel.setBounds(120, 70, 300, 30);
         emailLabel.setBounds(20, 125, 80, 30);
         emailIdField.setBounds(130, 120, 200, 40);
-        orLabel.setBounds(200, 162, 30, 30);
         userNameLabel.setBounds(20,190,80,30);
         userNameField.setBounds(130, 190, 200, 40);
-        orLabel.setBounds(200, 235, 30, 30);
-        mobileLabel.setBounds(20,265,80,30);
-        mobileField.setBounds(130, 265, 200, 40);
-        searchButton.setBounds(350,125,100,30);
-        clearButton.setBounds(350,193,100,30);
-        exitButton.setBounds(350,267,100,30);        
+        searchButton.setBounds(350,170,100,30);
+
+        orLabel.setBounds(200, 245, 30, 30);
+        mobileLabel.setBounds(20,290,80,30);
+        mobileField.setBounds(130, 290, 200, 40);
+        search2Button.setBounds(350,290,100,30);
+        clearButton.setBounds(130,370,100,30);
+        exitButton.setBounds(350,370,100,30);
+
+
         imageLabel.setBounds(0, 0, 250, 500);        
         resetLabel.setBounds(150, 80, 300, 30);
         userName2Label.setBounds(30,140,80,30);
@@ -133,6 +146,8 @@ public class InfoRecovery extends JFrame implements ActionListener
         cpasswordField.setBounds(180, 260, 220, 40);
         clear2Button.setBounds(180,350,100,40);
         submitButton.setBounds(300,350,100,40);
+
+
     }
     
     public void addComponent(){
@@ -146,7 +161,8 @@ public class InfoRecovery extends JFrame implements ActionListener
         recoveryPanel.add(passowrdField);  recoveryPanel.add(cpasswordLabel);        
         recoveryPanel.add(cpasswordField); imagePanel.add(imageLabel);
         searchPanel.add(clearButton);      searchPanel.add(exitButton);
-        recoveryPanel.add(clear2Button);   recoveryPanel.add(submitButton);   
+        recoveryPanel.add(clear2Button);   recoveryPanel.add(submitButton);
+        searchPanel.add(search2Button);    searchPanel.add(errorMessage);
     }    
     
     @Override
@@ -154,11 +170,35 @@ public class InfoRecovery extends JFrame implements ActionListener
       //  throw new UnsupportedOperationException("Not supported yet."); 
 
           
-     if(e.getActionCommand() == "SEARCH")
+     if(e.getActionCommand() == "SEARCH 1")
        {
-          searchPanel.setVisible(false);
-          recoveryPanel.setVisible(true);          
-       }     
+           if(emailIdField.getText().trim().isEmpty() && userNameField.getText().trim().isEmpty()){
+               emailIdField.setText(("Email-ID can't be empty"));
+               userNameField.setText("UserName can't be empty");
+               errorMessage.setVisible(true);
+               errorMessage.setText("Please press CLEAR BUTTON");
+
+           } else if (emailIdField.getText().trim().isEmpty() || userNameField.getText().trim().isEmpty()) {
+                errorMessage.setVisible(true);
+                errorMessage.setText("Email-Id or UserName can't be empty:");
+           } else{
+               searchPanel.setVisible(false);
+               recoveryPanel.setVisible(true);
+           }
+
+       }
+     if(e.getActionCommand() == "SEARCH 2"){
+          if (mobileField.getText().trim().isEmpty()) {
+              mobileField.setText("Mobile Number can't be Empty");
+              errorMessage.setVisible(true);
+              errorMessage.setText("Please press CLEAR BUTTON");
+         }
+          else{
+                searchPanel.setVisible(false);
+                recoveryPanel.setVisible(true);
+
+          }
+     }
      if(e.getActionCommand() == "CLEAR")
        {
                  emailIdField.setText("");
@@ -166,6 +206,8 @@ public class InfoRecovery extends JFrame implements ActionListener
                  mobileField.setText("");
                  passowrdField.setText("");
                  cpasswordField.setText("");
+                 errorMessage.setText("");
+                 errorMessage.setVisible(false);
                  
        }
      if(e.getActionCommand()== "EXIT")

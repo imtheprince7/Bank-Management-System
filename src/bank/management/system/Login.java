@@ -1,7 +1,8 @@
 package bank.management.system;
 
-import java.awt.Font;
-import java.awt.Image;
+import com.intellij.ui.JBColor;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -14,13 +15,13 @@ public class Login extends JFrame implements ActionListener {
     
     JPanel panelImage, panelContent;
     JLabel imageLabel, messgaeLabel,usernameLabel,passwordLabel;
-    JTextField usernameFiled,passwordFiled;
+    JTextField usernameFiled,passwordFiled,messageField;
     JButton registerButton,loginButton,forgetpassowrdButton;
     
     Login(){
         setLayout(null);
         setResizable(false);
-        setSize(900,500);
+        setSize(920,500);
         setLocation(200,100);
         setTitle("HOME PAGE"); 
         
@@ -45,7 +46,12 @@ public class Login extends JFrame implements ActionListener {
         messgaeLabel = new JLabel("Welcome To CEGians Bank");
         usernameLabel = new JLabel("Username");
         usernameFiled = new JTextField();
-        
+
+        // Error message if occur during login
+        messageField = new JTextField();
+        messageField.setEditable(false);
+        messageField.setVisible(false);
+
         passwordLabel = new JLabel("Password");
         passwordFiled = new JTextField();
         
@@ -68,6 +74,8 @@ public class Login extends JFrame implements ActionListener {
         messgaeLabel.setFont(new Font("verdana", Font.BOLD, 28));        
         usernameLabel.setFont(new Font("verdana", Font.BOLD, 14));
         usernameFiled.setFont(new Font("verdana", Font.ITALIC, 14));
+        messageField.setFont(new Font("verdana", Font.ITALIC, 12));
+        messageField.getSelectedTextColor().getRed();
         passwordLabel.setFont(new Font("verdana", Font.BOLD, 14));
         passwordFiled.setFont(new Font("verdana", Font.BOLD, 14));
     }
@@ -75,7 +83,9 @@ public class Login extends JFrame implements ActionListener {
         messgaeLabel.setBounds(50,50,450,40);     
         usernameLabel.setBounds(40,150,100,50);        
         usernameFiled.setBounds(150, 150, 250, 40);
-        passwordLabel.setBounds(40, 225,250,20);        
+        passwordLabel.setBounds(40, 225,250,20);
+        messageField.setBounds(350, 190,200,25);
+
         passwordFiled.setBounds(150, 220, 250, 40);
         loginButton.setBounds(150,300,100,35);      
         registerButton.setBounds(300,300,100,35); 
@@ -86,6 +96,7 @@ public class Login extends JFrame implements ActionListener {
         panelContent.add(usernameFiled);    panelContent.add(passwordLabel);
         panelContent.add(passwordFiled);    panelContent.add(loginButton);
         panelContent.add(registerButton);   panelContent.add(forgetpassowrdButton);
+        panelContent.add(messageField);
     }
         
     
@@ -112,14 +123,21 @@ public class Login extends JFrame implements ActionListener {
         
          if(e.getActionCommand()== "Sign In")
        {
-           if(usernameFiled.getText().equals("admin") && passwordFiled.getText().equals("admin"))
-           {
-               // Genreating Multiple Message on POP-UP
-            JOptionPane.showMessageDialog(null,"userType:"+" "+usernameFiled.getText()+"\n"+" Password:"+" "+
-                    passwordFiled.getText()+" ");
-              dispose();
-              new AdminPanel();
+           if(usernameFiled.getText().trim().isEmpty() && passwordFiled.getText().trim().isEmpty()){
+                messageField.setText("Field(s) are Empty:");
+           } else if (usernameFiled.getText().trim().isEmpty()) {
+               messageField.setVisible(true);
+               messageField.setText("UserName is Empty:");
+               
            }
+//           if(usernameFiled.getText().equals("admin") && passwordFiled.getText().equals("admin"))
+//           {
+//               // Genreating Multiple Message on POP-UP
+//            JOptionPane.showMessageDialog(null,"userType:"+" "+usernameFiled.getText()+"\n"+" Password:"+" "+
+//                    passwordFiled.getText()+" ");
+//              dispose();
+//              new AdminPanel();
+//           }
            else
            {
                dispose();
