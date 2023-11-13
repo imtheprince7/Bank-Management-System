@@ -1,24 +1,32 @@
 package bank.management.system;
 
-import com.intellij.ui.JBColor;
-
+import bank.management.system.database.DatabaseConnection;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-/**
- *
- * @author prince kumar singh
- */
+
+
 public class Login extends JFrame implements ActionListener {
+    HashMap<String, String> users = new HashMap<>();
     
     JPanel panelImage, panelContent;
     JLabel imageLabel, messgaeLabel,usernameLabel,passwordLabel;
-    JTextField usernameFiled,passwordFiled,messageField;
+    JTextField usernameFiled,messageField;
+    JPasswordField passwordFiled;
     JButton registerButton,loginButton,forgetpassowrdButton;
-    
+   
+    Login(HashMap<String,String> userDetails){
+       users = userDetails;
+       System.out.println(users+" ");
+    }
     Login(){
+        
         setLayout(null);
         setResizable(false);
         setSize(920,500);
@@ -53,7 +61,7 @@ public class Login extends JFrame implements ActionListener {
         messageField.setVisible(false);
 
         passwordLabel = new JLabel("Password");
-        passwordFiled = new JTextField();
+        passwordFiled = new JPasswordField();
         
         loginButton = new JButton("Sign In");
         loginButton.addActionListener(this);        
@@ -101,51 +109,53 @@ public class Login extends JFrame implements ActionListener {
         
     
    public static void main(String [] args)
-   {
-   
-       new Login();      
+   {   
+       new Login();
    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         //throw new UnsupportedOperationException("Not supported yet.");
-       if(e.getActionCommand()== "Forget password")
+       if("Forget password".equals(e.getActionCommand()))
        {
            dispose();
            new InfoRecovery();          
        }
-        if(e.getActionCommand()== "Register")
+        if("Register".equals(e.getActionCommand()))
        {
            dispose();
            new Register();          
-       }
+       }       
         
-        
-         if(e.getActionCommand()== "Sign In")
+       if("Sign In".equals(e.getActionCommand()))
        {
-           if(usernameFiled.getText().trim().isEmpty() && passwordFiled.getText().trim().isEmpty()){
-                messageField.setText("Field(s) are Empty:");
-           } else if (usernameFiled.getText().trim().isEmpty()) {
-               messageField.setVisible(true);
-               messageField.setText("UserName is Empty:");
+           try{
+               // calling COnnection from the database-package:
+              Connection connection = DatabaseConnection.ConnectionString();
                
-           }
-//           if(usernameFiled.getText().equals("admin") && passwordFiled.getText().equals("admin"))
-//           {
-//               // Genreating Multiple Message on POP-UP
-//            JOptionPane.showMessageDialog(null,"userType:"+" "+usernameFiled.getText()+"\n"+" Password:"+" "+
-//                    passwordFiled.getText()+" ");
-//              dispose();
-//              new AdminPanel();
-//           }
-           else
-           {
-               dispose();
-               new Register();
-           }
-          
-          
-       }
-              
-    }
-}
+           
+           if(usernameFiled.getText().trim().isEmpty() && passwordFiled.getText().trim().isEmpty()){
+                   messageField.setText("Field(s) are Empty:");
+                   usernameFiled.setFocusable(true);
+                   JOptionPane.showMessageDialog(null, "Username is empty !");
+                   loginButton.setForeground(Color.RED);
+               } 
+           else if (usernameFiled.getText().trim().isEmpty()){
+                   messageField.setVisible(true);
+                   messageField.setText("UserName is Empty:");
+               }               
+           else{
+                   dispose();
+                   new Register();          
+               }
+           
+           } // try-block end here:
+           catch(HeadlessException | ClassNotFoundException | SQLException exception){
+               System.out.println("Exception is:"+"\n"+exception);
+           }// try-catch-block end here:
+           
+       } //Sign-In Action-Performed Method   close Here:
+    } // Action-Performed Method close here:
+    
+    
+}// Login Class End Here:

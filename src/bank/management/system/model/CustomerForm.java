@@ -33,6 +33,8 @@ public class CustomerForm  implements  Serializable{
     private String chequeBook;
     private String atmCard;
     private String encPassword;
+    
+    private String customerName;
 
     @Override
     public String toString() {
@@ -276,6 +278,14 @@ public class CustomerForm  implements  Serializable{
     public void setEncPassword(String encPassword) {
         this.encPassword = encPassword;
     }
+    
+     public String customerName() {
+        return customerName;
+    }
+
+    public void customerName(String customerName) {
+        this.customerName = customerName;
+    }
     public CustomerForm(){
         
     }
@@ -314,5 +324,54 @@ public class CustomerForm  implements  Serializable{
         this.chequeBook = chequeBook;
         this.atmCard = atmCard;
     }
+    
+    public CustomerForm(String customerName, String userName, String emailId, String mobileNo){
+        this.customerName = customerName;
+        this.userName = userName;
+        this.emailId = emailId;
+        this.mobileNo = mobileNo;
+    }
+    
+    public CustomerForm(String firstName, String lastName, String fatherName, String motherName, String dob, String gender,
+            String martialStatus, String emailId, String mobileNo, String panCard, String aadharcard, String userName){
+      
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.fatherName = fatherName;
+        this.motherName = motherName;
+        this.dob = dob;
+        this.gender = gender;
+        this.martialStatus = martialStatus;
+        this.emailId = emailId;
+        this.mobileNo = mobileNo;
+        this.aadharcard = aadharcard;
+        this.panCard = panCard;        
+        this.userName = userName;
+    }
+    
+    public CustomerForm( String flateNo, String street, String landmark, String pincode, String district,
+            String city, String state, String country, String userName){        
+        this.flateNo = flateNo;
+        this.street = street;
+        this.landmark = landmark;
+        this.pincode = pincode;
+        this.district = district;
+        this.city = city;
+        this.state = state;
+        this.country = country;      
+        this.userName = userName;
+    }
+    public  CustomerForm(String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, 
+            String chequeBook, String atmCard, String userName){        
+        this.accountNumber = accountNumber;
+        this.ifscCode = ifscCode;
+        this.micrCode = micrCode;
+        this.netbanking = netbanking;
+        this.mobileBanking = mobileBanking;
+        this.chequeBook = chequeBook;
+        this.atmCard = atmCard;
+        this.userName = userName;
+    }
+    
     
 }
