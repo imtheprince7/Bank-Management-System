@@ -1,4 +1,5 @@
-package bank.management.system.accountRegistration;
+package bank.management.system.administration;
+import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.accountRegistration.WelcomePage;
 import java.awt.Color;
 import java.awt.Font;

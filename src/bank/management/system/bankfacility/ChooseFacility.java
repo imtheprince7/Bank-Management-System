@@ -14,14 +14,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ChoseFacility extends JFrame implements ActionListener{
+public class ChooseFacility extends JFrame implements ActionListener{
     JPanel mainPanel, imagePanel, facilityPanel;
     JLabel imagePicLabel, nameLabel, messageLabel;
     JTextField nameField;
     JButton mobileBankingButton,netBankingButton, kycUpdateButton, logoutButton, exitButton;
     String applicantName;
     
-    public ChoseFacility(){
+    public ChooseFacility(){
 //        applicantName = name;
         setTitle("Choose Banking Facility");
         setLayout(null);
@@ -161,7 +161,7 @@ public class ChoseFacility extends JFrame implements ActionListener{
     }
     
     public static void main(String[] args) {
-        new ChoseFacility();
+        new ChooseFacility();
     }
     
 }

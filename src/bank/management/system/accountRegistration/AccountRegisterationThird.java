@@ -2,11 +2,11 @@ package bank.management.system.accountRegistration;
 
 import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.database.DatabaseConnection;
+import bank.management.system.database.EmailOtpVerification;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.Image;
-import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -29,7 +29,7 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
 
      String userAccountNumber,ifscCode,micrCode,accountType,netBanking,mobileBanking, chequeBook, atmCard,
              getUserApplicationNumber, getuserName, password;
-     JPanel mainPanel; Random random;  
+     JPanel mainPanel;
      JLabel applicationNoLabel, accountNumberLabel, ifscCodeLabel, micrCodeLabel, serviceLabel,netbankingLabel,
              mobileBankingLabel, chequeBookLabel, atmCardLabel, accountTypeLabel;
      JTextField applicationNoField, accountNumberField, ifscCodeField, micrCodeField;
@@ -37,8 +37,7 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
                   chequeBook25, chequeBook50,chequeBook100,chequeBookNo, atmCardYes,atmCardNo ;
      ButtonGroup accountTypeGroup, netbankingGroup , mobileBankingGroup, chequeBookGroup, atmCardGroup;
      JButton clearButton, submitButton;
-     static String accountNumber, ifsccodes = "CEGB3147000",micrcodes = "110015317",atmNumber,cvv ;
-     
+     static String accountNumber, ifsccodes = "CEGB3147000",micrcodes = "110015317",atmNumber,cvv ;     
      private Connection connection;
      private Statement statement;
     
@@ -46,12 +45,10 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
        
         getUserApplicationNumber = userApplicationNumber;
         getuserName = userName;
-        random = new Random();
         password = AccountRegisteration.getPassword();
-
-        accountNumber = Long.toString((long)Math.abs((random.nextDouble()* 100000L) + 314700000000L));
-        atmNumber = Long.toString((long)Math.abs((random.nextDouble()* 1000000000L) + 4601331700000000L));
-        cvv = Integer.toString((int)Math.abs((random.nextDouble()*10)+300));
+        accountNumber = EmailOtpVerification.getAccountNumber();
+        atmNumber = EmailOtpVerification.getAtmNumber();
+        cvv =  EmailOtpVerification.getCVVNumber();
         
         setTitle("Account Registration || Account Type (3/3)");
         setLayout(null);
@@ -142,8 +139,7 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
         setFont();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);  
-    }    
-   // CONSTRUCTOR CLOSE HERE
+    }
     
     public void setFont(){
         applicationNoLabel.setFont(new Font("verdana", Font.BOLD, 12)); 
@@ -301,22 +297,22 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
     
      public void saveDataIntoDatabase() throws SQLException{
         try{
-             connection = DatabaseConnection.ConnectionString();
-             String query1 = "INSERT INTO service_opted(username, account_type, net_banking, mobile_banking, cheque_book, atm_card) VALUES"
+             connection = DatabaseConnection.ConnectionString(); 
+             statement = connection.createStatement();
+             String service_opted = "INSERT INTO service_opted(username, account_type, net_banking, mobile_banking, cheque_book, atm_card) VALUES"
                                 + " ('" + getuserName + "', '" + accountType + "', '" + netBanking + "', '" + mobileBanking + "', '" + chequeBook + "', '" + atmCard + "')";
              
-             String query2 = "INSERT INTO account_details(account_number, ifsc_code, micr_code, username) VALUES"
+             String account_details = "INSERT INTO account_details(account_number, ifsc_code, micr_code, username) VALUES"
                                 + " ('" + accountNumber + "', '" + ifscCode + "', '" + micrCode + "', '" + getuserName + "')";
-
-             
-
-             statement = connection.createStatement();
+ /*
              int rowsAffected = statement.executeUpdate(query1);
              int rowsAffected2 = statement.executeUpdate(query2);
              System.out.println("Rows affected1: " + rowsAffected);
-             System.out.println("Rows affected2: " + rowsAffected2);                
-             
-             int response = JOptionPane.showConfirmDialog(this, """
+             System.out.println("Rows affected2: " + rowsAffected2);
+  */
+            statement.executeUpdate(service_opted);
+            statement.executeUpdate(account_details);
+            int response = JOptionPane.showConfirmDialog(this, """
                                                             \t CEGians Bank !! 
                                                              Please Note it for Future Use                                                            
                                                             Account Number: \t """+accountNumber+"\n"+ "IFSC CODE: \t "+ifsccodes+"\n"+"MICR CODE:\t"
@@ -334,10 +330,6 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
               statement.close();
               connection.close();
         }
-    }
-     
-     public static void main(String[] args) {
-        new AccountRegisterationThird("121", "Prince");
     }
 }
 

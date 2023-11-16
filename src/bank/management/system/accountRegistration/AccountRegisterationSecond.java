@@ -1,10 +1,11 @@
 package bank.management.system.accountRegistration;
 
 import bank.management.system.accountRegistration.AccountRegisterationThird;
+import bank.management.system.database.EmailOtpVerification;
+import static bank.management.system.accountRegistration.AccountRegisterationThird.accountNumber;
 import bank.management.system.database.DatabaseConnection;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +20,8 @@ import javax.swing.*;
 public class AccountRegisterationSecond extends JFrame implements ActionListener{
 
      String flateNo, streetNo, landmark, pinCode,disrict, city, state, country, getUserApplicationNumber, getuserName;
-     JPanel mainPanel;
+     static String accountNumber;
+     JPanel mainPanel; 
      JLabel applicationNoLabel, flateNoLabel, streetLabel, landmarkLabel,pincodeLabel,districtLabel,cityLabel, stateLabel,countryLabel;
      JTextField applicationNoField,flateNoField,streetField, landmarkField,pincodeField,districtField, cityField,stateField,countryField;
      JButton nextButton, clearButton;
@@ -31,6 +33,8 @@ public class AccountRegisterationSecond extends JFrame implements ActionListener
      
      public AccountRegisterationSecond( String userApplicationNumber, String userName ){        
         getUserApplicationNumber = userApplicationNumber; getuserName = userName;
+        accountNumber = EmailOtpVerification.getAccountNumber();
+        
         setResizable(false);
         setLayout(null);
         setSize(900,510);
@@ -191,14 +195,17 @@ public class AccountRegisterationSecond extends JFrame implements ActionListener
           try {
               // Validating and Storing all data into Database;
               saveDataIntoDatabase();
-          } catch (SQLException exception) {
+          } catch (SQLException | ClassNotFoundException exception) {
               Logger.getLogger(AccountRegisterationSecond.class.getName()).log(Level.SEVERE, null, exception);
-          }
+          } 
       }
  } 
     
     
-    public void saveDataIntoDatabase() throws SQLException{
+    public void saveDataIntoDatabase() throws SQLException, ClassNotFoundException{
+        connection = DatabaseConnection.ConnectionString();
+        statement  = connection.createStatement();
+       try{ 
        // First checking textFields are not empty
             if(flateNo.equals("")){
                 JOptionPane.showMessageDialog(rootPane, "FLAT_NO: cannot be empty:");
@@ -217,27 +224,38 @@ public class AccountRegisterationSecond extends JFrame implements ActionListener
             }
             else if(city.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "CITY: cannot be empty:");
-            }                       
-            // Now store all data of text-field into databse:
-            try{
-                connection = DatabaseConnection.ConnectionString();
-                statement  = connection.createStatement();      
-                       String query = "INSERT INTO communication_details (flat_no, street_no, landmark, pin_code, district, city, state, country, username) VALUES"
+            }            
+            else if(state.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "CITY: cannot be empty:");
+            } 
+            else{  
+      // Now store all data of text-field into databse:
+               String permanent_address = "INSERT INTO permanent_address (flat_no, street_no, landmark, pin_code, district, city, state, country, account_number) VALUES"
                                          + " ('" + flateNo + "', '" + streetNo + "', '" + landmark + "', '" + pinCode + "', '" + disrict + "',"
-                                         + " '" + city + "', '" + state + "', '" + country + "', '" + getuserName + "')";
+                                         + " '" + city + "', '" + state + "', '" + country + "', '" + accountNumber + "')";
+                String communication_details = "INSERT INTO communication_details (flat_no, street_no, landmark, pin_code, district, city, state, country, account_number) VALUES"
+                                         + " ('" + flateNo + "', '" + streetNo + "', '" + landmark + "', '" + pinCode + "', '" + disrict + "',"
+                                         + " '" + city + "', '" + state + "', '" + country + "', '" + accountNumber + "')";
+ /*                       
+                    int rowsAffected = statement.executeUpdate(query1);
+                    int rowsAffected2 = statement.executeUpdate(query2);
+                    System.out.println("Rows affected: from AccountRegisteration Page-2" + rowsAffected); 
+                    System.out.println("Rows affected: from AccountRegisteration Page-2" + rowsAffected2);
+  */
 
-                        statement = connection.createStatement();
-                        int rowsAffected = statement.executeUpdate(query);
-                        System.out.println("Rows affected: from AccountRegisteration Page-2" + rowsAffected); 
-                        dispose();
-                        new AccountRegisterationThird(getUserApplicationNumber,getuserName);                            
-                }catch(ClassNotFoundException | SQLException exception){
+                statement.executeUpdate(permanent_address);
+                statement.executeUpdate(communication_details);
+                    dispose();
+                    new AccountRegisterationThird(getUserApplicationNumber,getuserName);   
+              }
+          }catch(SQLException exception){
                      System.out.println("Exception from Accoun-Registration Page-2: \n"+ exception);                    
-                } finally{
+          } finally{
                     statement.close();
                     connection.close();
-            }
-       }
+        }
+    }
+   
 }
 
 

@@ -1,25 +1,37 @@
 package bank.management.system.accountRegistration;
 
-import bank.management.system.bankfacility.ChoseFacility;
+import bank.management.system.administration.ManagerPage;
+import bank.management.system.administration.StaffPage;
+import bank.management.system.bankfacility.ChooseFacility;
 import bank.management.system.database.DatabaseConnection;
+import bank.management.system.database.EmailOtpVerification;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.ConnectException;
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class WelcomePage extends JFrame implements ActionListener {
+    JPanel panelImage, panelContent, emailOtpPanel;
+    JLabel imageLabel, messgaeLabel, usernameLabel, passwordLabel, loginTypeLabel, emailOtpLabel;
+    static JTextField usernameField, passwordField, loginTypeField, emailOtpField;
+    JButton registerButton, signInButton, forgetpassowrdButton, verifyEmailButton;
     
-    JPanel panelImage, panelContent;
-    JLabel imageLabel, messgaeLabel,usernameLabel,passwordLabel, emailOtpLabel;
-    JTextField usernameField,passwordField, emailOtpField;
-    JButton registerButton,loginButton,forgetpassowrdButton, verifyDetails;
-    private Connection connection;
+    public static String currentUserId = "";
+    long startTime = System.currentTimeMillis(), elapsedTime = 0L;
+    public static String currentUserName = "";
+    public String OTP = EmailOtpVerification.generateOTPForEmailVerification().toString();
+    public int state= -1;
+    
+    private  Connection connection;
     private Statement statement;
     
     public WelcomePage(){
@@ -45,20 +57,33 @@ public class WelcomePage extends JFrame implements ActionListener {
         add(panelContent);
         panelContent.setLayout(null);
         
+        emailOtpPanel = new JPanel();
+        add(emailOtpPanel);
+        emailOtpPanel.setLayout(null);
+        emailOtpPanel.setVisible(false);
+        
         
         messgaeLabel = new JLabel("Welcome To CEGians Bank");
         usernameLabel = new JLabel("Username");
         usernameField = new JTextField();
 
         passwordLabel = new JLabel("Password");
-        passwordField = new JPasswordField();        
-        loginButton = new JButton("Sign In");
-        loginButton.addActionListener(this);  
+        passwordField = new JPasswordField();   
+        loginTypeLabel = new JLabel("Login Type");
+        loginTypeField = new JTextField();
+        loginTypeField.setEditable(false);
+        emailOtpLabel = new JLabel("Email OTP:");
+        emailOtpField = new JTextField();
         
+        signInButton = new JButton("Sign In");
+        signInButton.addActionListener(this);        
         registerButton = new JButton("Register");
         registerButton.addActionListener(this);
+        
         forgetpassowrdButton = new JButton("Forget password");
         forgetpassowrdButton.addActionListener(this);
+        verifyEmailButton = new JButton("Verify OTP");
+        verifyEmailButton.addActionListener(this);
                 
         setFont();
         setBound();
@@ -77,83 +102,124 @@ public class WelcomePage extends JFrame implements ActionListener {
     }
     public void setBound(){  
         panelImage.setBounds(0, 0,350,500);
-        panelContent.setBounds(355, 0,500,500);      
+        panelContent.setBounds(355, 0,500,500); 
+        emailOtpPanel.setBounds(0, 350,500,130); 
+        
         messgaeLabel.setBounds(50,50,450,40);     
         usernameLabel.setBounds(40,150,100,50);        
         usernameField.setBounds(150, 150, 250, 40);
-        passwordLabel.setBounds(40, 225,250,20);
-       
+        passwordLabel.setBounds(40, 225,250,20);       
         passwordField.setBounds(150, 220, 250, 40);
-        loginButton.setBounds(150,300,100,35);      
+        signInButton.setBounds(150,300,100,35);      
         registerButton.setBounds(300,300,100,35); 
         forgetpassowrdButton.setBounds(210,360,150,35);
+        
+        loginTypeLabel.setBounds(10, 350,50,20); 
+        loginTypeField.setBounds(70, 350,200,30);
+        emailOtpLabel.setBounds(10, 380,50,20);
+        emailOtpField.setBounds(70, 380,200,30);
+        verifyEmailButton.setBounds(300, 380,100,30);
     }
     public void addComponent(){
-        panelContent.add(messgaeLabel);     panelContent.add(usernameLabel);
-        panelContent.add(usernameField);    panelContent.add(passwordLabel);
-        panelContent.add(passwordField);    panelContent.add(loginButton);
-        panelContent.add(registerButton);   panelContent.add(forgetpassowrdButton);      
+        panelContent.add(emailOtpPanel);
+        panelContent.add(messgaeLabel); 
+        panelContent.add(usernameLabel);
+        panelContent.add(usernameField); 
+        panelContent.add(passwordLabel);
+        panelContent.add(passwordField);  
+        panelContent.add(signInButton);
+        panelContent.add(registerButton); 
+        panelContent.add(forgetpassowrdButton);  
+        
+        emailOtpPanel.add(loginTypeLabel);
+        emailOtpPanel.add(loginTypeField);
+        emailOtpPanel.add(emailOtpLabel);
+        emailOtpPanel.add(emailOtpField);
+        emailOtpPanel.add(verifyEmailButton);
     }
         
-    
+     
    public static void main(String [] args){   
        new WelcomePage();
    }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-       if("Forget password".equals(e.getActionCommand()))
+    public void actionPerformed(ActionEvent event) {
+       if("Forget password".equals(event.getActionCommand()))
        {
            dispose();
            new InformationRecovery();          
        }
-        if("Register".equals(e.getActionCommand()))
+        if("Register".equals(event.getActionCommand()))
        {
            dispose();
            new AccountRegisteration();
        }       
         
-       if("Sign In".equals(e.getActionCommand()))
+       if("Sign In".equals(event.getActionCommand()))
        {
           if(usernameField.getText().trim().isEmpty() && passwordField.getText().trim().isEmpty()){
                    usernameField.setFocusable(true);
                    JOptionPane.showMessageDialog(null, "Login Credential cannot be empty !! \n\n");
-                   loginButton.setForeground(Color.RED);
+                   signInButton.setForeground(Color.RED);
                } 
           else if (usernameField.getText().trim().isEmpty() || passwordField.getText().trim().isEmpty()){
                    JOptionPane.showMessageDialog(null, "UserName or Password cannot be empty: \n\n");
                    usernameField.setText("");
                    passwordField.setText("");
                }
-           try{
-               connection = DatabaseConnection.ConnectionString();
-               statement  = connection.createStatement();
-               ResultSet resultSet = statement.executeQuery("select username, password from user_details where username='"+usernameField.getText().trim()+"'and password='"+passwordField.getText().trim()+"'");
-                if(resultSet.next()){
-                        JOptionPane.showMessageDialog(this, "User already exists !!");
-                    }
-                else{
-                    // redirect to AccountRegistration-Page1 and dispose it
+          else{
+              try{
+                connection = DatabaseConnection.ConnectionString();
+                statement  = connection.createStatement();
+                
+                ResultSet resultSet = statement.executeQuery("select login_type from user_details where username='"+usernameField.getText().trim()+"'"
+                                      + " AND password='"+passwordField.getText().trim()+"'");
+                  if(resultSet.next()){
+                     String loginType = resultSet.getString("login_type");
+                      if("Admin".equals(loginType)){
+                        emailOtpPanel.setVisible(true);
+                        
+                        state = 1;
+                        System.err.println("Your Login OTP is: \t"+OTP);
+                        EmailOtpVerification.sendEmail(OTP, resultSet.getString("name"),
+                                resultSet.getString("username"), resultSet.getString("email_id"));
+                        currentUserId = usernameField.getText().trim();
+                        currentUserName = resultSet.getString("name");
+                     
+                                      
+                }else if("Manager".equals(loginType) ){
+                        emailOtpPanel.setVisible(true);
+                    new ManagerPage();
                 }
-           }catch(HeadlessException | ClassNotFoundException | SQLException exception){
-               System.out.println("Exception is:"+"\n"+exception);
-           }
-           finally{
+                else if("Staff".equals(loginType)){
+                        emailOtpPanel.setVisible(true);
+                    new StaffPage();
+                }
+                
+                else if("customer".equals(loginType)){
+                        dispose();
+                        new ChooseFacility();
+                   }
+                 }
+                        JOptionPane.showMessageDialog(this, "Invalid username or password");
+                        usernameField.setText("");
+                        passwordField.setText("");
+            }catch(HeadlessException | ClassNotFoundException | SQLException exception){              
+                  Logger.getLogger(WelcomePage.class.getName()).log(Level.SEVERE, null, exception);
+              } finally{
               try {
                   statement.close();
-                  connection.close();
+                  connection.close();   
               } catch (SQLException ex) {
                   Logger.getLogger(WelcomePage.class.getName()).log(Level.SEVERE, null, ex);
-              }
-             
-           }
-               
+              }               
+            } 
+          }     
        }
-    } // Action-Performed Method close here:
-    
-    
-}// Login Class End Here:
+    }
+}
+
 
 // Login BUtton Work Models:
 /*

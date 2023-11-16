@@ -3,6 +3,7 @@ package bank.management.system.accountRegistration;
 import bank.management.system.accountRegistration.AccountRegisterationSecond;
 import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.database.DatabaseConnection;
+import bank.management.system.database.EmailOtpVerification;
 import bank.management.system.model.PasswordEncryption;
 import java.awt.Font;
 import java.awt.Image;
@@ -30,9 +31,8 @@ import java.util.regex.Pattern;
 
 
 public class AccountRegisteration extends JFrame implements ActionListener{
-    Random random ;
     String formNumber, userApplication,userApplicationNumber, userName, firstName, lastName, customerName,fatherName,motherName,
-            dob,gender,martialStatus,emailId,mobileNo, panCard, aadharCard,login_type="customer";
+            dob,gender,martialStatus,emailId,mobileNo, panCard, aadharCard, login_type="customer";
     JPanel PanelMain;
     JLabel applicationNoLabel, usernameLabel,firstNameLabel, lastNameLabel,fatherNameLabel,
             motherNameLabel, dobLabel,genderLabel,martialStatusLabel,emailIdLabel,mobileNoLabel,
@@ -50,8 +50,7 @@ public class AccountRegisteration extends JFrame implements ActionListener{
     
     AccountRegisteration()
     {
-        random = new Random();
-        formNumber =Integer.toString( Math.abs(random.nextInt()));
+        formNumber = EmailOtpVerification.getFormNumber();
         password = PasswordEncryption.encryptPassword();
         System.out.println("Encrypted Password:"+" "+password);
         
@@ -113,7 +112,7 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         
         
         martialStatusLabel = new JLabel("Martial Status");
-       buttonsSingle = new JRadioButton("SINGLE", true);
+        buttonsSingle = new JRadioButton("SINGLE", true);
         buttonMarried = new JRadioButton("MARRIED");
         buttonDivorce = new JRadioButton("DIVORCE");
         martialStatusGroup = new ButtonGroup();
@@ -199,7 +198,7 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         fatherNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
         fatherNameField.setFont(new Font("verdana", Font.ITALIC, 16));
         motherNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
-        motherNameField.setFont(new Font("verdana", Font.ITALIC, 14));
+        motherNameField.setFont(new Font("verdana", Font.ITALIC, 16));
         dobLabel.setFont(new Font("verdana", Font.BOLD, 16));
         genderLabel.setFont(new Font("verdana", Font.BOLD, 16));
         genderMale.setFont(new Font("verdana", Font.BOLD, 13));
@@ -237,8 +236,8 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         genderMale.setBounds(650, 210, 100, 40);
         genderFemale.setBounds(770, 210, 150, 40);
         martialStatusLabel.setBounds(20, 260, 150, 40);
-        buttonMarried.setBounds(200, 260, 150, 40);
-        buttonsSingle.setBounds(400, 260, 150, 40);
+        buttonsSingle.setBounds(200, 260, 150, 40);
+        buttonMarried.setBounds(400, 260, 150, 40);        
         buttonDivorce.setBounds(600, 260, 150, 40);
         emailIdLabel.setBounds(20, 310, 150, 40);
         emailidField.setBounds(200, 310, 200, 40);
@@ -257,9 +256,7 @@ public class AccountRegisteration extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    
-       if("EXIT".equals(e.getActionCommand()))
+      if("EXIT".equals(e.getActionCommand()))
        {
          int response = JOptionPane.showConfirmDialog(this, "Do You Want to EXIT ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
          if(response==JOptionPane.YES_OPTION){
@@ -297,16 +294,14 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         // Validating and Storing all data into Database;
            try { 
                saveDataIntoDatabase();
-           } catch (SQLException ex) {
+           } catch (ClassNotFoundException |SQLException ex) {
                Logger.getLogger(AccountRegisteration.class.getName()).log(Level.SEVERE, null, ex);
            }
        }
-    }     
-    
-    
+    }
     
     public String getUserName(){
-        return ( firstNameField.getText().substring(0).trim().concat(userApplication) );
+        return ( firstNameField.getText().substring(0,6).trim().concat(userApplication) );
     }
     public String getGender(){
         String gender=null;
@@ -341,84 +336,95 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         return salt.toString();
     }
     
-    public void saveDataIntoDatabase() throws SQLException{
+    public void saveDataIntoDatabase() throws SQLException, ClassNotFoundException{
          String regex = "^(?=.*[0-9])"
                        + "(?=.*[a-z])(?=.*[A-Z])"
                        + "(?=.*[@#$%^&+=])"
                        + "(?=\\S+$).{8,20}$";
         
             // First checking textFields are not empty and email Validation
+             connection = DatabaseConnection.ConnectionString();
+             statement  = connection.createStatement();
+        try{ 
             if(firstName.equals("")){
                 JOptionPane.showMessageDialog(rootPane, "FIRST_NAME:  cannot be empty:");
             }
-            if(lastName.equals("")){        
+            else if(lastName.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "LAST_NAME:  cannot be empty:");
             }
-            if(fatherName.equals("")){        
+            else if(fatherName.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "FATHER_NAME:  cannot be empty:");
             }
-            if(motherName.equals("")){        
+            else if(motherName.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "MOTHER_NAME:  cannot be empty:");
             }
-            if(dob.equals("")){        
+            else if(dob.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "D.O.B. cannot be empty:");
             }
-            if(gender.equals("")){        
+            else if(gender.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "GENDER:  cannot be empty:");
             }
-            if(martialStatus.equals("")){        
+            else if(martialStatus.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "MARTIAL_STATUS: cannot be empty:");
             }
-            if(emailId.equals("")){        
+            else if(emailId.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "EMAIL-ID: cannot be empty:");
             }
-            if(!Pattern.compile("^(.+)@(\\S+)$").matcher(emailId).matches()){
+            else if(!Pattern.compile("^(.+)@(\\S+)$").matcher(emailId).matches()){
                JOptionPane.showMessageDialog(rootPane, "Enter valid email ID");
                 return;
             }
-            if(mobileNo.equals("")){        
+            else if(mobileNo.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "MOBILE_NUMBER: cannot be empty:");
             }
-            if(panCard.equals("")){        
+            else if(panCard.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "PAN_CARD:  cannot be empty:");
             }
-            if(aadharCard.equals("")){        
+            else if(aadharCard.equals("")){        
                 JOptionPane.showMessageDialog(rootPane, "AADHAR_CARD:  cannot be empty:");
             }
-            try {
-                    connection = DatabaseConnection.ConnectionString();
-                    statement = connection.createStatement();
-                    String userVerify = "select * from kyc_detals where email_id='"+emailId+"' OR mobile_no = '"+mobileNo +"' OR user_pan_card = '"+panCard +"' OR user_aadhar_card ='"+aadharCard +"'";
+            else {
+                    String userVerify = "select * from kyc_details where email_id='"+emailId+"' OR mobile_no = '"+mobileNo +"' OR user_pan_card = '"+panCard +"' OR user_aadhar_card ='"+aadharCard +"'";
                     ResultSet resultSet = statement.executeQuery(userVerify);
                     if(resultSet.next()){
-                        JOptionPane.showMessageDialog(this, "User already exists !!");
+                        JOptionPane.showMessageDialog(this, "User already exists !!!!\n"+"Recover your Account !!");
+                        dispose();
+                      new WelcomePage();
+                      return;
                     }        
            // Now store all the text-field data into databse:
             else{
-                    String query1 = "INSERT INTO user_details(username,name, email_id, mobile_no, password, login_type, user_aadhar_card) VALUES"
-                                  + " ('" + userName+ "', '" + customerName+ "', '" + emailId + "', '" + mobileNo + "', '" +password+"', '" + login_type + "',  '" +aadharCard+"')";
+                  String user_details = "INSERT INTO user_details(username,name, email_id, mobile_no, password, login_type, user_aadhar_card) VALUES"
+                                  + " ('" + getUserName()+ "', '" + customerName+ "', '" + emailId + "', '" + mobileNo + "', '" +password+"', '" + login_type + "',  '" +aadharCard+"')";
 
-                    String query2 = "INSERT INTO kyc_details ( user_aadhar_card, customer_first_name, customer_last_name, father_name, mother_name, user_dob,"
+                  String kyc_details = "INSERT INTO kyc_details ( user_aadhar_card, customer_first_name, customer_last_name, father_name, mother_name, user_dob,"
                                   + " user_gender, user_martial_status, email_id, mobile_no, user_pan_card) VALUES " +
                                  "('"+ aadharCard + "', '" + firstName + "', '" + lastName + "', '" + fatherName + "', '" + motherName + "', '" + dob + "', '" +
                                   gender + "', '" + martialStatus + "', '" + emailId + "', '" + mobileNo + "', '" + panCard + "')";
-                        
+ 
+                  /*    Debug SuccessFull:        
                     int rowsAffected = statement.executeUpdate(query1);
                     int rowsAffected2 = statement.executeUpdate(query2);
-
                     System.out.println("Rows affected user_details: " + rowsAffected);
-                    System.out.println("Rows affected2 kyc_details: " + rowsAffected2);                          
-                } 
-                    dispose();
-                    new AccountRegisterationSecond(userApplicationNumber,getUserName());
-                }catch(ClassNotFoundException | SQLException exception){
+                    System.out.println("Rows affected2 kyc_details: " + rowsAffected2); 
+    */
+                  statement.executeUpdate(kyc_details);
+                  statement.executeUpdate(user_details);                
+                }
+                 dispose();
+                 new AccountRegisterationSecond(userApplicationNumber,getUserName());
+            }
+        }catch(SQLException exception){
                      System.out.println("Exception is:\n"+ exception);
                 }finally{
                         statement.close();
                         connection.close();    
             }
         }
-    
+   
+    public static void main(String[] args) {
+        new AccountRegisteration();
+    }
 }
 
 
