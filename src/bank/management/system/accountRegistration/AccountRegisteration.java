@@ -1,11 +1,13 @@
-package bank.management.system;
+package bank.management.system.accountRegistration;
 
-import bank.management.system.model.CustomerForm;
+import bank.management.system.accountRegistration.AccountRegisterationSecond;
+import bank.management.system.accountRegistration.WelcomePage;
+import bank.management.system.database.DatabaseConnection;
+import bank.management.system.model.PasswordEncryption;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -15,34 +17,45 @@ import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
-import java.util.HashMap;
 import java.util.Random;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
-public class Register extends JFrame implements ActionListener{
+
+public class AccountRegisteration extends JFrame implements ActionListener{
     Random random ;
-    String formNumber, userString, userApplication, customerName, userName,fatherName,motherName,
-            dob,gender,martialStatus,emailId,mobileNo, panCard, aadharCard;
+    String formNumber, userApplication,userApplicationNumber, userName, firstName, lastName, customerName,fatherName,motherName,
+            dob,gender,martialStatus,emailId,mobileNo, panCard, aadharCard,login_type="customer";
     JPanel PanelMain;
     JLabel applicationNoLabel, usernameLabel,firstNameLabel, lastNameLabel,fatherNameLabel,
             motherNameLabel, dobLabel,genderLabel,martialStatusLabel,emailIdLabel,mobileNoLabel,
             panCardLabel,aadharcardLabel;
    static JTextField applicationNoField, usernameField,firstNameField, lastNameField,fatherNameField,
             motherNameField, emailidField, mobileNoField,panCardField,aadharcardField;
-    JRadioButton genderMale,genderFemale, buttonMarried, buttonUnmarried, buttonDivorce;
+    JRadioButton genderMale,genderFemale, buttonMarried, buttonsSingle, buttonDivorce;
     ButtonGroup genderGroup,martialStatusGroup;
     JButton exitButton, clearButton,nextButton;
     JDateChooser dateChooser;
+    public static String password;
+    private Connection connection;
+    private Statement statement;
     
-    HashMap<String,String> users = new HashMap<>();
-    Register()
+    
+    AccountRegisteration()
     {
         random = new Random();
         formNumber =Integer.toString( Math.abs(random.nextInt()));
+        password = PasswordEncryption.encryptPassword();
+        System.out.println("Encrypted Password:"+" "+password);
         
-        setTitle("Account Registration ||  Personal Details (1/3)");
+        setTitle("Account Registration || Personal Details (1/3)");
         setResizable(false);
         setLayout(null);
         setSize(900,550);
@@ -100,12 +113,12 @@ public class Register extends JFrame implements ActionListener{
         
         
         martialStatusLabel = new JLabel("Martial Status");
+       buttonsSingle = new JRadioButton("SINGLE", true);
         buttonMarried = new JRadioButton("MARRIED");
-        buttonUnmarried = new JRadioButton("UNMARRIED");
         buttonDivorce = new JRadioButton("DIVORCE");
         martialStatusGroup = new ButtonGroup();
         martialStatusGroup.add(this.buttonMarried);
-        martialStatusGroup.add(this.buttonUnmarried);
+        martialStatusGroup.add(this.buttonsSingle);
         martialStatusGroup.add(this.buttonDivorce);
        
         emailIdLabel = new JLabel("Email ID");
@@ -159,7 +172,7 @@ public class Register extends JFrame implements ActionListener{
         PanelMain.add(genderFemale);       
         PanelMain.add(martialStatusLabel); 
         PanelMain.add(buttonMarried);
-        PanelMain.add(buttonUnmarried); 
+        PanelMain.add(buttonsSingle); 
         PanelMain.add(buttonDivorce);
         PanelMain.add(emailIdLabel);   
         PanelMain.add(emailidField);
@@ -176,13 +189,17 @@ public class Register extends JFrame implements ActionListener{
     }
     public void setFont(){       
         applicationNoLabel.setFont(new Font("verdana", Font.BOLD, 12));
-        applicationNoField.setFont(new Font("verdana", Font.BOLD, 12));
+        applicationNoField.setFont(new Font("verdana", Font.BOLD, 14));
         usernameLabel.setFont(new Font("verdana", Font.BOLD, 16));
-        usernameField.setFont(new Font("verdana", Font.BOLD, 16));
+        usernameField.setFont(new Font("verdana", Font.BOLD, 18));
         firstNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        firstNameField.setFont(new Font("verdana", Font.ITALIC, 16));
         lastNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        lastNameField.setFont(new Font("verdana", Font.ITALIC, 16));
         fatherNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        fatherNameField.setFont(new Font("verdana", Font.ITALIC, 16));
         motherNameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        motherNameField.setFont(new Font("verdana", Font.ITALIC, 14));
         dobLabel.setFont(new Font("verdana", Font.BOLD, 16));
         genderLabel.setFont(new Font("verdana", Font.BOLD, 16));
         genderMale.setFont(new Font("verdana", Font.BOLD, 13));
@@ -190,10 +207,13 @@ public class Register extends JFrame implements ActionListener{
         martialStatusLabel.setFont(new Font("verdana", Font.BOLD, 16));
         buttonDivorce.setFont(new Font("verdana", Font.BOLD, 13));
         buttonMarried.setFont(new Font("verdana", Font.BOLD, 13));
-        buttonUnmarried.setFont(new Font("verdana", Font.BOLD, 13));
+        buttonsSingle.setFont(new Font("verdana", Font.BOLD, 13));
         emailIdLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        emailidField.setFont(new Font("verdana", Font.BOLD, 14));
         mobileNoLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        mobileNoField.setFont(new Font("verdana", Font.ITALIC, 14));
         panCardLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        panCardField.setFont(new Font("verdana", Font.ITALIC, 14));
         aadharcardLabel.setFont(new Font("verdana", Font.BOLD, 16));
         aadharcardField.setFont(new Font("verdana", Font.ITALIC, 14));
     }
@@ -218,7 +238,7 @@ public class Register extends JFrame implements ActionListener{
         genderFemale.setBounds(770, 210, 150, 40);
         martialStatusLabel.setBounds(20, 260, 150, 40);
         buttonMarried.setBounds(200, 260, 150, 40);
-        buttonUnmarried.setBounds(400, 260, 150, 40);
+        buttonsSingle.setBounds(400, 260, 150, 40);
         buttonDivorce.setBounds(600, 260, 150, 40);
         emailIdLabel.setBounds(20, 310, 150, 40);
         emailidField.setBounds(200, 310, 200, 40);
@@ -244,10 +264,11 @@ public class Register extends JFrame implements ActionListener{
          int response = JOptionPane.showConfirmDialog(this, "Do You Want to EXIT ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
          if(response==JOptionPane.YES_OPTION){
             dispose();
-            new Login();
+            new WelcomePage();
           }
        }       
        if("CLEAR".equals(e.getActionCommand())){
+           
            int response = JOptionPane.showConfirmDialog(this, "Do You Want to CLEAR ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
            if(response==JOptionPane.YES_OPTION){
                usernameField.setText("");
@@ -259,17 +280,33 @@ public class Register extends JFrame implements ActionListener{
        }
        
        if("NEXT".equals(e.getActionCommand())){
-            String userApplicationNumber = applicationNoField.getText().trim(), userName = getUserName();
-           // printErrorMessage();
-             userDetails(users);
-             dispose();
-           new RegisterSecond(users, userApplicationNumber,userName);
+             userApplicationNumber = applicationNoField.getText().trim();             
+             firstName = firstNameField.getText().trim();
+             lastName = lastNameField.getText().trim();
+             customerName = firstName+" "+lastName;
+             fatherName = fatherNameField.getText().trim();
+             motherName = motherNameField.getText().trim();
+             dob = ((JTextField)dateChooser.getDateEditor().getUiComponent()).getText();
+             gender = getGender();
+             martialStatus = getMartialStatus();
+             emailId = emailidField.getText().trim();
+             mobileNo = mobileNoField.getText().trim();
+             panCard = panCardField.getText().trim();
+             aadharCard = aadharcardField.getText().trim();
+             userName = usernameField.getText().trim();             
+        // Validating and Storing all data into Database;
+           try { 
+               saveDataIntoDatabase();
+           } catch (SQLException ex) {
+               Logger.getLogger(AccountRegisteration.class.getName()).log(Level.SEVERE, null, ex);
+           }
        }
-    }
-    // Event -Listener Method CLose here:
+    }     
+    
+    
+    
     public String getUserName(){
-        userString = firstNameField.getText().substring(0).trim();
-        return  userString.concat(userApplication);
+        return ( firstNameField.getText().substring(0).trim().concat(userApplication) );
     }
     public String getGender(){
         String gender=null;
@@ -284,14 +321,151 @@ public class Register extends JFrame implements ActionListener{
         String martialStatus=null;
         if(buttonMarried.isSelected())
             martialStatus = "MARRIED";
-        else if( buttonUnmarried.isSelected())
-                martialStatus = "UNMARRIED";
+        else if( buttonsSingle.isSelected())
+                martialStatus = "SINGLE";
         else
                 martialStatus = "DIVORCE";
         return martialStatus;
-     }  
+     }
+    
+     // GENERATING RANDOM PASSWORD:---
+    	public static String getPassword() 
+	{
+            String SALTCHARS = "ABCDENOPQRSTUWXYZ1234567890";
+            StringBuilder salt = new StringBuilder();
+            Random rnd = new Random();
+        while (salt.length() < 8) {
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
+    }
+    
+    public void saveDataIntoDatabase() throws SQLException{
+         String regex = "^(?=.*[0-9])"
+                       + "(?=.*[a-z])(?=.*[A-Z])"
+                       + "(?=.*[@#$%^&+=])"
+                       + "(?=\\S+$).{8,20}$";
+        
+            // First checking textFields are not empty and email Validation
+            if(firstName.equals("")){
+                JOptionPane.showMessageDialog(rootPane, "FIRST_NAME:  cannot be empty:");
+            }
+            if(lastName.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "LAST_NAME:  cannot be empty:");
+            }
+            if(fatherName.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "FATHER_NAME:  cannot be empty:");
+            }
+            if(motherName.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "MOTHER_NAME:  cannot be empty:");
+            }
+            if(dob.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "D.O.B. cannot be empty:");
+            }
+            if(gender.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "GENDER:  cannot be empty:");
+            }
+            if(martialStatus.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "MARTIAL_STATUS: cannot be empty:");
+            }
+            if(emailId.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "EMAIL-ID: cannot be empty:");
+            }
+            if(!Pattern.compile("^(.+)@(\\S+)$").matcher(emailId).matches()){
+               JOptionPane.showMessageDialog(rootPane, "Enter valid email ID");
+                return;
+            }
+            if(mobileNo.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "MOBILE_NUMBER: cannot be empty:");
+            }
+            if(panCard.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "PAN_CARD:  cannot be empty:");
+            }
+            if(aadharCard.equals("")){        
+                JOptionPane.showMessageDialog(rootPane, "AADHAR_CARD:  cannot be empty:");
+            }
+            try {
+                    connection = DatabaseConnection.ConnectionString();
+                    statement = connection.createStatement();
+                    String userVerify = "select * from kyc_detals where email_id='"+emailId+"' OR mobile_no = '"+mobileNo +"' OR user_pan_card = '"+panCard +"' OR user_aadhar_card ='"+aadharCard +"'";
+                    ResultSet resultSet = statement.executeQuery(userVerify);
+                    if(resultSet.next()){
+                        JOptionPane.showMessageDialog(this, "User already exists !!");
+                    }        
+           // Now store all the text-field data into databse:
+            else{
+                    String query1 = "INSERT INTO user_details(username,name, email_id, mobile_no, password, login_type, user_aadhar_card) VALUES"
+                                  + " ('" + userName+ "', '" + customerName+ "', '" + emailId + "', '" + mobileNo + "', '" +password+"', '" + login_type + "',  '" +aadharCard+"')";
+
+                    String query2 = "INSERT INTO kyc_details ( user_aadhar_card, customer_first_name, customer_last_name, father_name, mother_name, user_dob,"
+                                  + " user_gender, user_martial_status, email_id, mobile_no, user_pan_card) VALUES " +
+                                 "('"+ aadharCard + "', '" + firstName + "', '" + lastName + "', '" + fatherName + "', '" + motherName + "', '" + dob + "', '" +
+                                  gender + "', '" + martialStatus + "', '" + emailId + "', '" + mobileNo + "', '" + panCard + "')";
+                        
+                    int rowsAffected = statement.executeUpdate(query1);
+                    int rowsAffected2 = statement.executeUpdate(query2);
+
+                    System.out.println("Rows affected user_details: " + rowsAffected);
+                    System.out.println("Rows affected2 kyc_details: " + rowsAffected2);                          
+                } 
+                    dispose();
+                    new AccountRegisterationSecond(userApplicationNumber,getUserName());
+                }catch(ClassNotFoundException | SQLException exception){
+                     System.out.println("Exception is:\n"+ exception);
+                }finally{
+                        statement.close();
+                        connection.close();    
+            }
+        }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+  public ArrayList<String> user_details (){
+    ArrayList<String> user_details = new ArrayList<>();
+    user_details.add(0, firstNameField.getText().trim()+ lastNameField.getText().trim());
+    user_details.add(1,getUserName());
+    user_details.add(2, emailidField.getText().trim());    
+    user_details.add(3, mobileNoField.getText().trim());    
+    return user_details;
+    }
     
     
+    public ArrayList<String> kyc_details(){
+    ArrayList<String> kyc_details = new ArrayList<>();
+    kyc_details.add(0, firstNameField.getText().trim());
+    kyc_details.add(1,lastNameField.getText().trim());
+    kyc_details.add(2, fatherNameField.getText().trim());
+    kyc_details.add(3, motherNameField.getText().trim());
+    kyc_details.add(4, ((JTextField)dateChooser.getDateEditor().getUiComponent()).getText());
+    kyc_details.add(5,getGender());
+    kyc_details.add(6, getMartialStatus());
+    kyc_details.add(7, emailidField.getText().trim());
+    kyc_details.add(8, mobileNoField.getText().trim());
+    kyc_details.add(0, panCardField.getText().trim());
+    kyc_details.add(10, aadharcardField.getText().trim());
+    kyc_details.add(11,getUserName());   
+    return kyc_details;
+    }  
+   
     // Getting Data from the Form to store in Database:
 //    public static CustomerForm user_details (){
 //        return new CustomerForm(firstNameField.getText().trim() + lastNameField.getText().trim().toLowerCase(),
@@ -359,4 +533,5 @@ public class Register extends JFrame implements ActionListener{
         }
  // Mobile-TextField Validation End Here:
 
-}
+
+*/

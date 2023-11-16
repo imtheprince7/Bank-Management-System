@@ -1,6 +1,6 @@
-package bank.management.system;
+package bank.management.system.model;
 
-public class Users {
+public class RegistrationModel {
     private String applicationNumber;
     private String userName;
     private String firstName;
@@ -254,7 +254,7 @@ public class Users {
         this.atmCard = atmCard;
     }
 
-    public Users(String applicationNumber, String userName, String firstName, String lastName, String fatherName, String motherName, String dateOfBirth, String gender, String martialStatus, String emailId, String mobileNumber, String pancardNo, String aadharCard, String flatNo, String streetNo, String landMark, String pinCode, String district, String city, String state, String country, String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, String chequeBook, String atmCard) {
+    public RegistrationModel(String applicationNumber, String userName, String firstName, String lastName, String fatherName, String motherName, String dateOfBirth, String gender, String martialStatus, String emailId, String mobileNumber, String pancardNo, String aadharCard, String flatNo, String streetNo, String landMark, String pinCode, String district, String city, String state, String country, String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, String chequeBook, String atmCard) {
         this.applicationNumber = applicationNumber;
         this.userName = userName;
         this.firstName = firstName;

@@ -1,7 +1,9 @@
-package bank.management.system;
+package bank.management.system.accountRegistration;
 
-import  java.util.HashMap;
+import bank.management.system.accountRegistration.WelcomePage;
+import bank.management.system.database.DatabaseConnection;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.util.Random;
 import java.awt.event.ActionEvent;
@@ -15,28 +17,36 @@ import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-public class RegisterThird extends JFrame implements ActionListener{
+public class AccountRegisterationThird extends JFrame implements ActionListener{
 
-     String userAccountNumber,ifscCode,micrCode,accountType,netBanking,mobileBanking, chequeBook, atmCard;
-     JPanel mainPanel;
+     String userAccountNumber,ifscCode,micrCode,accountType,netBanking,mobileBanking, chequeBook, atmCard,
+             getUserApplicationNumber, getuserName, password;
+     JPanel mainPanel; Random random;  
      JLabel applicationNoLabel, accountNumberLabel, ifscCodeLabel, micrCodeLabel, serviceLabel,netbankingLabel,
              mobileBankingLabel, chequeBookLabel, atmCardLabel, accountTypeLabel;
      JTextField applicationNoField, accountNumberField, ifscCodeField, micrCodeField;
      JRadioButton savingButton, currentButton, netbankingYes, netbankingNo, mobileBankingYes, mobileBankingNo,
-             chequeBook25, chequeBook50,chequeBook100,chequeBookNo, atmCardYes,atmCardNo ;
+                  chequeBook25, chequeBook50,chequeBook100,chequeBookNo, atmCardYes,atmCardNo ;
      ButtonGroup accountTypeGroup, netbankingGroup , mobileBankingGroup, chequeBookGroup, atmCardGroup;
      JButton clearButton, submitButton;
-    Random random;
-    public static String password;
-    static String accountNumber, ifsccodes = "CEGB3147000",micrcodes = "110015317",atmNumber,cvv, getUserApplicationNumber, getuserName;
-    HashMap<String,String> users = new HashMap<>();
-    RegisterThird(HashMap<String,String> user, String userApplicationNumber, String userName){
-        users.putAll(user);
-        getUserApplicationNumber = userApplicationNumber; getuserName = userName;
+     static String accountNumber, ifsccodes = "CEGB3147000",micrcodes = "110015317",atmNumber,cvv ;
+     
+     private Connection connection;
+     private Statement statement;
+    
+     public AccountRegisterationThird( String userApplicationNumber, String userName ){
+       
+        getUserApplicationNumber = userApplicationNumber;
+        getuserName = userName;
         random = new Random();
-        password = getPassword();
+        password = AccountRegisteration.getPassword();
 
         accountNumber = Long.toString((long)Math.abs((random.nextDouble()* 100000L) + 314700000000L));
         atmNumber = Long.toString((long)Math.abs((random.nextDouble()* 1000000000L) + 4601331700000000L));
@@ -45,8 +55,8 @@ public class RegisterThird extends JFrame implements ActionListener{
         setTitle("Account Registration || Account Type (3/3)");
         setLayout(null);
         setResizable(false);
-        setSize(900,600);
-        setLocation(200,100);
+        setSize(900,550);
+        setLocation(300,150);
         
         mainPanel= new JPanel();
         mainPanel.setBounds(0, 0,900,500);
@@ -81,7 +91,6 @@ public class RegisterThird extends JFrame implements ActionListener{
         micrCodeField.setText(micrcodes);
 
         serviceLabel = new JLabel("Services for Best Banking facilities");
-
         accountTypeLabel = new JLabel("Account Type");
         savingButton = new JRadioButton("Saving",true);
         currentButton = new JRadioButton("Current");
@@ -126,41 +135,63 @@ public class RegisterThird extends JFrame implements ActionListener{
         submitButton= new JButton("SUBMIT");
         submitButton.addActionListener(this);
                 
-        setFont();
-        setBound();
         addComponent();
+        setBound();
+        setFont();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);  
     }    
    // CONSTRUCTOR CLOSE HERE
     
     public void setFont(){
-        applicationNoLabel.setFont(new Font("verdana", Font.BOLD, 12));         applicationNoField.setFont(new Font("verdana", Font.BOLD, 14));
-        accountNumberLabel.setFont(new Font("verdana", Font.BOLD, 12));         accountNumberField.setFont(new Font("verdana", Font.BOLD, 12));
-        ifscCodeField.setFont(new Font("verdana", Font.BOLD, 12));              micrCodeField.setFont(new Font("verdana", Font.BOLD, 12));
-        ifscCodeLabel.setFont(new Font("verdana", Font.BOLD, 12));              micrCodeLabel.setFont(new Font("verdana", Font.BOLD, 12));
-        serviceLabel.setFont(new Font("verdana", Font.BOLD, 14));               accountTypeLabel.setFont(new Font("verdana", Font.BOLD, 12));
-        netbankingLabel.setFont(new Font("verdana", Font.BOLD, 12));            mobileBankingLabel.setFont(new Font("verdana", Font.BOLD, 12));
-        chequeBookLabel.setFont(new Font("verdana", Font.BOLD, 12));            atmCardLabel.setFont(new Font("verdana", Font.BOLD, 12));
-        clearButton.setFont(new Font("verdana", Font.BOLD, 12));                submitButton.setFont(new Font("verdana", Font.BOLD, 12));
+        applicationNoLabel.setFont(new Font("verdana", Font.BOLD, 12)); 
+        applicationNoField.setFont(new Font("verdana", Font.BOLD, 14));
+        accountNumberLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        accountNumberField.setFont(new Font("verdana", Font.BOLD, 12));
+        ifscCodeField.setFont(new Font("verdana", Font.BOLD, 12));   
+        micrCodeField.setFont(new Font("verdana", Font.BOLD, 12));
+        ifscCodeLabel.setFont(new Font("verdana", Font.BOLD, 12));  
+        micrCodeLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        serviceLabel.setFont(new Font("verdana", Font.BOLD, 14));  
+        accountTypeLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        netbankingLabel.setFont(new Font("verdana", Font.BOLD, 12)); 
+        mobileBankingLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        chequeBookLabel.setFont(new Font("verdana", Font.BOLD, 12));   
+        atmCardLabel.setFont(new Font("verdana", Font.BOLD, 12));
+        clearButton.setFont(new Font("verdana", Font.BOLD, 12));
+        submitButton.setFont(new Font("verdana", Font.BOLD, 12));
     }
     
     public void setBound(){
-        applicationNoLabel.setBounds(20, 20, 200, 30);              applicationNoField.setBounds(200, 20, 200, 30);
-        accountNumberLabel.setBounds(20, 60, 200, 30);              accountNumberField.setBounds(200, 60, 200, 30);
-        ifscCodeLabel.setBounds(20, 100, 200, 30);                  ifscCodeField.setBounds(200, 100, 200, 30);
-        micrCodeLabel.setBounds(20, 140, 200, 30);                  micrCodeField.setBounds(200, 140, 200, 30);
+        applicationNoLabel.setBounds(20, 20, 200, 30);  
+        applicationNoField.setBounds(200, 20, 200, 30);
+        accountNumberLabel.setBounds(20, 60, 200, 30); 
+        accountNumberField.setBounds(200, 60, 200, 30);
+        ifscCodeLabel.setBounds(20, 100, 200, 30);   
+        ifscCodeField.setBounds(200, 100, 200, 30);
+        micrCodeLabel.setBounds(20, 140, 200, 30); 
+        micrCodeField.setBounds(200, 140, 200, 30);
 
-        serviceLabel.setBounds(20, 190, 350, 30);                   accountTypeLabel.setBounds(20, 230, 200, 30);
-        savingButton.setBounds(200, 230, 200, 30);                  currentButton.setBounds(350, 230, 200, 30);
-        netbankingLabel.setBounds(20, 270, 200, 30);                netbankingYes.setBounds(200, 270, 80, 30);
-        netbankingNo.setBounds(300, 270, 100, 30);                  mobileBankingLabel.setBounds(20, 310, 200, 30);
-        mobileBankingYes.setBounds(200, 310, 80, 30);               mobileBankingNo.setBounds(300, 310, 100, 30);
-        chequeBookLabel.setBounds(20, 350, 200, 30);                chequeBook25.setBounds(200, 350, 100, 30);
-        chequeBook50.setBounds(350, 350, 100, 30);                  chequeBook100.setBounds(500, 350, 100, 30);
-        chequeBookNo.setBounds(650, 350, 100, 30);                  atmCardLabel.setBounds(20, 390, 100, 30);
-        atmCardYes.setBounds(200, 390, 100, 30);                    atmCardNo.setBounds(350, 390, 100, 30);
-        clearButton.setBounds(600, 430, 100, 40);                   submitButton.setBounds(750, 430, 100, 40);
+        serviceLabel.setBounds(20, 190, 350, 30);   
+        accountTypeLabel.setBounds(20, 230, 200, 30);
+        savingButton.setBounds(200, 230, 200, 30); 
+        currentButton.setBounds(400, 230, 200, 30);
+        netbankingLabel.setBounds(20, 270, 200, 30); 
+        netbankingYes.setBounds(200, 270, 80, 30);
+        netbankingNo.setBounds(300, 270, 100, 30); 
+        mobileBankingLabel.setBounds(20, 310, 200, 30);
+        mobileBankingYes.setBounds(200, 310, 80, 30);   
+        mobileBankingNo.setBounds(300, 310, 100, 30);
+        chequeBookLabel.setBounds(20, 350, 200, 30);
+        chequeBook25.setBounds(200, 350, 100, 30);
+        chequeBook50.setBounds(350, 350, 100, 30);  
+        chequeBook100.setBounds(500, 350, 100, 30);
+        chequeBookNo.setBounds(650, 350, 100, 30); 
+        atmCardLabel.setBounds(20, 390, 100, 30);
+        atmCardYes.setBounds(200, 390, 100, 30); 
+        atmCardNo.setBounds(350, 390, 100, 30);
+        clearButton.setBounds(630, 450, 100, 40);
+        submitButton.setBounds(760, 450, 100, 40);
     }
     
     public  void addComponent(){
@@ -194,19 +225,8 @@ public class RegisterThird extends JFrame implements ActionListener{
         mainPanel.add(submitButton);
     }
     
-    // GENERATING RANDOM PASSWORD:---
-    	public static String getPassword() 
-	{
-            String SALTCHARS = "ABCDENOPQRSTUWXYZ1234567890";
-            StringBuilder salt = new StringBuilder();
-            Random rnd = new Random();
-        while (salt.length() < 8) {
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
-        }
-        return salt.toString();
-    }
-  // Method to get data from Better-Servicef-Facilities:
+   
+  // Method to get data from Better-Service-Facilities:
      public String getAccountType(){
         String accountType=null;
         if(savingButton.isSelected())
@@ -254,7 +274,75 @@ public class RegisterThird extends JFrame implements ActionListener{
       }
      
 
-    public HashMap<String,String> userDetails(HashMap<String, String> users){
+   
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       if(e.getActionCommand().equals("SUBMIT")) {
+            userAccountNumber = accountNumberField.getText().trim();
+            ifscCode = ifscCodeField.getText().trim();
+            micrCode = micrCodeField.getText().trim();
+            accountNumber = getAccountType();
+            netBanking = getNetBanking();
+            mobileBanking = getMobileBanking();
+            chequeBook = getCheckBook();
+            atmCard = getATMCard();
+            
+           try {
+               // Validating and Storing all data into Database;
+               saveDataIntoDatabase();
+           } catch (SQLException exception) {
+               Logger.getLogger(AccountRegisterationThird.class.getName()).log(Level.SEVERE, null, exception);
+           }             
+       }    
+    } 
+    
+    
+     public void saveDataIntoDatabase() throws SQLException{
+        try{
+             connection = DatabaseConnection.ConnectionString();
+             String query1 = "INSERT INTO account_details(account_number, ifsc_code, micr_code, username) VALUES"
+                                + " ('" + accountNumber + "', '" + ifscCode + "', '" + micrCode + "', '" + getuserName + "')";
+
+             String query2 = "INSERT INTO service_opted(username, account_type, net_banking, mobile_banking, cheque_book, atm_card) VALUES"
+                                + " ('" + getuserName + "', '" + accountType + "', '" + netBanking + "', '" + mobileBanking + "', '" + chequeBook + "', '" + atmCard + "')";
+
+             statement = connection.createStatement();
+             int rowsAffected = statement.executeUpdate(query1);
+             int rowsAffected2 = statement.executeUpdate(query2);
+             System.out.println("Rows affected1: " + rowsAffected);
+             System.out.println("Rows affected2: " + rowsAffected2);                
+             
+             int response = JOptionPane.showConfirmDialog(this, """
+                                                            \t CEGians Bank !! 
+                                                             Please Note it for Future Use                                                            
+                                                            Account Number: \t """+accountNumber+"\n"+ "IFSC CODE: \t "+ifsccodes+"\n"+"MICR CODE:\t"
+                 + micrcodes+"\nATM Number: \t"+atmNumber+"\n"+"Valid Thru:\t 05/28"+"\n"+"CVV: \t"+cvv+"\n\n"+"UserName:\t"+" "+getuserName
+                 +"\n"+"Password:\t"+" "+password,"\n"
+                 +"THANK YOU ❤️", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if(response==JOptionPane.YES_OPTION){
+                dispose();
+                JOptionPane.showMessageDialog(this, "Acoount Registration SuccessFully !!\n"+"UserName: \t"+getuserName+"\n Password: \t"+password);
+                new WelcomePage();
+            }
+        }catch(HeadlessException | ClassNotFoundException | SQLException exception){
+                   System.out.println("Exception from Accoun-Registration Page-3: \n"+ exception);
+        }finally{
+              statement.close();
+              connection.close();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+/*
+ public HashMap<String,String> userDetails(HashMap<String, String> users){
         this.users.put("accountNumber",accountNumberField.getText().trim());           this.users.put("ifscCode ",ifscCodeField.getText().trim());
         this.users.put("micrCode",micrCodeField.getText().trim());                     this.users.put("accountType",getAccountType());
         this.users.put("netbanking",getNetBanking());                                  this.users.put("mobileBanking",getMobileBanking());
@@ -263,27 +351,4 @@ public class RegisterThird extends JFrame implements ActionListener{
         System.out.println(this.users);
         return this.users;
     }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-       if(e.getActionCommand().equals("SUBMIT")) {
-           // Saving Page 3: data for temporary:
-           userDetails(users);
-
-         int response = JOptionPane.showConfirmDialog(this, """
-                                                            \t CEGians Bank !! 
-                                                             Please Note it for Future Use
-                                                            
-                                                            Account Number: \t """+accountNumber+"\n"+ "IFSC CODE: \t "+ifsccodes+"\n"+"MICR CODE:\t"
-                 + micrcodes+"\nATM Number: \t"+atmNumber+"\n"+"Valid Thru:\t 05/28"+"\n"+"CVV: \t"+cvv+"\n\n"+"UserName:\t"+" "+getuserName
-                 +"\n"+"Password:\t"+" "+password,"\n"
-                 +"THANK YOU ❤️", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
-         if(response==JOptionPane.YES_OPTION){
-             System.out.println("Inside of Dispose Method:");
-             System.out.println(users);
-             dispose();
-            new Login(userDetails(users));
-          }
-       }    
-    }      // OVERRIDE METHOD CLOSE HERE
- }  
-// MAIN CLASS END HERE
+*/

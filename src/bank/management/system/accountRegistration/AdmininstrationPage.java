@@ -1,4 +1,5 @@
-package bank.management.system;
+package bank.management.system.accountRegistration;
+import bank.management.system.accountRegistration.WelcomePage;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,16 +11,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.SQLException;
 
 
-public class AdminPanel extends JFrame implements ActionListener {
+public class AdmininstrationPage extends JFrame implements ActionListener {
     JPanel mainPanel, adminPanel, showPanel;
-    JLabel welcomeLabel,infoLabel, usernameLabel, fullNameLabel, mobileLabel, emailLabel, userTypeLabel, passwordLabel, cpasswordLabel;
-    JTextField usernameField, fullNameField, mobileField, emailField, userTypeField,passwordField, cpasswordField;
+    JLabel welcomeLabel,infoLabel, usernameLabel, fullNameLabel, mobileLabel, emailLabel, userTypeLabel, passwordLabel, cpasswordLabel, aadharCardLabel;
+    JTextField usernameField, fullNameField, mobileField, emailField, userTypeField,passwordField, cpasswordField,aadharCardField;
     JButton createButton, clearButton, checkUsersButton,logoutButton, backButton;
     JComboBox roleTypeBox;
     
-    AdminPanel()
+    AdmininstrationPage()
     {
         setResizable(false);
         setLayout(null);
@@ -72,10 +76,14 @@ public class AdminPanel extends JFrame implements ActionListener {
         cpasswordLabel = new JLabel("Confirm Password");
         cpasswordField = new JTextField();
         
+        aadharCardLabel = new JLabel("Aadhar Card");
+        aadharCardField = new JTextField();
+        
         clearButton = new JButton("CLEAR"); 
         clearButton.addActionListener(this);        
         createButton = new JButton("Create User");              
-        createButton.addActionListener(this);  
+        createButton.addActionListener(this); 
+        
         checkUsersButton = new JButton("Check Users");     
         checkUsersButton.addActionListener(this); 
         logoutButton = new JButton("LOGOUT");               
@@ -112,6 +120,8 @@ public class AdminPanel extends JFrame implements ActionListener {
         passwordField.setBounds(200, 300, 200, 40);
         cpasswordLabel.setBounds(20, 345, 180, 40);
         cpasswordField.setBounds(200, 345, 200, 40);
+        aadharCardLabel.setBounds(410, 345, 50, 40);
+        aadharCardField.setBounds(470, 345, 200, 40);
         clearButton.setBounds(20,405,80,30);
         createButton.setBounds(130,405,120,30);
         checkUsersButton.setBounds(280,405,120,30);
@@ -134,6 +144,8 @@ public class AdminPanel extends JFrame implements ActionListener {
         adminPanel.add(passwordField);
         adminPanel.add(cpasswordLabel);
         adminPanel.add(cpasswordField);
+        adminPanel.add(aadharCardLabel);
+        adminPanel.add(aadharCardField);        
         adminPanel.add(clearButton);
         adminPanel.add(createButton);
         adminPanel.add(checkUsersButton);  
@@ -146,37 +158,40 @@ public class AdminPanel extends JFrame implements ActionListener {
        // throw new UnsupportedOperationException("Not supported yet."); 
 
     
-       if(e.getActionCommand()=="LOGOUT"){
+       if("LOGOUT".equals(e.getActionCommand())){
         int response = JOptionPane.showConfirmDialog(this, "Do You Want to Logout ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response==JOptionPane.YES_OPTION){
             dispose();
-            new Login();
+            new WelcomePage();
         }
         
     }
-       if(e.getActionCommand()=="CLEAR"){
+       if("CLEAR".equals(e.getActionCommand())){
            userTypeField.setText("");   fullNameField.setText("");
            mobileField.setText("");     emailField.setText("");
            userTypeField.setText("");   passwordField.setText("");
            cpasswordField.setText("");
            
        }
-       if(e.getActionCommand()=="Create User"){
+       if("Create User".equals(e.getActionCommand())){
            
        }
        
-       if(e.getActionCommand()=="Check Users"){
+       if("Check Users".equals(e.getActionCommand())){
           showPanel.setVisible(true);
           adminPanel.setVisible(false);
        }
        
-       if(e.getActionCommand()=="BACK"){
+       if("BACK".equals(e.getActionCommand())){
            showPanel.setVisible(false);
            adminPanel.setVisible(true);
            
-       }
-           
+       }          
+    }
     
+    
+    public static void main(String[] args) {
+        new AdmininstrationPage();
     }
     
 }

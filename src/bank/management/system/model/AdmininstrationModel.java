@@ -1,6 +1,6 @@
 package bank.management.system.model;
 
 
-public class AdminModel {
+public class AdmininstrationModel {
     
 }

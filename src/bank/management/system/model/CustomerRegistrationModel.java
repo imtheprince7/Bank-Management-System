@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class CustomerForm  implements  Serializable{
+public class CustomerRegistrationModel  implements  Serializable{
     private String applicationNumber; 
     private String userName;
     private String firstName;
@@ -286,10 +286,10 @@ public class CustomerForm  implements  Serializable{
     public void customerName(String customerName) {
         this.customerName = customerName;
     }
-    public CustomerForm(){
+    public CustomerRegistrationModel(){
         
     }
-    public CustomerForm(String applicationNumber, String userName, String firstName, String lastName, String fatherName, 
+    public CustomerRegistrationModel(String applicationNumber, String userName, String firstName, String lastName, String fatherName, 
             String motherName, String dob, String gender, String martialStatus, String emailId, String mobileNo, String aadharcard,
             String panCard, String flateNo, String street, String landmark, String pincode, String district, String city, String state,
             String country, String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, 
@@ -325,14 +325,14 @@ public class CustomerForm  implements  Serializable{
         this.atmCard = atmCard;
     }
     
-    public CustomerForm(String customerName, String userName, String emailId, String mobileNo){
+    public CustomerRegistrationModel(String customerName, String userName, String emailId, String mobileNo){
         this.customerName = customerName;
         this.userName = userName;
         this.emailId = emailId;
         this.mobileNo = mobileNo;
     }
     
-    public CustomerForm(String firstName, String lastName, String fatherName, String motherName, String dob, String gender,
+    public CustomerRegistrationModel(String firstName, String lastName, String fatherName, String motherName, String dob, String gender,
             String martialStatus, String emailId, String mobileNo, String panCard, String aadharcard, String userName){
       
         this.firstName = firstName;
@@ -349,7 +349,7 @@ public class CustomerForm  implements  Serializable{
         this.userName = userName;
     }
     
-    public CustomerForm( String flateNo, String street, String landmark, String pincode, String district,
+    public CustomerRegistrationModel( String flateNo, String street, String landmark, String pincode, String district,
             String city, String state, String country, String userName){        
         this.flateNo = flateNo;
         this.street = street;
@@ -361,7 +361,7 @@ public class CustomerForm  implements  Serializable{
         this.country = country;      
         this.userName = userName;
     }
-    public  CustomerForm(String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, 
+    public  CustomerRegistrationModel(String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, 
             String chequeBook, String atmCard, String userName){        
         this.accountNumber = accountNumber;
         this.ifscCode = ifscCode;

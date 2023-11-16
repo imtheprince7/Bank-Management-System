@@ -1,4 +1,5 @@
-package bank.management.system;
+package bank.management.system.accountRegistration;
+import bank.management.system.accountRegistration.WelcomePage;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -13,14 +14,14 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 
-public class InfoRecovery extends JFrame implements ActionListener
+public class InformationRecovery extends JFrame implements ActionListener
 {
     JPanel imagePanel, searchPanel, recoveryPanel;
     JLabel imageLabel, emailLabel, userNameLabel, orLabel, infoLabel, resetLabel,userName2Label,passwordLabel,cpasswordLabel, mobileLabel;
     JTextField emailIdField,userNameField,UserName2Field,passowrdField, cpasswordField, mobileField, errorMessage;
     JButton exitButton, searchButton, clearButton, clear2Button, submitButton,search2Button;
     
-    InfoRecovery() {
+    InformationRecovery() {
         setResizable(false);
         setLayout(null);
         setSize(900,500);
@@ -215,14 +216,14 @@ public class InfoRecovery extends JFrame implements ActionListener
          int response = JOptionPane.showConfirmDialog(this, "Do You Want to EXIT ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
          if(response==JOptionPane.YES_OPTION){
             dispose();
-            new Login();
+            new WelcomePage();
           }
        }
      
         if(e.getActionCommand()== "SUBMIT")
        {
            dispose();
-           new Login();
+           new WelcomePage();
        } 
     }
     
