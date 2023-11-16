@@ -2,6 +2,7 @@ package bank.management.system.accountRegistration;
 
 import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.database.DatabaseConnection;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.Image;
@@ -132,6 +133,7 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
         
         clearButton = new JButton("CLEAR");
         clearButton.addActionListener(this);
+        clearButton.setForeground(Color.red);
         submitButton= new JButton("SUBMIT");
         submitButton.addActionListener(this);
                 
@@ -281,7 +283,7 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
             userAccountNumber = accountNumberField.getText().trim();
             ifscCode = ifscCodeField.getText().trim();
             micrCode = micrCodeField.getText().trim();
-            accountNumber = getAccountType();
+            accountType = getAccountType();
             netBanking = getNetBanking();
             mobileBanking = getMobileBanking();
             chequeBook = getCheckBook();
@@ -300,11 +302,13 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
      public void saveDataIntoDatabase() throws SQLException{
         try{
              connection = DatabaseConnection.ConnectionString();
-             String query1 = "INSERT INTO account_details(account_number, ifsc_code, micr_code, username) VALUES"
+             String query1 = "INSERT INTO service_opted(username, account_type, net_banking, mobile_banking, cheque_book, atm_card) VALUES"
+                                + " ('" + getuserName + "', '" + accountType + "', '" + netBanking + "', '" + mobileBanking + "', '" + chequeBook + "', '" + atmCard + "')";
+             
+             String query2 = "INSERT INTO account_details(account_number, ifsc_code, micr_code, username) VALUES"
                                 + " ('" + accountNumber + "', '" + ifscCode + "', '" + micrCode + "', '" + getuserName + "')";
 
-             String query2 = "INSERT INTO service_opted(username, account_type, net_banking, mobile_banking, cheque_book, atm_card) VALUES"
-                                + " ('" + getuserName + "', '" + accountType + "', '" + netBanking + "', '" + mobileBanking + "', '" + chequeBook + "', '" + atmCard + "')";
+             
 
              statement = connection.createStatement();
              int rowsAffected = statement.executeUpdate(query1);
@@ -330,6 +334,10 @@ public class AccountRegisterationThird extends JFrame implements ActionListener{
               statement.close();
               connection.close();
         }
+    }
+     
+     public static void main(String[] args) {
+        new AccountRegisterationThird("121", "Prince");
     }
 }
 
