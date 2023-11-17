@@ -4,7 +4,7 @@ import bank.management.system.accountRegistration.AccountRegisterationSecond;
 import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.database.DatabaseConnection;
 import bank.management.system.database.EmailOtpVerification;
-import bank.management.system.model.PasswordEncryption;
+import bank.management.system.database.PasswordEncryption;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -18,9 +18,10 @@ import javax.swing.JButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
-import java.util.Random;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -29,88 +30,81 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+public class AccountRegisteration extends JFrame implements ActionListener {
 
-public class AccountRegisteration extends JFrame implements ActionListener{
-    String formNumber, userApplication,userApplicationNumber, userName, firstName, lastName, customerName,fatherName,motherName,
-            dob,gender,martialStatus,emailId,mobileNo, panCard, aadharCard, login_type="customer";
+    String formNumber, userApplication, userApplicationNumber, firstName, lastName, customerName, fatherName, motherName,
+            dob, gender, martialStatus, emailId, mobileNo, panCard, aadharCard, login_type = "customer";
     JPanel PanelMain;
-    JLabel applicationNoLabel, usernameLabel,firstNameLabel, lastNameLabel,fatherNameLabel,
-            motherNameLabel, dobLabel,genderLabel,martialStatusLabel,emailIdLabel,mobileNoLabel,
-            panCardLabel,aadharcardLabel;
-   static JTextField applicationNoField, usernameField,firstNameField, lastNameField,fatherNameField,
-            motherNameField, emailidField, mobileNoField,panCardField,aadharcardField;
-    JRadioButton genderMale,genderFemale, buttonMarried, buttonsSingle, buttonDivorce;
-    ButtonGroup genderGroup,martialStatusGroup;
-    JButton exitButton, clearButton,nextButton;
+    JLabel ImageLabel, applicationNoLabel, usernameLabel, firstNameLabel, lastNameLabel, fatherNameLabel,
+            motherNameLabel, dobLabel, genderLabel, martialStatusLabel, emailIdLabel, mobileNoLabel,
+            panCardLabel, aadharcardLabel;
+    static JTextField applicationNoField, usernameField, firstNameField, lastNameField, fatherNameField,
+            motherNameField, emailidField, mobileNoField, panCardField, aadharcardField;
+    JRadioButton genderMale, genderFemale, buttonMarried, buttonsSingle, buttonDivorce;
+    ButtonGroup genderGroup, martialStatusGroup;
+    JButton exitButton, clearButton, nextButton;
     JDateChooser dateChooser;
     public static String password;
     private Connection connection;
     private Statement statement;
-    
-    
-    AccountRegisteration()
-    {
+
+    AccountRegisteration() {
         formNumber = EmailOtpVerification.getFormNumber();
         password = PasswordEncryption.encryptPassword();
-        System.out.println("Encrypted Password:"+" "+password);
-        
+        System.out.println("Encrypted Password:" + " " + password);
+
         setTitle("Account Registration || Personal Details (1/3)");
         setResizable(false);
         setLayout(null);
-        setSize(900,550);
-        setLocation(200,100);
-        
-        PanelMain= new JPanel();
-        PanelMain.setBounds(0, 0,900,550);
-        add(PanelMain);  
+        setSize(900, 550);
+        setLocation(200, 100);
+
+        PanelMain = new JPanel();
+        PanelMain.setBounds(0, 0, 900, 550);
+        add(PanelMain);
         PanelMain.setLayout(null);
-        
+
         // IMAGE ICON LOADER
         ImageIcon img = new ImageIcon(ClassLoader.getSystemResource("icons/banklogo.png"));
         Image img1 = img.getImage().getScaledInstance(450, 100, Image.SCALE_DEFAULT);
-        ImageIcon img2 = new ImageIcon(img1); 
-        JLabel Imagelabel = new JLabel(img2);
-        Imagelabel.setBounds(450, 0, 500, 100);
-        PanelMain.add(Imagelabel);
-        
-        
-        
+        ImageIcon img2 = new ImageIcon(img1);
+        ImageLabel = new JLabel(img2);
+        ImageLabel.setBounds(450, 0, 500, 100);
+        PanelMain.add(ImageLabel);
+
         applicationNoLabel = new JLabel("Application Number");
-        applicationNoField =  new JTextField();
+        applicationNoField = new JTextField();
         applicationNoField.setText(formNumber);
         applicationNoField.setEditable(false);
-        userApplication = formNumber.substring(0,5);
-        
-        
-        usernameLabel = new JLabel("Username");      
+        userApplication = formNumber.substring(0, 5);
+
+        usernameLabel = new JLabel("Username");
         usernameField = new JTextField();
         usernameField.setEditable(false);
-        
-        firstNameLabel = new JLabel("First Name"); 
+
+        firstNameLabel = new JLabel("First Name");
         firstNameField = new JTextField();
 
-        
         lastNameLabel = new JLabel("Last Name");
         lastNameField = new JTextField();
-       
+
         fatherNameLabel = new JLabel("Father Name");
         fatherNameField = new JTextField();
-          
+
         motherNameLabel = new JLabel("Mother Name");
         motherNameField = new JTextField();
-      
+
         dobLabel = new JLabel("D.O.B.");
         dateChooser = new JDateChooser();
-        
-        genderLabel= new JLabel("Gender");
+
+        genderLabel = new JLabel("Gender");
         genderMale = new JRadioButton("MALE", true);
         genderFemale = new JRadioButton("FEMALE");
-       
+
         genderGroup = new ButtonGroup();
         genderGroup.add(this.genderMale);
         genderGroup.add(this.genderFemale);
-        
-        
+
         martialStatusLabel = new JLabel("Martial Status");
         buttonsSingle = new JRadioButton("SINGLE", true);
         buttonMarried = new JRadioButton("MARRIED");
@@ -119,74 +113,74 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         martialStatusGroup.add(this.buttonMarried);
         martialStatusGroup.add(this.buttonsSingle);
         martialStatusGroup.add(this.buttonDivorce);
-       
+
         emailIdLabel = new JLabel("Email ID");
         emailidField = new JTextField();
-        
+
         mobileNoLabel = new JLabel("Mobile Number");
         mobileNoField = new JTextField();
 
         panCardLabel = new JLabel("PANCARD NO");
-        panCardField = new JTextField();        
-              
+        panCardField = new JTextField();
+
         aadharcardLabel = new JLabel("Aadhar Number");
         aadharcardField = new JTextField();
-        
-        
+
         exitButton = new JButton("EXIT");
         exitButton.setForeground(Color.red);
         exitButton.addActionListener(this);
-        
-        clearButton= new JButton("CLEAR");
+
+        clearButton = new JButton("CLEAR");
         clearButton.addActionListener(this);
-            
+
         nextButton = new JButton("NEXT");
-        nextButton.addActionListener(this);        
-        
+        nextButton.addActionListener(this);
+
         setFont();
         setBound();
-        addComponent();        
-        
+        addComponent();
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);        
+        setVisible(true);
     }
-    
-    public void addComponent(){
+
+    public void addComponent() {
         PanelMain.add(applicationNoLabel);
         PanelMain.add(applicationNoField);
-        PanelMain.add(usernameLabel); 
+        PanelMain.add(usernameLabel);
         PanelMain.add(usernameField);
-        PanelMain.add(firstNameLabel); 
+        PanelMain.add(firstNameLabel);
         PanelMain.add(firstNameField);
-        PanelMain.add(lastNameLabel);  
+        PanelMain.add(lastNameLabel);
         PanelMain.add(lastNameField);
-        PanelMain.add(fatherNameLabel); 
+        PanelMain.add(fatherNameLabel);
         PanelMain.add(fatherNameField);
-        PanelMain.add(motherNameLabel); 
+        PanelMain.add(motherNameLabel);
         PanelMain.add(motherNameField);
-        PanelMain.add(dobLabel);        
+        PanelMain.add(dobLabel);
         PanelMain.add(dateChooser);
-        PanelMain.add(genderLabel);  
+        PanelMain.add(genderLabel);
         PanelMain.add(genderMale);
-        PanelMain.add(genderFemale);       
-        PanelMain.add(martialStatusLabel); 
+        PanelMain.add(genderFemale);
+        PanelMain.add(martialStatusLabel);
         PanelMain.add(buttonMarried);
-        PanelMain.add(buttonsSingle); 
+        PanelMain.add(buttonsSingle);
         PanelMain.add(buttonDivorce);
-        PanelMain.add(emailIdLabel);   
+        PanelMain.add(emailIdLabel);
         PanelMain.add(emailidField);
         PanelMain.add(mobileNoLabel);
         PanelMain.add(mobileNoField);
-        PanelMain.add(panCardLabel);   
+        PanelMain.add(panCardLabel);
         PanelMain.add(panCardField);
-        PanelMain.add(aadharcardLabel); 
+        PanelMain.add(aadharcardLabel);
         PanelMain.add(aadharcardField);
-        PanelMain.add(exitButton);      
+        PanelMain.add(exitButton);
         PanelMain.add(clearButton);
-        PanelMain.add(nextButton);          
-        
+        PanelMain.add(nextButton);
+
     }
-    public void setFont(){       
+
+    public void setFont() {
         applicationNoLabel.setFont(new Font("verdana", Font.BOLD, 12));
         applicationNoField.setFont(new Font("verdana", Font.BOLD, 14));
         usernameLabel.setFont(new Font("verdana", Font.BOLD, 16));
@@ -216,8 +210,8 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         aadharcardLabel.setFont(new Font("verdana", Font.BOLD, 16));
         aadharcardField.setFont(new Font("verdana", Font.ITALIC, 14));
     }
-    
-    public void setBound(){
+
+    public void setBound() {
         applicationNoLabel.setBounds(20, 10, 150, 40);
         applicationNoField.setBounds(200, 10, 200, 30);
         usernameLabel.setBounds(20, 60, 150, 40);
@@ -237,7 +231,7 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         genderFemale.setBounds(770, 210, 150, 40);
         martialStatusLabel.setBounds(20, 260, 150, 40);
         buttonsSingle.setBounds(200, 260, 150, 40);
-        buttonMarried.setBounds(400, 260, 150, 40);        
+        buttonMarried.setBounds(400, 260, 150, 40);
         buttonDivorce.setBounds(600, 260, 150, 40);
         emailIdLabel.setBounds(20, 310, 150, 40);
         emailidField.setBounds(200, 310, 200, 40);
@@ -247,202 +241,180 @@ public class AccountRegisteration extends JFrame implements ActionListener{
         panCardField.setBounds(200, 360, 200, 40);
         aadharcardLabel.setBounds(450, 360, 150, 40);
         aadharcardField.setBounds(650, 360, 200, 40);
-        exitButton.setBounds(450,440,100,40); 
-        clearButton.setBounds(600,440,100,40);
-        nextButton.setBounds(750,440,100,40);
+        exitButton.setBounds(450, 440, 100, 40);
+        clearButton.setBounds(600, 440, 100, 40);
+        nextButton.setBounds(750, 440, 100, 40);
 
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
-      if("EXIT".equals(e.getActionCommand()))
-       {
-         int response = JOptionPane.showConfirmDialog(this, "Do You Want to EXIT ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-         if(response==JOptionPane.YES_OPTION){
-            dispose();
-            new WelcomePage();
-          }
-       }       
-       if("CLEAR".equals(e.getActionCommand())){
-           
-           int response = JOptionPane.showConfirmDialog(this, "Do You Want to CLEAR ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-           if(response==JOptionPane.YES_OPTION){
-               usernameField.setText("");
-               firstNameField.setText("");   lastNameField.setText("");
-               fatherNameField.setText("");  motherNameField.setText("");
-               emailidField.setText("");     mobileNoField.setText("");
-               aadharcardField.setText("");  panCardField.setText("");
-           }
-       }
-       
-       if("NEXT".equals(e.getActionCommand())){
-             userApplicationNumber = applicationNoField.getText().trim();             
-             firstName = firstNameField.getText().trim();
-             lastName = lastNameField.getText().trim();
-             customerName = firstName+" "+lastName;
-             fatherName = fatherNameField.getText().trim();
-             motherName = motherNameField.getText().trim();
-             dob = ((JTextField)dateChooser.getDateEditor().getUiComponent()).getText();
-             gender = getGender();
-             martialStatus = getMartialStatus();
-             emailId = emailidField.getText().trim();
-             mobileNo = mobileNoField.getText().trim();
-             panCard = panCardField.getText().trim();
-             aadharCard = aadharcardField.getText().trim();
-             userName = usernameField.getText().trim();             
-        // Validating and Storing all data into Database;
-           try { 
-               saveDataIntoDatabase();
-           } catch (ClassNotFoundException |SQLException ex) {
-               Logger.getLogger(AccountRegisteration.class.getName()).log(Level.SEVERE, null, ex);
-           }
-       }
-    }
-    
-    public String getUserName(){
-        return ( firstNameField.getText().substring(0,6).trim().concat(userApplication) );
-    }
-    public String getGender(){
-        String gender=null;
-        if(genderMale.isSelected())
-            gender = "MALE";
-        else if( genderFemale.isSelected())
-                gender = "FEMALE";
-        return gender;
-       }
-    
-    public String getMartialStatus(){
-        String martialStatus=null;
-        if(buttonMarried.isSelected())
-            martialStatus = "MARRIED";
-        else if( buttonsSingle.isSelected())
-                martialStatus = "SINGLE";
-        else
-                martialStatus = "DIVORCE";
-        return martialStatus;
-     }
-    
-     // GENERATING RANDOM PASSWORD:---
-    	public static String getPassword() 
-	{
-            String SALTCHARS = "ABCDENOPQRSTUWXYZ1234567890";
-            StringBuilder salt = new StringBuilder();
-            Random rnd = new Random();
-        while (salt.length() < 8) {
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            salt.append(SALTCHARS.charAt(index));
+        if ("EXIT".equals(e.getActionCommand())) {
+            int response = JOptionPane.showConfirmDialog(this, "Do You Want to EXIT ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (response == JOptionPane.YES_OPTION) {
+                dispose();
+                new WelcomePage();
+            }
         }
-        return salt.toString();
-    }
-    
-    public void saveDataIntoDatabase() throws SQLException, ClassNotFoundException{
-         String regex = "^(?=.*[0-9])"
-                       + "(?=.*[a-z])(?=.*[A-Z])"
-                       + "(?=.*[@#$%^&+=])"
-                       + "(?=\\S+$).{8,20}$";
-        
-            // First checking textFields are not empty and email Validation
-             connection = DatabaseConnection.ConnectionString();
-             statement  = connection.createStatement();
-        try{ 
-            if(firstName.equals("")){
-                JOptionPane.showMessageDialog(rootPane, "FIRST_NAME:  cannot be empty:");
-            }
-            else if(lastName.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "LAST_NAME:  cannot be empty:");
-            }
-            else if(fatherName.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "FATHER_NAME:  cannot be empty:");
-            }
-            else if(motherName.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "MOTHER_NAME:  cannot be empty:");
-            }
-            else if(dob.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "D.O.B. cannot be empty:");
-            }
-            else if(gender.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "GENDER:  cannot be empty:");
-            }
-            else if(martialStatus.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "MARTIAL_STATUS: cannot be empty:");
-            }
-            else if(emailId.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "EMAIL-ID: cannot be empty:");
-            }
-            else if(!Pattern.compile("^(.+)@(\\S+)$").matcher(emailId).matches()){
-               JOptionPane.showMessageDialog(rootPane, "Enter valid email ID");
-                return;
-            }
-            else if(mobileNo.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "MOBILE_NUMBER: cannot be empty:");
-            }
-            else if(panCard.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "PAN_CARD:  cannot be empty:");
-            }
-            else if(aadharCard.equals("")){        
-                JOptionPane.showMessageDialog(rootPane, "AADHAR_CARD:  cannot be empty:");
-            }
-            else {
-                    String userVerify = "select * from kyc_details where email_id='"+emailId+"' OR mobile_no = '"+mobileNo +"' OR user_pan_card = '"+panCard +"' OR user_aadhar_card ='"+aadharCard +"'";
-                    ResultSet resultSet = statement.executeQuery(userVerify);
-                    if(resultSet.next()){
-                        JOptionPane.showMessageDialog(this, "User already exists !!!!\n"+"Recover your Account !!");
-                        dispose();
-                      new WelcomePage();
-                      return;
-                    }        
-           // Now store all the text-field data into databse:
-            else{
-                  String user_details = "INSERT INTO user_details(username,name, email_id, mobile_no, password, login_type, user_aadhar_card) VALUES"
-                                  + " ('" + getUserName()+ "', '" + customerName+ "', '" + emailId + "', '" + mobileNo + "', '" +password+"', '" + login_type + "',  '" +aadharCard+"')";
+        if ("CLEAR".equals(e.getActionCommand())) {
 
-                  String kyc_details = "INSERT INTO kyc_details ( user_aadhar_card, customer_first_name, customer_last_name, father_name, mother_name, user_dob,"
-                                  + " user_gender, user_martial_status, email_id, mobile_no, user_pan_card) VALUES " +
-                                 "('"+ aadharCard + "', '" + firstName + "', '" + lastName + "', '" + fatherName + "', '" + motherName + "', '" + dob + "', '" +
-                                  gender + "', '" + martialStatus + "', '" + emailId + "', '" + mobileNo + "', '" + panCard + "')";
- 
-                  /*    Debug SuccessFull:        
+            int response = JOptionPane.showConfirmDialog(this, "Do You Want to CLEAR ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (response == JOptionPane.YES_OPTION) {
+                usernameField.setText("");
+                firstNameField.setText("");
+                lastNameField.setText("");
+                fatherNameField.setText("");
+                motherNameField.setText("");
+                emailidField.setText("");
+                mobileNoField.setText("");
+                aadharcardField.setText("");
+                panCardField.setText("");
+            }
+        }
+
+        if ("NEXT".equals(e.getActionCommand())) {
+            userApplicationNumber = applicationNoField.getText().trim();
+            firstName = firstNameField.getText().trim();
+            lastName = lastNameField.getText().trim();
+            customerName = firstName + " " + lastName;
+            fatherName = fatherNameField.getText().trim();
+            motherName = motherNameField.getText().trim();
+            dob = ((JTextField) dateChooser.getDateEditor().getUiComponent()).getText();
+            gender = getGender();
+            martialStatus = getMartialStatus();
+            emailId = emailidField.getText().toLowerCase().trim();
+            mobileNo = mobileNoField.getText().trim();
+            panCard = panCardField.getText().toLowerCase().trim();
+            aadharCard = aadharcardField.getText().trim();
+
+            // Validating and Storing all data into Database;
+            try {
+                saveDataIntoDatabase();
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(AccountRegisteration.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public String getUserName() {
+        return (firstNameField.getText().toLowerCase().substring(0, 6).trim().concat(userApplication));
+    }
+
+    public String getGender() {
+        String gender = null;
+        if (genderMale.isSelected()) {
+            gender = "MALE";
+        } else if (genderFemale.isSelected()) {
+            gender = "FEMALE";
+        }
+        return gender;
+    }
+
+    public String getMartialStatus() {
+        String martialStatus = null;
+        if (buttonMarried.isSelected()) {
+            martialStatus = "MARRIED";
+        } else if (buttonsSingle.isSelected()) {
+            martialStatus = "SINGLE";
+        } else {
+            martialStatus = "DIVORCE";
+        }
+        return martialStatus;
+    }
+
+    public void saveDataIntoDatabase() throws SQLException, ClassNotFoundException {
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+
+        // First checking textFields are not empty and email Validation
+        connection = DatabaseConnection.ConnectionString();
+        statement = connection.createStatement();
+        try {
+            if (firstName.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "FIRST_NAME:  cannot be empty:");
+            } else if (firstName.length() > 15) {
+                JOptionPane.showMessageDialog(rootPane, "Firstname field can't have more than 15 characters:");
+            } else if (lastName.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "LAST_NAME: cannot be empty:");
+            } else if (lastName.length() > 25) {
+                JOptionPane.showMessageDialog(rootPane, "Lastname field can't have more than 25 characters:");
+            } else if (fatherName.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "FATHER_NAME:  cannot be empty:");
+            } else if (fatherName.length() > 25) {
+                JOptionPane.showMessageDialog(rootPane, "Father Name field can't have more than 25 characters:");
+            } else if (motherName.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "MOTHER_NAME:  cannot be empty:");
+            } else if (motherName.length() > 25) {
+                JOptionPane.showMessageDialog(rootPane, "Mother Name field can't have more than 25 characters:");
+            } else if (dob.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "D.O.B. cannot be empty:");
+            } else if (emailId.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "EMAIL-ID: cannot be empty:");
+            } else if (emailId.length() > 25) {
+                JOptionPane.showMessageDialog(rootPane, "Email id length should be less than 25:");
+            } else if (!Pattern.compile("^(.+)@(\\S+)$").matcher(emailId).matches()) {
+                JOptionPane.showMessageDialog(rootPane, "Enter valid email ID");
+                emailidField.setText("");
+                return;
+            } else if (mobileNo.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "MOBILE_NUMBER: cannot be empty:");
+            } else if (mobileNo.length() > 10) {
+                JOptionPane.showMessageDialog(rootPane, "Mobile number must be 10 digits:");
+                mobileNoField.setText("");
+            } else if (panCard.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "PAN_CARD: cannot be empty:");
+            } else if (panCard.length() > 10) {
+                JOptionPane.showMessageDialog(rootPane, "Pancard field can't be more than 10 digits:");
+                panCardField.setText("");
+            } else if (aadharCard.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "AADHAR_CARD: cannot be empty:");
+            } else if (aadharCard.length() > 12) {
+                JOptionPane.showMessageDialog(rootPane, "Aadhar Card filed must be 12 digits:");
+                aadharcardField.setText("");
+            } else {
+                String userVerify = "select * from kyc_details where email_id='" + emailId + "' OR mobile_no = '" + mobileNo + "' OR user_pan_card = '" + panCard + "' OR user_aadhar_card ='" + aadharCard + "'";
+                ResultSet resultSet = statement.executeQuery(userVerify);
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(this, "User already exists !!!!\n" + "Recover your Account !!");
+                    dispose();
+                    new WelcomePage();
+                    return;
+                } // Now store all the text-field data into databse:
+                else {
+                    String user_details = "INSERT INTO user_details(username,name, email_id, mobile_no, password, login_type, user_aadhar_card) VALUES"
+                            + " ('" + getUserName() + "', '" + customerName + "', '" + emailId + "', '" + mobileNo + "', '" + password + "', '" + login_type + "',  '" + aadharCard + "')";
+
+                    String kyc_details = "INSERT INTO kyc_details ( user_aadhar_card, customer_first_name, customer_last_name, father_name, mother_name, user_dob,"
+                            + " user_gender, user_martial_status, email_id, mobile_no, user_pan_card, username) VALUES "
+                            + "('" + aadharCard + "', '" + firstName + "', '" + lastName + "', '" + fatherName + "', '" + motherName + "', '" + dob + "', '"
+                            + gender + "', '" + martialStatus + "', '" + emailId + "', '" + mobileNo + "', '" + panCard + "', '" + getUserName() + "')";
+
+                    /*    Debug SuccessFull:        
                     int rowsAffected = statement.executeUpdate(query1);
                     int rowsAffected2 = statement.executeUpdate(query2);
                     System.out.println("Rows affected user_details: " + rowsAffected);
                     System.out.println("Rows affected2 kyc_details: " + rowsAffected2); 
-    */
-                  statement.executeUpdate(kyc_details);
-                  statement.executeUpdate(user_details);                
+                     */
+                    statement.executeUpdate(kyc_details);
+                    statement.executeUpdate(user_details);
                 }
-                 dispose();
-                 new AccountRegisterationSecond(userApplicationNumber,getUserName());
+                dispose();
+                new AccountRegisterationSecond(userApplicationNumber, getUserName());
             }
-        }catch(SQLException exception){
-                     System.out.println("Exception is:\n"+ exception);
-                }finally{
-                        statement.close();
-                        connection.close();    
-            }
+        } catch (SQLException exception) {
+            System.out.println("Exception is:\n" + exception);
+        } finally {
+            statement.close();
+            connection.close();
         }
-   
+    }
+
     public static void main(String[] args) {
         new AccountRegisteration();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*
   public ArrayList<String> user_details (){
@@ -540,4 +512,4 @@ public class AccountRegisteration extends JFrame implements ActionListener{
  // Mobile-TextField Validation End Here:
 
 
-*/
+ */

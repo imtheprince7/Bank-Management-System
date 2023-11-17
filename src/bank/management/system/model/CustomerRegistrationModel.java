@@ -1,10 +1,12 @@
 package bank.management.system.model;
+
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class CustomerRegistrationModel  implements  Serializable{
-    private String applicationNumber; 
+public class CustomerRegistrationModel implements Serializable {
+
+    private String applicationNumber;
     private String userName;
     private String firstName;
     private String lastName;
@@ -33,7 +35,7 @@ public class CustomerRegistrationModel  implements  Serializable{
     private String chequeBook;
     private String atmCard;
     private String encPassword;
-    
+
     private String customerName;
 
     @Override
@@ -269,32 +271,33 @@ public class CustomerRegistrationModel  implements  Serializable{
 
     public void setAtmCard(String atmCard) {
         this.atmCard = atmCard;
-    }    
-    
+    }
+
     public String getEncPassword() {
         return encPassword;
     }
- 
+
     public void setEncPassword(String encPassword) {
         this.encPassword = encPassword;
     }
-    
-     public String customerName() {
+
+    public String customerName() {
         return customerName;
     }
 
     public void customerName(String customerName) {
         this.customerName = customerName;
     }
-    public CustomerRegistrationModel(){
-        
+
+    public CustomerRegistrationModel() {
+
     }
-    public CustomerRegistrationModel(String applicationNumber, String userName, String firstName, String lastName, String fatherName, 
+
+    public CustomerRegistrationModel(String applicationNumber, String userName, String firstName, String lastName, String fatherName,
             String motherName, String dob, String gender, String martialStatus, String emailId, String mobileNo, String aadharcard,
             String panCard, String flateNo, String street, String landmark, String pincode, String district, String city, String state,
-            String country, String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, 
-            String chequeBook, String atmCard)
-    {
+            String country, String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking,
+            String chequeBook, String atmCard) {
         this.applicationNumber = applicationNumber;
         this.userName = userName;
         this.firstName = firstName;
@@ -324,17 +327,17 @@ public class CustomerRegistrationModel  implements  Serializable{
         this.chequeBook = chequeBook;
         this.atmCard = atmCard;
     }
-    
-    public CustomerRegistrationModel(String customerName, String userName, String emailId, String mobileNo){
+
+    public CustomerRegistrationModel(String customerName, String userName, String emailId, String mobileNo) {
         this.customerName = customerName;
         this.userName = userName;
         this.emailId = emailId;
         this.mobileNo = mobileNo;
     }
-    
+
     public CustomerRegistrationModel(String firstName, String lastName, String fatherName, String motherName, String dob, String gender,
-            String martialStatus, String emailId, String mobileNo, String panCard, String aadharcard, String userName){
-      
+            String martialStatus, String emailId, String mobileNo, String panCard, String aadharcard, String userName) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.fatherName = fatherName;
@@ -345,12 +348,12 @@ public class CustomerRegistrationModel  implements  Serializable{
         this.emailId = emailId;
         this.mobileNo = mobileNo;
         this.aadharcard = aadharcard;
-        this.panCard = panCard;        
+        this.panCard = panCard;
         this.userName = userName;
     }
-    
-    public CustomerRegistrationModel( String flateNo, String street, String landmark, String pincode, String district,
-            String city, String state, String country, String userName){        
+
+    public CustomerRegistrationModel(String flateNo, String street, String landmark, String pincode, String district,
+            String city, String state, String country, String userName) {
         this.flateNo = flateNo;
         this.street = street;
         this.landmark = landmark;
@@ -358,11 +361,12 @@ public class CustomerRegistrationModel  implements  Serializable{
         this.district = district;
         this.city = city;
         this.state = state;
-        this.country = country;      
+        this.country = country;
         this.userName = userName;
     }
-    public  CustomerRegistrationModel(String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking, 
-            String chequeBook, String atmCard, String userName){        
+
+    public CustomerRegistrationModel(String accountNumber, String ifscCode, String micrCode, String netbanking, String mobileBanking,
+            String chequeBook, String atmCard, String userName) {
         this.accountNumber = accountNumber;
         this.ifscCode = ifscCode;
         this.micrCode = micrCode;
@@ -372,6 +376,5 @@ public class CustomerRegistrationModel  implements  Serializable{
         this.atmCard = atmCard;
         this.userName = userName;
     }
-    
-    
+
 }

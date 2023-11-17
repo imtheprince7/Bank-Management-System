@@ -1,6 +1,7 @@
 package bank.management.system.model;
 
 public class RegistrationModel {
+
     private String applicationNumber;
     private String userName;
     private String firstName;
@@ -283,11 +284,6 @@ public class RegistrationModel {
         this.mobileBanking = mobileBanking;
         this.chequeBook = chequeBook;
         this.atmCard = atmCard;
-    }    
-    
-}
-    
-    
-    
-    
+    }
 
+}
