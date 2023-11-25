@@ -2,6 +2,7 @@ package bank.management.system.accountRegistration;
 
 import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.database.DatabaseConnection;
+import bank.management.system.database.MysqlJoinsClasses;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -20,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class AccountRecovery extends JFrame implements ActionListener {
 
@@ -27,16 +29,20 @@ public class AccountRecovery extends JFrame implements ActionListener {
     JLabel imageLabel, optionFirst, infoLabelFirst, emailLabelFirst, userNameLabelFirst, optionSecond, userNameLabelSecond,
             mobileLabelFirst, optionThird, emailLabelSecond, mobileLabelSecond, infoLabelSecond, accountNumberLabel, userNameLabelThird, nameLabel,
             emailLabelThird, mobileLabelThird, passwordLabelFirst, confirmPasswordLabelFirst;
-    //passwordLabel, cpasswordLabel;
     JTextField emailIdFieldFirst, userNameFieldFirst, userNameFieldSecond, mobileFieldFirst, emailFieldSecond, mobileFieldSecond,
-            infoTextSecond, accountNumberField, userNameFieldThird, nameField, emailFieldThird, mobileFieldThird, passwordField, confirmPasswordField;
+            infoTextSecond, infoTextThird, accountNumberField, userNameFieldThird, nameField, emailFieldThird, mobileFieldThird, passwordField, confirmPasswordField;
     JButton searchButtonFirst, searchButtonSecond, searchButtonThird, clearButtonFirst, exitButton, mobileChooseButton, emailIdChooseButton,
-            passwordChooseButton, exitButtonSecond, submitButtonForth;
+            passwordChooseButton, exitButtonSecond, updateButton;
+    boolean updateEmailId = false, updateContact = false, updatePassword = false;
+    String regex = "^(?=.*[0-9])"
+            + "(?=.*[a-z])(?=.*[A-Z])"
+            + "(?=.*[@#$%^&+=])"
+            + "(?=\\S+$).{8,20}$";
 
     private Connection connection;
     private Statement statement;
 
-    public AccountRecovery() {
+    public AccountRecovery() throws SQLException, ClassNotFoundException {
         setResizable(false);
         setLayout(null);
         setSize(900, 600);
@@ -114,9 +120,13 @@ public class AccountRecovery extends JFrame implements ActionListener {
         passwordChooseButton = new JButton("Update Password");
         passwordChooseButton.addActionListener(this);
 
+        infoTextThird = new JTextField();
+        infoTextThird.setEditable(false);
+
         accountNumberLabel = new JLabel("Account Number");
         accountNumberField = new JTextField();
         accountNumberField.setEditable(false);
+        accountNumberField.setText(MysqlJoinsClasses.getaccountNumber());
         nameLabel = new JLabel("Candidate Name");
         nameField = new JTextField();
         nameField.setEditable(false);
@@ -138,8 +148,8 @@ public class AccountRecovery extends JFrame implements ActionListener {
 
         exitButtonSecond = new JButton("EXIT");
         exitButtonSecond.addActionListener(this);
-        submitButtonForth = new JButton("SUBMIT");
-        submitButtonForth.addActionListener(this);
+        updateButton = new JButton("UPDATE");
+        updateButton.addActionListener(this);
 
         setFont();
         setBound();
@@ -176,6 +186,7 @@ public class AccountRecovery extends JFrame implements ActionListener {
         emailIdChooseButton.setFont(new Font("verdana", Font.BOLD, 13));
         passwordChooseButton.setFont(new Font("verdana", Font.BOLD, 13));
 
+        infoTextThird.setFont(new Font("verdana", Font.BOLD, 16));
         accountNumberLabel.setFont(new Font("verdana", Font.BOLD, 16));
         accountNumberField.setFont(new Font("verdana", Font.BOLD, 15));
         nameLabel.setFont(new Font("verdana", Font.BOLD, 16));
@@ -188,10 +199,10 @@ public class AccountRecovery extends JFrame implements ActionListener {
         mobileFieldThird.setFont(new Font("verdana", Font.BOLD, 15));
         passwordLabelFirst.setFont(new Font("verdana", Font.BOLD, 16));
         passwordField.setFont(new Font("verdana", Font.BOLD, 15));
-        confirmPasswordLabelFirst.setFont(new Font("verdana", Font.BOLD, 16));
-        confirmPasswordField.setFont(new Font("verdana", Font.BOLD, 15));
+        confirmPasswordLabelFirst.setFont(new Font("verdana", Font.BOLD, 12));
+        confirmPasswordField.setFont(new Font("verdana", Font.BOLD, 13));
         exitButtonSecond.setFont(new Font("verdana", Font.BOLD, 13));
-        submitButtonForth.setFont(new Font("verdana", Font.BOLD, 13));
+        updateButton.setFont(new Font("verdana", Font.BOLD, 13));
 
     }
 
@@ -200,8 +211,8 @@ public class AccountRecovery extends JFrame implements ActionListener {
         imageLabel.setBounds(0, 0, 250, 500);
         searchPanel.setBounds(400, 0, 500, 600);
         recoveryPanel.setBounds(400, 0, 500, 600);
-        choosePanel.setBounds(0, 0, 500, 200);
-        updatePanel.setBounds(0, 0, 500, 400);
+        choosePanel.setBounds(0, 0, 500, 150);
+        updatePanel.setBounds(0, 0, 500, 600);
 
         infoLabelFirst.setBounds(20, 10, 500, 45);
         optionFirst.setBounds(0, 50, 500, 50);
@@ -233,6 +244,7 @@ public class AccountRecovery extends JFrame implements ActionListener {
         emailIdChooseButton.setBounds(160, 90, 160, 40);
         passwordChooseButton.setBounds(325, 90, 160, 40);
 // Now y-axis is: 150
+        infoTextThird.setBounds(340, 10, 150, 40);
         accountNumberLabel.setBounds(20, 150, 150, 40);
         accountNumberField.setBounds(200, 150, 250, 40);
         nameLabel.setBounds(20, 200, 150, 40);
@@ -246,9 +258,9 @@ public class AccountRecovery extends JFrame implements ActionListener {
         passwordLabelFirst.setBounds(20, 400, 150, 40);
         passwordField.setBounds(200, 400, 250, 40);
         confirmPasswordLabelFirst.setBounds(20, 450, 150, 40);
-        confirmPasswordLabelFirst.setBounds(200, 450, 250, 40);
-        exitButtonSecond.setBounds(200, 500, 150, 40);
-        submitButtonForth.setBounds(400, 500, 150, 40);
+        confirmPasswordField.setBounds(200, 450, 250, 40);
+        exitButtonSecond.setBounds(150, 520, 150, 40);
+        updateButton.setBounds(350, 520, 150, 40);
     }
 
     public void addComponent() {
@@ -285,6 +297,7 @@ public class AccountRecovery extends JFrame implements ActionListener {
         choosePanel.add(emailIdChooseButton);
         choosePanel.add(passwordChooseButton);
 
+        updatePanel.add(infoTextThird);
         updatePanel.add(accountNumberLabel);
         updatePanel.add(accountNumberField);
         updatePanel.add(nameLabel);
@@ -300,7 +313,7 @@ public class AccountRecovery extends JFrame implements ActionListener {
         updatePanel.add(confirmPasswordLabelFirst);
         updatePanel.add(confirmPasswordField);
         updatePanel.add(exitButtonSecond);
-        updatePanel.add(submitButtonForth);
+        updatePanel.add(updateButton);
 
     }
 
@@ -309,25 +322,27 @@ public class AccountRecovery extends JFrame implements ActionListener {
 
         if ("SEARCH".equals(event.getActionCommand())) {
             if (emailIdFieldFirst.getText().toLowerCase().trim().isEmpty() && userNameFieldFirst.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Can't retrieve fields are empty 1!! \n\n");
+                JOptionPane.showMessageDialog(null, "Can't retrieve fields are empty !! \n\n");
                 searchButtonFirst.setForeground(Color.RED);
 
             } else if (emailIdFieldFirst.getText().toLowerCase().trim().isEmpty() || userNameFieldFirst.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "UserName or Password can't be empty: 1 \n\n");
+                JOptionPane.showMessageDialog(null, "UserName or Password can't be empty: \n\n");
                 emailIdFieldFirst.setText("");
                 userNameFieldFirst.setText("");
+            } else if (!Pattern.compile("^(.+)@(\\S+)$").matcher(emailIdFieldFirst.getText().trim()).matches()) {
+                JOptionPane.showMessageDialog(rootPane, "Enter valid email id:");
             } else {
                 try {
                     connection = DatabaseConnection.ConnectionString();
                     statement = connection.createStatement();
-                    ResultSet resultSetFirst = statement.executeQuery("select * from user_details where username='" + userNameFieldFirst.getText().toLowerCase().trim() + "'"
-                            + " AND email_id ='" + emailIdFieldFirst.getText().toLowerCase().trim() + "'");
+                    ResultSet resultSetFirst = statement.executeQuery("select * from user_details where username='" + userNameFieldFirst.getText().toLowerCase().trim().equalsIgnoreCase(userNameFieldFirst.getText()) + "'"
+                            + " AND email_id ='" + emailIdFieldFirst.getText().toLowerCase().trim().equalsIgnoreCase(emailIdFieldFirst.getText()) + "'");
 // ResultSet for SearchButtonFirst:     SEARCH
                     if (resultSetFirst.next()) {
-//                        personAadharCard = resultSetFirst.getString("user_aadhar_card");
                         userNameFieldThird.setText(resultSetFirst.getString("userName"));
                         infoTextSecond.setText(resultSetFirst.getString("name"));
                         nameField.setText(resultSetFirst.getString("name"));
+                        infoTextThird.setText(resultSetFirst.getString("name"));
                         emailFieldThird.setText(resultSetFirst.getString("email_id"));
                         mobileFieldThird.setText(resultSetFirst.getString("mobile_no"));
                         passwordField.setText(resultSetFirst.getString("password"));
@@ -335,7 +350,6 @@ public class AccountRecovery extends JFrame implements ActionListener {
                         searchPanel.setVisible(false);
                         recoveryPanel.setVisible(true);
                         choosePanel.setVisible(true);
-                        getaccountNumber();
                     } else {
                         int response = JOptionPane.showConfirmDialog(this, "Person doesn't exist: !!\n Do you want to register yourself:", "CONFIRM",
                                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -364,13 +378,14 @@ public class AccountRecovery extends JFrame implements ActionListener {
 
         if ("FIND".equals(event.getActionCommand())) {
             if (userNameFieldSecond.getText().trim().isEmpty() && mobileFieldFirst.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Can't retrieve fields are empty 2 !! \n\n");
+                JOptionPane.showMessageDialog(null, "Can't retrieve fields are empty!! \n\n");
                 searchButtonSecond.setForeground(Color.RED);
-            }
-            if (userNameFieldSecond.getText().trim().isEmpty() || mobileFieldFirst.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "UserName or Password can't be empty: 2\n\n");
+            } else if (userNameFieldSecond.getText().trim().isEmpty() || mobileFieldFirst.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "UserName or Password can't be empty \n\n");
                 userNameFieldSecond.setText("");
                 mobileFieldFirst.setText("");
+            } else if (mobileFieldFirst.getText().length() > 10) {
+                JOptionPane.showMessageDialog(rootPane, "Mobile Number must have 10 digits:");
             } else {
                 try {
                     connection = DatabaseConnection.ConnectionString();
@@ -381,10 +396,10 @@ public class AccountRecovery extends JFrame implements ActionListener {
                             + " AND mobile_no= '" + mobileFieldFirst.getText().trim() + "'");
 
                     if (resultSetSecond.next()) {
-//                        personAadharCard = resultSetSecond.getString("user_aadhar_card");
                         userNameFieldThird.setText(resultSetSecond.getString("userName"));
                         infoTextSecond.setText(resultSetSecond.getString("name"));
                         nameField.setText(resultSetSecond.getString("name"));
+                        infoTextThird.setText(resultSetSecond.getString("name"));
                         emailFieldThird.setText(resultSetSecond.getString("email_id"));
                         mobileFieldThird.setText(resultSetSecond.getString("mobile_no"));
                         passwordField.setText(resultSetSecond.getString("password"));
@@ -392,7 +407,6 @@ public class AccountRecovery extends JFrame implements ActionListener {
                         searchPanel.setVisible(false);
                         recoveryPanel.setVisible(true);
                         choosePanel.setVisible(true);
-                        getaccountNumber();
                     } else {
                         int response = JOptionPane.showConfirmDialog(this, "Person doesn't exist: !!\n Do you want to register yourself:", "CONFIRM",
                                 JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
@@ -422,25 +436,30 @@ public class AccountRecovery extends JFrame implements ActionListener {
 
         if ("RECOVER".equals(event.getActionCommand())) {
             if (emailFieldSecond.getText().toLowerCase().trim().isEmpty() && mobileFieldSecond.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Can't retrieve fields are empty !! 3 \n\n");
+                JOptionPane.showMessageDialog(null, "Can't retrieve fields are empty !!\n\n");
                 emailFieldSecond.setForeground(Color.RED);
             } else if (emailFieldSecond.getText().toLowerCase().trim().isEmpty() || mobileFieldSecond.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "emailId or Mobile number can't be empty: 3\n\n");
+                JOptionPane.showMessageDialog(null, "emailId or Mobile number can't be empty:\n\n");
                 emailFieldSecond.setText("");
                 mobileFieldSecond.setText("");
+            } else if (mobileFieldSecond.getText().length() > 10) {
+                JOptionPane.showMessageDialog(rootPane, "Mobile Number must have 10 digit:");
+            } else if (!Pattern.compile("^(.+)@(\\S+)$").matcher(emailFieldSecond.getText().trim()).matches()) {
+                JOptionPane.showMessageDialog(rootPane, "Enter valid email id:");
             } else {
                 try {
                     connection = DatabaseConnection.ConnectionString();
                     statement = connection.createStatement();
 // ResultSet for SearchButtonSecond:    RECOVER
                     ResultSet resultSetThird = statement.executeQuery("select * from user_details where email_id='" + emailFieldSecond.getText().toLowerCase().trim() + "'"
-                            + " AND mobile_no= '" + mobileFieldSecond.getText().trim() + "'");
+                            + " AND mobile_no = '" + mobileFieldSecond.getText().trim() + "'");
 
                     if (resultSetThird.next()) {
 //                        personAadharCard = resultSetThird.getString("user_aadhar_card");
                         userNameFieldThird.setText(resultSetThird.getString("userName"));
                         infoTextSecond.setText(resultSetThird.getString("name"));
                         nameField.setText(resultSetThird.getString("name"));
+                        infoTextThird.setText(resultSetThird.getString("name"));
                         emailFieldThird.setText(resultSetThird.getString("email_id"));
                         mobileFieldThird.setText(resultSetThird.getString("mobile_no"));
                         passwordField.setText(resultSetThird.getString("password"));
@@ -448,7 +467,6 @@ public class AccountRecovery extends JFrame implements ActionListener {
                         searchPanel.setVisible(false);
                         recoveryPanel.setVisible(true);
                         choosePanel.setVisible(true);
-                        getaccountNumber();
                         return;
                     } else {
                         int response = JOptionPane.showConfirmDialog(this, "Person doesn't exist: !!\n Do you want to register yourself:",
@@ -496,39 +514,89 @@ public class AccountRecovery extends JFrame implements ActionListener {
         }
 
         if ("Update Contact".equals(event.getActionCommand())) {
+            updateContact = true;
             choosePanel.setVisible(false);
             updatePanel.setVisible(true);
-            mobileFieldThird.setText("");       mobileFieldThird.setEditable(true);
+            mobileFieldThird.setText("");
+            mobileFieldThird.setEditable(true);
         }
 
         if ("Update EmailId".equals(event.getActionCommand())) {
+            updateEmailId = true;
             choosePanel.setVisible(false);
             updatePanel.setVisible(true);
-            emailFieldThird.setText("");        emailFieldThird.setEditable(true);
+            emailFieldThird.setText("");
+            emailFieldThird.setEditable(true);
 
         }
         if ("Update Password".equals(event.getActionCommand())) {
+            updatePassword = true;
             choosePanel.setVisible(false);
             updatePanel.setVisible(true);
-            passwordField.setText("");              passwordField.setEditable(true);
-            confirmPasswordField.setText("");       confirmPasswordField.setEditable(true);
+            passwordField.setText("");
+            passwordField.setEditable(true);
+            confirmPasswordField.setText("");
+            confirmPasswordField.setEditable(true);
         }
-    }
+        if ("UPDATE".equals(event.getActionCommand())) {
+            // Calling Connection:
+            try {
+                connection = DatabaseConnection.ConnectionString();
+                statement = connection.createStatement();
+                    String mobile_number = mobileFieldThird.getText().trim();
+                    String user_name = userNameFieldThird.getText().toLowerCase().trim();
+                    String email_id =  emailFieldThird.getText().trim();
+                    String password = passwordField.getText().trim();
+                // UPDATE BLOCK OF MOBILE_NUMBER:
+                if (updateContact == true) {
+                    if (mobileFieldThird.getText().toLowerCase().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Mobile number field can't be empty!! \n\n");
+                        emailFieldSecond.setForeground(Color.RED);
+                    } else if (mobileFieldThird.getText().toLowerCase().trim().length() > 10) {
+                        JOptionPane.showMessageDialog(null, "Mobile number field \n can't be more than 10 digits: \n\n");
+                        emailFieldSecond.setForeground(Color.RED);
+                    } else {
+                         String mobileQuery = "UPDATE user_details SET email_id = '" + email_id + "' WHERE username = '" + user_name + "'";
+                         int rowsAffected = statement.executeUpdate(mobileQuery);
+                         System.out.println("Mobile Number Updated"+" "+rowsAffected);
+                      //  ResultSet resultSet = statement.executeQuery("UPDATE user_details SET mobile_no = '" + mobile_number + "' WHERE username = '" + user_name + "'");
+                        JOptionPane.showMessageDialog(null, "Mobile number has been Updated ❤️ \n\n");
+                    }
+                }
 
-    public void getaccountNumber() throws SQLException {
-        try {
-            connection = DatabaseConnection.ConnectionString();
-            statement = connection.createStatement();
-            String accountNumber = "SELECT account_details.account_number FROM account_details LEFT JOIN user_details "
-                    + "ON user_details.username = account_details.username";
-            ResultSet resultSet = statement.executeQuery(accountNumber);
-            if (resultSet.next()) {
-                accountNumberField.setText(resultSet.getString("account_number"));
+                // UPDATE BLOCK for MOBILE_NUMBER:
+                
+//                if (updateEmailId == true) {
+//                    if (emailFieldThird.getText().toLowerCase().isEmpty()) {
+//                        JOptionPane.showMessageDialog(null, "Email-ID Field can't be empty!!  \n\n");
+//                        emailFieldSecond.setForeground(Color.RED);
+//                    } else if (!Pattern.compile("^(.+)@(\\S+)$").matcher(emailFieldThird.getText().trim()).matches()) {
+//                        JOptionPane.showMessageDialog(rootPane, "Enter valid email id:");
+//                    } else {
+//                        ResultSet resultSet = statement.executeQuery("UPDATE user_details SET email_id = '" + email_id + "' WHERE username = '" + user_name + "'");
+//                        JOptionPane.showMessageDialog(null, "Email-ID has been Updated ❤️ \n\n");
+//                    }
+//                }
+//
+//// UPDATE BLOCK OF MOBILE_NUMBER:
+//                if (updatePassword == true) {
+//                    if (passwordField.getText().trim().isEmpty() && confirmPasswordField.getText().trim().isEmpty()) {
+//                        JOptionPane.showMessageDialog(null, "Password Field can't be empty!!  \n\n");
+//                    }
+//                    if (passwordField.getText().trim().isEmpty() || confirmPasswordField.getText().trim().isEmpty()) {
+//                        JOptionPane.showMessageDialog(null, "Password Field can't be empty!!  \n\n");
+//                    } else if (!confirmPasswordField.getText().equals(passwordField.getText())) {
+//                        JOptionPane.showMessageDialog(rootPane, "Confirm Password is not Same:");
+//                    } else {
+//                        ResultSet resultSet = statement.executeQuery("UPDATE user_details SET password = '" + password + "' WHERE username = '" + user_name + "'");
+//                        JOptionPane.showMessageDialog(null, "Password has been Updated ❤️ \n\n");
+//                    }
+//                }
+
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(AccountRecovery.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (ClassNotFoundException | SQLException exception) {
-        } finally {
-            statement.close();
-            connection.close();
         }
+
     }
 }

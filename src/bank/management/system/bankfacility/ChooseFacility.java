@@ -3,9 +3,13 @@ package bank.management.system.bankfacility;
 import bank.management.system.accountRegistration.WelcomePage;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,8 +26,9 @@ public class ChooseFacility extends JFrame implements ActionListener {
     JButton mobileBankingButton, netBankingButton, kycUpdateButton, logoutButton, exitButton;
     String applicantName;
 
-    public ChooseFacility() {
-//        applicantName = name;
+    public ChooseFacility(String name) {
+        System.err.println("Coming Name is:"+" "+applicantName);
+        applicantName = name;
         setTitle("Choose Banking Facility");
         setLayout(null);
         setResizable(false);
@@ -50,6 +55,8 @@ public class ChooseFacility extends JFrame implements ActionListener {
 
         nameLabel = new JLabel("Hello");
         nameField = new JTextField();
+        nameField.setEditable(false);
+        nameField.setText(applicantName);
 
         messageLabel = new JLabel("Choose Any one of the banking facilities:");
 
@@ -76,6 +83,7 @@ public class ChooseFacility extends JFrame implements ActionListener {
     public void setFont() {
 
         nameLabel.setFont(new Font("verdana", Font.BOLD, 16));
+        nameField.setFont(new Font("verdana", Font.BOLD, 14));
         messageLabel.setFont(new Font("verdana", Font.BOLD, 16));
     }
 
@@ -86,7 +94,7 @@ public class ChooseFacility extends JFrame implements ActionListener {
         facilityPanel.setBounds(350, 0, 350, 500);
         imagePicLabel.setBounds(0, 0, 350, 450);
 
-        nameLabel.setBounds(10, 0, 50, 30);
+        nameLabel.setBounds(10, 5, 50, 30);
         nameField.setBounds(70, 5, 275, 30);
         messageLabel.setBounds(370, 100, 250, 30);
 
@@ -126,34 +134,33 @@ public class ChooseFacility extends JFrame implements ActionListener {
             int response = JOptionPane.showConfirmDialog(this, "Do You Want to EXIT ?\n", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 dispose();
-                new WelcomePage();
+                new ChooseFacility(applicantName);
             }
         }
         if ("Mobile Banking".equals(event.getActionCommand())) {
             int response = JOptionPane.showConfirmDialog(this, "Do You Want to GO on \n  MOBILE BANKING PAGE ?\n", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 dispose();
-                new MobileBanking();
+                try {
+                    new MobileBanking(applicantName);
+                } catch (HeadlessException  | ClassNotFoundException | SQLException exception) {
+                    Logger.getLogger(ChooseFacility.class.getName()).log(Level.SEVERE, null, exception);
+                }
             }
         }
         if ("Net Banking".equals(event.getActionCommand())) {
             int response = JOptionPane.showConfirmDialog(this, "Do You Want to GO on \n  NET BANKING PAGE ?\n", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 dispose();
-                new NetBanking();
+                new NetBanking(applicantName);
             }
         }
         if ("KYC Update".equals(event.getActionCommand())) {
             int response = JOptionPane.showConfirmDialog(this, "Do You Want to GO on \n KYC DETAIL PAGE ?\n", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 dispose();
-                new KycUpdate();
+                new KycUpdate(applicantName);
             }
         }
     }
-
-    public static void main(String[] args) {
-        new ChooseFacility();
-    }
-
 }

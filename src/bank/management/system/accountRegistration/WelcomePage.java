@@ -6,6 +6,7 @@ import bank.management.system.administration.StaffPage;
 import bank.management.system.bankfacility.ChooseFacility;
 import bank.management.system.database.DatabaseConnection;
 import bank.management.system.database.EmailOtpVerification;
+import bank.management.system.database.MysqlJoinsClasses;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +27,7 @@ public class WelcomePage extends JFrame implements ActionListener {
     static JTextField usernameField, passwordField, loginTypeField, emailOtpField;
     JButton registerButton, signInButton, forgetpassowrdButton, verifyEmailButton;
 
-    public static String currentUserId = "";
+    public static String currentUserId = "", loginedName ="";
     long startTime = System.currentTimeMillis(), elapsedTime = 0L;
     public static String currentUserName = "";
     public String OTP = EmailOtpVerification.generateOTP().toString();
@@ -51,7 +52,6 @@ public class WelcomePage extends JFrame implements ActionListener {
         Image img1 = img.getImage().getScaledInstance(350, 500, Image.SCALE_DEFAULT);
         ImageIcon img2 = new ImageIcon(img1);
         imageLabel = new JLabel(img2);
-        imageLabel.setBounds(0, 0, 350, 500);
         panelImage.add(imageLabel);
 
         panelContent = new JPanel();
@@ -95,13 +95,17 @@ public class WelcomePage extends JFrame implements ActionListener {
 
     public void setFont() {
         messgaeLabel.setFont(new Font("verdana", Font.BOLD, 28));
-        usernameLabel.setFont(new Font("verdana", Font.BOLD, 14));
-        usernameField.setFont(new Font("verdana", Font.ITALIC, 16));
-        passwordLabel.setFont(new Font("verdana", Font.BOLD, 14));
-        passwordField.setFont(new Font("verdana", Font.BOLD, 16));
+        usernameLabel.setFont(new Font("verdana", Font.BOLD, 15));
+        usernameField.setFont(new Font("verdana", Font.BOLD, 15));
+        passwordLabel.setFont(new Font("verdana", Font.BOLD, 15));
+        passwordField.setFont(new Font("verdana", Font.BOLD, 15));
+        signInButton.setFont(new Font("verdana", Font.BOLD, 15));
+        registerButton.setFont(new Font("verdana", Font.BOLD, 15));
+        forgetpassowrdButton.setFont(new Font("verdana", Font.BOLD, 15));
     }
 
     public void setBound() {
+        imageLabel.setBounds(0, 0, 350, 500);
         panelImage.setBounds(0, 0, 350, 500);
         panelContent.setBounds(355, 0, 500, 500);
         emailOtpPanel.setBounds(0, 350, 500, 130);
@@ -111,9 +115,9 @@ public class WelcomePage extends JFrame implements ActionListener {
         usernameField.setBounds(150, 150, 250, 40);
         passwordLabel.setBounds(40, 225, 250, 20);
         passwordField.setBounds(150, 220, 250, 40);
-        signInButton.setBounds(150, 300, 100, 35);
-        registerButton.setBounds(300, 300, 100, 35);
-        forgetpassowrdButton.setBounds(210, 360, 150, 35);
+        signInButton.setBounds(150, 300, 150, 40);
+        registerButton.setBounds(350, 300, 150, 40);
+        forgetpassowrdButton.setBounds(220, 360, 200, 40);
 
         loginTypeLabel.setBounds(10, 350, 50, 20);
         loginTypeField.setBounds(70, 350, 200, 30);
@@ -144,7 +148,11 @@ public class WelcomePage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent event) {
         if ("Forget password".equals(event.getActionCommand())) {
             dispose();
-            new AccountRecovery();
+            try {
+                new AccountRecovery() ;
+            } catch (SQLException | ClassNotFoundException exception) {
+                Logger.getLogger(WelcomePage.class.getName()).log(Level.SEVERE, null, exception);
+            } 
         }
         if ("Register".equals(event.getActionCommand())) {
             dispose();
@@ -165,10 +173,15 @@ public class WelcomePage extends JFrame implements ActionListener {
                     connection = DatabaseConnection.ConnectionString();
                     statement = connection.createStatement();
 
-                    ResultSet resultSet = statement.executeQuery("select login_type from user_details where username='" + usernameField.getText().trim() + "'"
+                    ResultSet resultSet = statement.executeQuery("select * from user_details where username='" + usernameField.getText().trim() + "'"
                             + " AND password='" + passwordField.getText().trim() + "'");
                     if (resultSet.next()) {
                         String loginType = resultSet.getString("login_type");
+                        loginedName = resultSet.getString("name").toString();
+                        System.out.println("Getting name is:"+" "+loginedName);
+                        System.err.println("Loggined Type is:"+" "+loginType);
+                        MysqlJoinsClasses.getUserName(loginedName);
+                        
                         if ("Admin".equals(loginType)) {
                             emailOtpPanel.setVisible(true);
 
@@ -184,18 +197,19 @@ public class WelcomePage extends JFrame implements ActionListener {
 
                         } else if ("Manager".equals(loginType)) {
                             emailOtpPanel.setVisible(true);
-                            new ManagerPage();
+                            new ManagerPage(loginedName);
                         } else if ("Staff".equals(loginType)) {
                             emailOtpPanel.setVisible(true);
-                            new StaffPage();
+                            new StaffPage(loginedName);
                         } else if ("customer".equals(loginType)) {
                             dispose();
-                            new ChooseFacility();
+                            new ChooseFacility(loginedName);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Invalid username or password");
+                            usernameField.setText("");
+                            passwordField.setText("");
                         }
                     }
-                    JOptionPane.showMessageDialog(this, "Invalid username or password");
-                    usernameField.setText("");
-                    passwordField.setText("");
                 } catch (HeadlessException | ClassNotFoundException | SQLException exception) {
                     Logger.getLogger(WelcomePage.class.getName()).log(Level.SEVERE, null, exception);
                 } finally {

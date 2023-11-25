@@ -305,8 +305,8 @@ public class AccountRegisterationThird extends JFrame implements ActionListener 
             String service_opted = "INSERT INTO service_opted(username, account_type, net_banking, mobile_banking, cheque_book, atm_card, account_number) VALUES"
                     + " ('" + getuserName + "', '" + accountType + "', '" + netBanking + "', '" + mobileBanking + "', '" + chequeBook + "', '" + atmCard + "','" + accountNumber + "')";
 
-            String account_details = "INSERT INTO account_details(account_number, ifsc_code, micr_code, username) VALUES"
-                    + " ('" + accountNumber + "', '" + ifscCode + "', '" + micrCode + "', '" + getuserName + "')";
+            String account_details = "INSERT INTO account_details(account_number, ifsc_code, micr_code, username, account_type) VALUES"
+                    + " ('" + accountNumber + "', '" + ifscCode + "', '" + micrCode + "', '" + getuserName + "', '" + accountType + "')";
 
             /*      Debug SuccessFull:   
              int rowsAffected = statement.executeUpdate(query1);

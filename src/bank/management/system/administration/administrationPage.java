@@ -284,7 +284,7 @@ public class AdministrationPage extends JFrame implements ActionListener {
         } else if (emailField.equals("")) {
             JOptionPane.showMessageDialog(rootPane, "email ID:  cannot be empty:");
         } else if (!Pattern.compile("^(.+)@(\\S+)$").matcher(emailId).matches()) {
-            JOptionPane.showMessageDialog(rootPane, "Emter valid email id:");
+            JOptionPane.showMessageDialog(rootPane, "Enter valid email id:");
         } else if (aadharCard.length() > 12) {
             JOptionPane.showMessageDialog(rootPane, "Aadhar Card must have 12 digit:");
         } else if (aadharCard.equals("")) {

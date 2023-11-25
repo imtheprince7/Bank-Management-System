@@ -19,11 +19,13 @@ public class NetBanking extends JFrame implements ActionListener{
 
     JPanel mainPanel;
     JButton createButton, clearButton, checkUsersButton,logoutButton, backButton;
+    static String applicantName="";
     
     private Connection connection;  
     private Statement statement;
     
-    public NetBanking() throws HeadlessException {
+    public NetBanking( String name) throws HeadlessException {
+        this.applicantName = name;
         setTitle("Net Banking Facility");
         setLayout(null);
         setResizable(false);
@@ -62,7 +64,7 @@ public class NetBanking extends JFrame implements ActionListener{
     
     
     public static void main(String[] args) {
-        new MobileBanking();
+        new NetBanking(applicantName);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class NetBanking extends JFrame implements ActionListener{
         int response = JOptionPane.showConfirmDialog(this, "Do You Want to Logout ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response==JOptionPane.YES_OPTION){
             dispose();
-            new WelcomePage();
+            new ChooseFacility(applicantName);
         }
     }
   

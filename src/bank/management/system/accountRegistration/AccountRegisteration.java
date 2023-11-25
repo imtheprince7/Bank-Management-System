@@ -20,8 +20,6 @@ import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -209,6 +207,9 @@ public class AccountRegisteration extends JFrame implements ActionListener {
         panCardField.setFont(new Font("verdana", Font.ITALIC, 14));
         aadharcardLabel.setFont(new Font("verdana", Font.BOLD, 16));
         aadharcardField.setFont(new Font("verdana", Font.ITALIC, 14));
+        exitButton.setFont(new Font("verdana", Font.BOLD, 15));
+        clearButton.setFont(new Font("verdana", Font.BOLD, 15));
+        nextButton.setFont(new Font("verdana", Font.BOLD, 15));
     }
 
     public void setBound() {
