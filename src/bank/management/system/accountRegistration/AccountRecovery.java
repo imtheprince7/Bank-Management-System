@@ -543,60 +543,88 @@ public class AccountRecovery extends JFrame implements ActionListener {
             try {
                 connection = DatabaseConnection.ConnectionString();
                 statement = connection.createStatement();
-                    String mobile_number = mobileFieldThird.getText().trim();
-                    String user_name = userNameFieldThird.getText().toLowerCase().trim();
-                    String email_id =  emailFieldThird.getText().trim();
-                    String password = passwordField.getText().trim();
-                // UPDATE BLOCK OF MOBILE_NUMBER:
+                String mobile_number = mobileFieldThird.getText().trim();
+                String user_name = userNameFieldThird.getText().toLowerCase().trim();
+                String email_id = emailFieldThird.getText().trim(), userPassword = passwordField.getText().trim();
+
+// UPDATE BLOCK OF MOBILE_NUMBER:
                 if (updateContact == true) {
+
                     if (mobileFieldThird.getText().toLowerCase().trim().isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Mobile number field can't be empty!! \n\n");
                         emailFieldSecond.setForeground(Color.RED);
                     } else if (mobileFieldThird.getText().toLowerCase().trim().length() > 10) {
                         JOptionPane.showMessageDialog(null, "Mobile number field \n can't be more than 10 digits: \n\n");
-                        emailFieldSecond.setForeground(Color.RED);
+                        mobileFieldThird.setForeground(Color.RED);
+                        mobileFieldThird.setText("");
                     } else {
-                         String mobileQuery = "UPDATE user_details SET email_id = '" + email_id + "' WHERE username = '" + user_name + "'";
-                         int rowsAffected = statement.executeUpdate(mobileQuery);
-                         System.out.println("Mobile Number Updated"+" "+rowsAffected);
-                      //  ResultSet resultSet = statement.executeQuery("UPDATE user_details SET mobile_no = '" + mobile_number + "' WHERE username = '" + user_name + "'");
-                        JOptionPane.showMessageDialog(null, "Mobile number has been Updated ❤️ \n\n");
+                        String updateMobile = "UPDATE user_details SET mobile_no = '" + mobile_number + "' WHERE username = '" + user_name + "'";
+                        int rowsAffected = statement.executeUpdate(updateMobile);
+                        if (rowsAffected == 1) {
+                            JOptionPane.showMessageDialog(null, "Mobile number has been Updated ❤️ \n\n");
+                            mobileFieldThird.setText("");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "OOPS....!! \n Mobile number has not been Updated ❤️ \n\n");
+                            mobileFieldThird.setText("");
+                            mobileFieldThird.setForeground(Color.RED);
+                        }
                     }
                 }
-
-                // UPDATE BLOCK for MOBILE_NUMBER:
-                
-//                if (updateEmailId == true) {
-//                    if (emailFieldThird.getText().toLowerCase().isEmpty()) {
-//                        JOptionPane.showMessageDialog(null, "Email-ID Field can't be empty!!  \n\n");
-//                        emailFieldSecond.setForeground(Color.RED);
-//                    } else if (!Pattern.compile("^(.+)@(\\S+)$").matcher(emailFieldThird.getText().trim()).matches()) {
-//                        JOptionPane.showMessageDialog(rootPane, "Enter valid email id:");
-//                    } else {
-//                        ResultSet resultSet = statement.executeQuery("UPDATE user_details SET email_id = '" + email_id + "' WHERE username = '" + user_name + "'");
-//                        JOptionPane.showMessageDialog(null, "Email-ID has been Updated ❤️ \n\n");
-//                    }
-//                }
-//
-//// UPDATE BLOCK OF MOBILE_NUMBER:
-//                if (updatePassword == true) {
-//                    if (passwordField.getText().trim().isEmpty() && confirmPasswordField.getText().trim().isEmpty()) {
-//                        JOptionPane.showMessageDialog(null, "Password Field can't be empty!!  \n\n");
-//                    }
-//                    if (passwordField.getText().trim().isEmpty() || confirmPasswordField.getText().trim().isEmpty()) {
-//                        JOptionPane.showMessageDialog(null, "Password Field can't be empty!!  \n\n");
-//                    } else if (!confirmPasswordField.getText().equals(passwordField.getText())) {
-//                        JOptionPane.showMessageDialog(rootPane, "Confirm Password is not Same:");
-//                    } else {
-//                        ResultSet resultSet = statement.executeQuery("UPDATE user_details SET password = '" + password + "' WHERE username = '" + user_name + "'");
-//                        JOptionPane.showMessageDialog(null, "Password has been Updated ❤️ \n\n");
-//                    }
-//                }
-
+// UPDATE BLOCK for Email-ID:
+                if (updateEmailId == true) {
+                    if (emailFieldThird.getText().toLowerCase().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Email-ID Field can't be empty!!  \n\n");
+                        emailFieldSecond.setForeground(Color.RED);
+                    } else if (!Pattern.compile("^(.+)@(\\S+)$").matcher(emailFieldThird.getText().trim()).matches()) {
+                        JOptionPane.showMessageDialog(rootPane, "Enter valid email id:");
+                        emailFieldSecond.setText("");
+                    } else {
+                        String updateEmail = "UPDATE user_details SET email_id = '" + email_id + "' WHERE username = '" + user_name + "'";
+                        int rowsAffected = statement.executeUpdate(updateEmail);
+                        if (rowsAffected == 1) {
+                            JOptionPane.showMessageDialog(null, "Email-ID has been Updated ❤️ \n\n");
+                            passwordField.setText("");
+                            confirmPasswordField.setText("");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "OOPS....!! \n Email-ID has not been Updated ❤️ \n\n");
+                            passwordField.setText("");
+                            confirmPasswordField.setText("");
+                        }
+                    }
+                }
+// UPDATE BLOCK OF Password:
+                if (updatePassword == true) {
+                    if (passwordField.getText().trim().isEmpty() && confirmPasswordField.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Password Field can't be empty!!  \n\n");
+                        mobileFieldThird.setForeground(Color.RED);
+                        mobileFieldThird.setText("");
+                    } else if (!confirmPasswordField.getText().equals(passwordField.getText())) {
+                        JOptionPane.showMessageDialog(rootPane, "Confirm Password is not Same:");
+                        passwordField.setForeground(Color.RED);
+                        confirmPasswordField.setForeground(Color.RED);
+                        passwordField.setText("");
+                        confirmPasswordField.setText("");
+                    } else {
+                        String updatePassword = "UPDATE user_details SET password = '" + userPassword + "' WHERE username = '" + user_name + "'";
+                        int rowsAffected = statement.executeUpdate(updatePassword);
+                        if (rowsAffected == 1) {
+                            JOptionPane.showMessageDialog(null, "Password has been Updated ❤️ \n\n");
+                            passwordField.setText("");
+                            confirmPasswordField.setText("");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "OOPS....!! \n Password has not been Updated ❤️ \n\n");
+                            passwordField.setText("");
+                            confirmPasswordField.setText("");
+                        }
+                    }
+                }
             } catch (SQLException | ClassNotFoundException ex) {
                 Logger.getLogger(AccountRecovery.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
 
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, ClassNotFoundException {
+        new AccountRecovery();
     }
 }

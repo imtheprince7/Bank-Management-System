@@ -254,26 +254,41 @@ public class MobileBanking extends JFrame implements ActionListener {
 
         }
         if ("DEPOSIT AMOUNT".equals(event.getActionCommand())) {
-            String amount = "500000", minbalance = "0";
+            String amount = "100000", minbalance = "0";
             if (depositText.equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "You can't leave blank deposit section:");
             } else if (depositText.getText().length() > 6) {
-                JOptionPane.showMessageDialog(rootPane, "You can only deposit upto 5 Lacks:");
+                JOptionPane.showMessageDialog(rootPane, "You can only deposit upto 1 Lack:");
                 depositText.setText("");
             } else if (depositText.getText().equals(minbalance)) {
-                JOptionPane.showMessageDialog(rootPane, "You can't deposit 0 amount::");
+                JOptionPane.showMessageDialog(rootPane, "You can't deposit 000 amount::");
             } else {
                 Date date = new Date();
-
                 try {
-                    String accountNumber = getAccountDetails().get(1), accountType = getAccountDetails().get(2), amountDeposit = depositText.getText().trim();
-                    String amount_withdrawal = "0", cuurent_amount = currentAmountField.getText().trim() + amountDeposit;
+                    String accountNumber = getAccountDetails().get(1), accountType = getAccountDetails().get(2), amount_withdrawal = "0", amountDeposit = depositText.getText().trim(); 
+                    int totalAmount = Integer.parseInt(currentAmountField.getText().trim()) + Integer.parseInt(amountDeposit);
+                    String cuurent_amount = Integer.toString(totalAmount);     
                     Connection connection = DatabaseConnection.ConnectionString();
                     Statement statement = connection.createStatement();
-                    String depositAmount = "INSERT INTO communication_address (account_number, account_type, date, amount_deposit, amount_withdrawal, current_amount) VALUES"
-                            + "('" + accountNumber + "', '" + accountType + "', '" + date + "', '" + amountDeposit + "', '" + amount_withdrawal + "', '" + cuurent_amount + "'";
-                    ResultSet resultSet = statement.executeQuery(depositAmount);
-
+                    
+                   String updateAmount = "UPDATE deposit_details SET account_type = '" + accountType + "', "
+                        + "date = '" + date + "', " 
+                        + "amount_deposit = '" + amountDeposit + "', "
+                        + "amount_withdrawal = '" + amount_withdrawal + "', "
+                        + "current_amount = '" + cuurent_amount + "' "
+                        + "WHERE account_number = '" + accountNumber + "'";
+                   int rowsAffected = statement.executeUpdate(updateAmount);
+                    if(rowsAffected == 1){
+                          JOptionPane.showMessageDialog(rootPane, "Your amount"+" "+amountDeposit+" "+"has been deposited:");
+                          depositText.setText("");
+                          currentAmountField.setText(getCurrentAmount());
+                          depositSecondButton.setForeground(Color.BLUE);
+                    }else{
+                          JOptionPane.showMessageDialog(rootPane, "Your amount"+" "+amountDeposit+" "+"has not been deposited:");
+                          depositText.setText("");
+                          currentAmountField.setText(getCurrentAmount());
+                          depositSecondButton.setForeground(Color.RED);
+                    }
                 } catch (ClassNotFoundException | SQLException exception) {
                     Logger.getLogger(MobileBanking.class.getName()).log(Level.SEVERE, null, exception);
                 }

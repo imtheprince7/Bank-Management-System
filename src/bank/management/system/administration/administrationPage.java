@@ -1,7 +1,5 @@
 package bank.management.system.administration;
 
-import bank.management.system.accountRegistration.AccountRecovery;
-import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.accountRegistration.WelcomePage;
 import bank.management.system.database.DatabaseConnection;
 import bank.management.system.database.GenerateOTP;
@@ -27,6 +25,8 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import java.util.regex.Pattern;
 import javax.swing.JPasswordField;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class AdministrationPage extends JFrame implements ActionListener {
 
@@ -112,6 +112,10 @@ public class AdministrationPage extends JFrame implements ActionListener {
         logoutButton.addActionListener(this);
         logoutButton.setForeground(Color.red);
         backButton = new JButton("BACK");
+        checkUserPanel.setBorder(new TitledBorder("Total Registered Users"));
+        
+        
+        
 
         backButton.addActionListener(this);
         backButton.setVisible(false);
@@ -302,7 +306,7 @@ public class AdministrationPage extends JFrame implements ActionListener {
         try {
             ResultSet resultSet = statement.executeQuery("select * from user_details WHERE email_id = '" + emailId + "' OR mobile_no = '" + mobileNumber + "' OR user_aadhar_card = '" + aadharCard + "'");
             if (resultSet.next()) {
-                int response = JOptionPane.showConfirmDialog(this, "Person is Already exist: !!\n" + "UserName: \t" + resultSet.getString("username") + "\n Account Type:: \t" + resultSet.getString("login_type"), "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                int response = JOptionPane.showConfirmDialog(this, "Person is Already Registered: !!\n" + "UserName: \t" + resultSet.getString("username") + "\n Account Type:: \t" + resultSet.getString("login_type"), "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION) {
                     fullNameField.setText("");
                     mobileField.setText("");
@@ -313,9 +317,7 @@ public class AdministrationPage extends JFrame implements ActionListener {
                 }
                 return;
             } else {
-                String user_details = "INSERT INTO user_details(username, name, email_id, mobile_no, password, login_type, user_aadhar_card) VALUES"
-                        + " ('" + userName + "', '" + fullName + "', '" + emailId + "', '" + mobileNumber + "', '" + savePassword + "', '" + accountType + "',  '" + aadharCard + "')";
-                statement.executeUpdate(user_details);
+                statement.executeUpdate("UPDATE user_details SET name='" + fullName + "', email_id='" + emailId + "', mobile_no='" + mobileNumber + "', password='" + savePassword + "', login_type='" + accountType + "', user_aadhar_card='" + aadharCard + "' WHERE username='" + userName + "'");
                 JOptionPane.showConfirmDialog(this, "Acoount created SuccessFully !!\n" + "UserName: \t" + userName + "\n Password: \t" + confirmPassword);
                 fullNameField.setText("");
                 mobileField.setText("");
@@ -337,5 +339,9 @@ public class AdministrationPage extends JFrame implements ActionListener {
     }
     public static String encryptPassword() {
         return password;
+    }
+    
+    public static void main(String[] args) {
+        new AdministrationPage();
     }
 }
