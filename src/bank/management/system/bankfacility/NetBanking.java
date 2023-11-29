@@ -21,7 +21,7 @@ public class NetBanking extends JFrame implements ActionListener{
     JButton createButton, clearButton, checkUsersButton,logoutButton, backButton;
     static String applicantName="";
     
-    private Connection connection;  
+    private Connection connection; 
     private Statement statement;
     
     public NetBanking( String name) throws HeadlessException {

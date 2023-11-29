@@ -24,15 +24,16 @@ import java.sql.SQLException;
 
 public class MobileBanking extends JFrame implements ActionListener {
 
-    JPanel mainPanel, facilityMesagepanel, facilityButtonPanel, operationPanelFirst, operationPanelSecond, operationPanelThird,
-            operationPanelForth, operationPanelFifth;
-    JLabel nameLabel, accountNoLabel, accountyNameLabel, accountTypeLabel, depositLabel, currentAmountLabel;
+    JPanel mainPanel, facilityMesagepanel, facilityButtonPanel, operationPanelFirst, operationPanelThird,
+            operationPanelForth;
+    JLabel nameLabel, accountNoLabel, accountyNameLabel, accountTypeLabel, depositLabel, withdrawLabel, transferLabel, currentAmountLabel;
     JTextField currentAmountField, nameField, accountNumberField, accountyNameField, accountTypeField, depositText;
-    JButton depositButton, depositSecondButton, clearButton, fastCashButton, pinChangeButton, amountTransferButton, miniStatementButton, exitButton, logoutButton;
+    JButton depositButton, depositSecondButton, withdrawButton, clearButton, fastCashButton, pinChangeButton, amountTransferButton, transferButton, miniStatementButton, exitButton, logoutButton;
+
 // Creating connection and Statement globally:
     private Connection connection;
     private Statement statement;
-    static String applicantName = "", accountNumber, accountyName, accountType;
+    static String applicantName = "", accountNumber = "", accountBalance, accountType, cuurent_amount, amount = "100000", minbalance = "0";
 
     public MobileBanking(String name) throws HeadlessException, ClassNotFoundException, SQLException {
         this.applicantName = name;
@@ -82,7 +83,7 @@ public class MobileBanking extends JFrame implements ActionListener {
 
         operationPanelFirst = new JPanel();
         add(operationPanelFirst);
-        operationPanelFirst.setBackground(Color.pink);
+        operationPanelFirst.setBackground(Color.GRAY);
         operationPanelFirst.setLayout(null);
         operationPanelFirst.setVisible(false);
 
@@ -104,17 +105,16 @@ public class MobileBanking extends JFrame implements ActionListener {
         accountTypeField.setText(getAccountDetails().get(2));
         depositLabel = new JLabel("Enter Amount to deposit in your account");
         depositText = new JTextField();
-
+        withdrawLabel = new JLabel("Enter Amount to withdraw from your account");
+        transferLabel = new JLabel("Enter Amount to transfer from your account");
         depositSecondButton = new JButton("DEPOSIT AMOUNT");
         depositSecondButton.addActionListener(this);
+        withdrawButton = new JButton("WITHDRAW AMOUNT");
+        withdrawButton.addActionListener(this);
+        transferButton = new JButton("TRANSFER AMOUNT");
+        transferButton.addActionListener(this);
         clearButton = new JButton("CLEAR");
         clearButton.addActionListener(this);
-
-        operationPanelSecond = new JPanel();
-        add(operationPanelSecond);
-        operationPanelSecond.setBackground(Color.BLUE);
-        operationPanelSecond.setLayout(null);
-        operationPanelSecond.setVisible(false);
 
         operationPanelThird = new JPanel();
         add(operationPanelThird);
@@ -127,12 +127,6 @@ public class MobileBanking extends JFrame implements ActionListener {
         operationPanelForth.setBackground(Color.MAGENTA);
         operationPanelForth.setLayout(null);
         operationPanelForth.setVisible(false);
-
-        operationPanelFifth = new JPanel();
-        add(operationPanelFifth);
-        operationPanelFifth.setBackground(Color.ORANGE);
-        operationPanelFifth.setLayout(null);
-        operationPanelFifth.setVisible(false);
 
         addComponent();
         setBound();
@@ -155,10 +149,8 @@ public class MobileBanking extends JFrame implements ActionListener {
         mainPanel.add(facilityButtonPanel.add(miniStatementButton));
         mainPanel.add(facilityButtonPanel.add(exitButton));
         mainPanel.add(facilityMesagepanel.add(operationPanelFirst));
-        mainPanel.add(facilityMesagepanel.add(operationPanelSecond));
         mainPanel.add(facilityMesagepanel.add(operationPanelThird));
         mainPanel.add(facilityMesagepanel.add(operationPanelForth));
-        mainPanel.add(facilityMesagepanel.add(operationPanelFifth));
 
         operationPanelFirst.add(currentAmountLabel);
         operationPanelFirst.add(currentAmountField);
@@ -169,10 +161,13 @@ public class MobileBanking extends JFrame implements ActionListener {
         operationPanelFirst.add(accountTypeLabel);
         operationPanelFirst.add(accountTypeField);
         operationPanelFirst.add(depositLabel);
+        operationPanelFirst.add(withdrawLabel);
+        operationPanelFirst.add(transferLabel);
         operationPanelFirst.add(depositText);
         operationPanelFirst.add(depositSecondButton);
+        operationPanelFirst.add(withdrawButton);
+        operationPanelFirst.add(transferButton);
         operationPanelFirst.add(clearButton);
-
     }
 
     public void setFont() {
@@ -194,9 +189,13 @@ public class MobileBanking extends JFrame implements ActionListener {
         accountTypeLabel.setFont(new Font("verdana", Font.BOLD, 15));
         accountTypeField.setFont(new Font("verdana", Font.BOLD, 15));
         depositLabel.setFont(new Font("verdana", Font.BOLD, 15));
+        withdrawLabel.setFont(new Font("verdana", Font.BOLD, 14));
+        transferLabel.setFont(new Font("verdana", Font.BOLD, 14));
         depositText.setFont(new Font("verdana", Font.BOLD, 15));
         depositSecondButton.setFont(new Font("verdana", Font.BOLD, 15));
-        clearButton.setFont(new Font("verdana", Font.BOLD, 15));
+        withdrawButton.setFont(new Font("verdana", Font.BOLD, 13));
+        transferButton.setFont(new Font("verdana", Font.BOLD, 13));
+        clearButton.setFont(new Font("verdana", Font.BOLD, 14));
     }
 
     public void setBound() {
@@ -204,10 +203,8 @@ public class MobileBanking extends JFrame implements ActionListener {
         facilityMesagepanel.setBounds(0, 70, 600, 530);
         facilityButtonPanel.setBounds(600, 70, 200, 530);
         operationPanelFirst.setBounds(0, 70, 600, 530);
-        operationPanelSecond.setBounds(0, 70, 600, 530);
         operationPanelThird.setBounds(0, 70, 600, 530);
         operationPanelForth.setBounds(0, 70, 600, 530);
-        operationPanelFifth.setBounds(0, 70, 600, 530);
         nameLabel.setBounds(10, 10, 200, 40);
         nameField.setBounds(80, 10, 250, 40);
 
@@ -228,9 +225,13 @@ public class MobileBanking extends JFrame implements ActionListener {
         accountTypeLabel.setBounds(10, 200, 150, 40);
         accountTypeField.setBounds(250, 200, 250, 40);
         depositLabel.setBounds(10, 250, 400, 40);
+        withdrawLabel.setBounds(10, 250, 400, 40);
+        transferLabel.setBounds(10, 250, 400, 40);
         depositText.setBounds(400, 250, 100, 40);
         depositSecondButton.setBounds(250, 350, 200, 40);
-        clearButton.setBounds(460, 350, 130, 40);
+        withdrawButton.setBounds(250, 350, 220, 40);
+        transferButton.setBounds(250, 350, 220, 40);
+        clearButton.setBounds(480, 350, 120, 40);
 
     }
 
@@ -247,14 +248,17 @@ public class MobileBanking extends JFrame implements ActionListener {
         if ("DEPOSIT".equals(event.getActionCommand())) {
             operationPanelFirst.setVisible(true);
             facilityMesagepanel.setVisible(false);
-            operationPanelSecond.setVisible(false);
             operationPanelThird.setVisible(false);
             operationPanelForth.setVisible(false);
-            operationPanelFifth.setVisible(false);
+            withdrawButton.setVisible(false);
+            withdrawLabel.setVisible(false);
+            transferLabel.setVisible(false);
+            transferButton.setVisible(false);
+            depositSecondButton.setVisible(true);
+            depositLabel.setVisible(true);
 
         }
         if ("DEPOSIT AMOUNT".equals(event.getActionCommand())) {
-            String amount = "100000", minbalance = "0";
             if (depositText.equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "You can't leave blank deposit section:");
             } else if (depositText.getText().length() > 6) {
@@ -265,78 +269,183 @@ public class MobileBanking extends JFrame implements ActionListener {
             } else {
                 Date date = new Date();
                 try {
-                    String accountNumber = getAccountDetails().get(1), accountType = getAccountDetails().get(2), amount_withdrawal = "0", amountDeposit = depositText.getText().trim(); 
+                    accountNumber = getAccountDetails().get(1);
+                    accountType = getAccountDetails().get(2);
+                    String amount_withdrawal = "0", amountDeposit = depositText.getText().trim();
                     int totalAmount = Integer.parseInt(currentAmountField.getText().trim()) + Integer.parseInt(amountDeposit);
-                    String cuurent_amount = Integer.toString(totalAmount);     
+                    cuurent_amount = Integer.toString(totalAmount);
+
                     Connection connection = DatabaseConnection.ConnectionString();
                     Statement statement = connection.createStatement();
-                    
-                   String updateAmount = "UPDATE deposit_details SET account_type = '" + accountType + "', "
-                        + "date = '" + date + "', " 
-                        + "amount_deposit = '" + amountDeposit + "', "
-                        + "amount_withdrawal = '" + amount_withdrawal + "', "
-                        + "current_amount = '" + cuurent_amount + "' "
-                        + "WHERE account_number = '" + accountNumber + "'";
-                   int rowsAffected = statement.executeUpdate(updateAmount);
-                    if(rowsAffected == 1){
-                          JOptionPane.showMessageDialog(rootPane, "Your amount"+" "+amountDeposit+" "+"has been deposited:");
-                          depositText.setText("");
-                          currentAmountField.setText(getCurrentAmount());
-                          depositSecondButton.setForeground(Color.BLUE);
-                    }else{
-                          JOptionPane.showMessageDialog(rootPane, "Your amount"+" "+amountDeposit+" "+"has not been deposited:");
-                          depositText.setText("");
-                          currentAmountField.setText(getCurrentAmount());
-                          depositSecondButton.setForeground(Color.RED);
+
+                    String updateAmount = "UPDATE deposit_details SET account_type = '" + accountType + "', "
+                            + "date = '" + date + "', "
+                            + "amount_deposit = '" + amountDeposit + "', "
+                            + "amount_withdrawal = '" + amount_withdrawal + "', "
+                            + "current_amount = '" + cuurent_amount + "' "
+                            + "WHERE account_number = '" + accountNumber + "'";
+                    int rowsAffected = statement.executeUpdate(updateAmount);
+                    if (rowsAffected == 1) {
+                        JOptionPane.showMessageDialog(rootPane, "Your amount" + " " + amountDeposit + " " + "has been deposited:");
+                        depositText.setText("");
+                        currentAmountField.setText(getCurrentAmount());
+                        depositSecondButton.setForeground(Color.BLUE);
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Your amount" + " " + amountDeposit + " " + "has not been deposited:");
+                        depositText.setText("");
+                        currentAmountField.setText(getCurrentAmount());
+                        depositSecondButton.setForeground(Color.RED);
                     }
                 } catch (ClassNotFoundException | SQLException exception) {
                     Logger.getLogger(MobileBanking.class.getName()).log(Level.SEVERE, null, exception);
                 }
             }
         }
-        if ("CLEAR".equals(event.getActionCommand())) {
-            depositText.setText("");
-        }
-
         if ("FAST CASH".equals(event.getActionCommand())) {
             facilityMesagepanel.setVisible(false);
-            operationPanelSecond.setVisible(true);
-            operationPanelFirst.setVisible(false);
+            operationPanelFirst.setVisible(true);
             operationPanelThird.setVisible(false);
             operationPanelForth.setVisible(false);
-            operationPanelFifth.setVisible(false);
+
+            depositSecondButton.setVisible(false);
+            depositLabel.setVisible(false);
+            transferLabel.setVisible(false);
+            withdrawButton.setVisible(true);
+            withdrawLabel.setVisible(true);
+            transferButton.setVisible(false);
+        }
+        if ("WITHDRAW AMOUNT".equals(event.getActionCommand())) {
+            if (depositText.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "You can't leave blank withdrawl section:");
+            } else if (depositText.getText().length() > 6) {
+                JOptionPane.showMessageDialog(rootPane, "You can only withdrawl upto 1 Lack:");
+                depositText.setText("");
+            } else if (depositText.getText().equals(minbalance)) {
+                JOptionPane.showMessageDialog(rootPane, "You can't withdrawl 000 amount::");
+            } else {
+                Date date = new Date();
+                try {
+                    Connection connection = DatabaseConnection.ConnectionString();
+                    Statement statement = connection.createStatement();
+                    accountNumber = getAccountDetails().get(1);
+                    accountType = getAccountDetails().get(2);
+                    String amountwithdrawl = depositText.getText().trim(), amountDeposit = "0";
+                    int totalAmount = Integer.parseInt(currentAmountField.getText().trim()) - Integer.parseInt(amountwithdrawl);
+                    cuurent_amount = Integer.toString(totalAmount);
+
+                    // TO check min balance and restrict accounty to withdrawal the AMOUNT:
+                    if (Integer.parseInt(cuurent_amount) >= Integer.parseInt(amountwithdrawl)) {
+                        String withdrawAmount = "UPDATE deposit_details SET account_type = '" + accountType + "', "
+                                + "date = '" + date + "', "
+                                + "amount_deposit = '" + amountDeposit + "', "
+                                + "amount_withdrawal = '" + amountwithdrawl + "', "
+                                + "current_amount = '" + cuurent_amount + "' "
+                                + "WHERE account_number = '" + accountNumber + "'";
+                        int rowsAffected = statement.executeUpdate(withdrawAmount);
+                        if (rowsAffected == 1) {
+                            JOptionPane.showMessageDialog(rootPane, "Your amount" + " " + amountwithdrawl + " " + "has been withdrawl:");
+                            depositText.setText("");
+                            currentAmountField.setText(getCurrentAmount());
+                            withdrawButton.setForeground(Color.BLUE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Withdrawal Amount is High \n Your amount" + " " + amountwithdrawl + " " + "cannot be Initiated:");
+                        depositText.setText("");
+                        currentAmountField.setText(getCurrentAmount());
+                        withdrawButton.setForeground(Color.RED);
+                    }
+                } catch (ClassNotFoundException | SQLException exception) {
+                    Logger.getLogger(MobileBanking.class.getName()).log(Level.SEVERE, null, exception);
+                }
+            }
         }
 
         if ("PIN CHANGE".equals(event.getActionCommand())) {
             facilityMesagepanel.setVisible(false);
             operationPanelFirst.setVisible(false);
-            operationPanelSecond.setVisible(false);
             operationPanelThird.setVisible(true);
             operationPanelForth.setVisible(false);
-            operationPanelFifth.setVisible(false);
 
         }
 
         if ("AMOUNT TRANSFER".equals(event.getActionCommand())) {
             facilityMesagepanel.setVisible(false);
-            operationPanelFirst.setVisible(false);
-            operationPanelSecond.setVisible(false);
+            operationPanelFirst.setVisible(true);
             operationPanelThird.setVisible(false);
             operationPanelForth.setVisible(true);
-            operationPanelFifth.setVisible(false);
+            depositSecondButton.setVisible(false);
+            depositLabel.setVisible(false);
+            withdrawButton.setVisible(false);
+            withdrawLabel.setVisible(false);
+            transferLabel.setVisible(true);
+            transferButton.setVisible(true);
+            accountyNameField.setText("");
+            accountNumberField.setText("");
+            accountTypeField.setText("");
 
+        }
+        if ("TRANSFER AMOUNT".equals(event.getActionCommand())) {
+            if (depositText.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "You can't leave blank TRANSFER AMOUNT section:");
+            } else if (depositText.getText().length() > 6) {
+                JOptionPane.showMessageDialog(rootPane, "You can only TRANSFER upto 1 Lack:");
+                depositText.setText("");
+            } else if (depositText.getText().equals(minbalance)) {
+                JOptionPane.showMessageDialog(rootPane, "You can't TRANSFER 000 amount::");
+            } else if (accountyNameField.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "You can't leave Accounty Name Field:");
+            } else if (accountNumberField.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "You can't leave Account Number Field:");
+            } else if (accountTypeField.equals("")) {
+                JOptionPane.showMessageDialog(rootPane, "You can't leave Account Type   Field:");
+            } else {
+                Date date = new Date();
+                try {
+                    Connection connection = DatabaseConnection.ConnectionString();
+                    Statement statement = connection.createStatement();
+                    accountNumber = getAccountDetails().get(1);
+                    accountType = getAccountDetails().get(2);
+                    String amountTransfer = depositText.getText().trim(), amountDeposit = "0";
+                    int totalAmount = Integer.parseInt(currentAmountField.getText().trim()) - Integer.parseInt(amountTransfer);
+                    cuurent_amount = Integer.toString(totalAmount);
+
+                    // TO check min balance and restrict accounty to withdrawal the AMOUNT:
+                    if (Integer.parseInt(cuurent_amount) >= Integer.parseInt(amountTransfer)) {
+                        String withdrawAmount = "UPDATE deposit_details SET account_type = '" + accountType + "', "
+                                + "date = '" + date + "', "
+                                + "amount_deposit = '" + amountDeposit + "', "
+                                + "amount_withdrawal = '" + amountTransfer + "', "
+                                + "current_amount = '" + cuurent_amount + "' "
+                                + "WHERE account_number = '" + accountNumber + "'";
+                        int rowsAffected = statement.executeUpdate(withdrawAmount);
+                        if (rowsAffected == 1) {
+                            JOptionPane.showMessageDialog(rootPane, "Your amount" + " " + amountTransfer + " " + "has been Transfered:");
+                            depositText.setText("");
+                            currentAmountField.setText(getCurrentAmount());
+                            withdrawButton.setForeground(Color.BLUE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Transfer Amount is High \n Your amount" + " " + amountTransfer + " " + "cannot be Initiated:");
+                        depositText.setText("");
+                        currentAmountField.setText(getCurrentAmount());
+                        withdrawButton.setForeground(Color.RED);
+                    }
+                } catch (ClassNotFoundException | SQLException exception) {
+                    Logger.getLogger(MobileBanking.class.getName()).log(Level.SEVERE, null, exception);
+                }
+            }
         }
 
         if ("MINI STATEMENT".equals(event.getActionCommand())) {
             facilityMesagepanel.setVisible(false);
             operationPanelFirst.setVisible(false);
-            operationPanelSecond.setVisible(false);
             operationPanelThird.setVisible(false);
             operationPanelForth.setVisible(false);
-            operationPanelFifth.setVisible(true);
 
         }
-
+        if ("CLEAR".equals(event.getActionCommand())) {
+            depositText.setText("");
+        }
         if ("EXIT".equals(event.getActionCommand())) {
             int response = JOptionPane.showConfirmDialog(this, "Do You Want to EXIT ?", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
