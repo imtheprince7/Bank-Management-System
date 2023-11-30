@@ -29,7 +29,7 @@ public class ChooseFacility extends JFrame implements ActionListener {
     public ChooseFacility(String name) {
         System.err.println("Coming Name is:"+" "+applicantName);
         applicantName = name;
-        setTitle("Choose Banking Facility");
+        setTitle("BANK FACILITY WINDOW");
         setLayout(null);
         setResizable(false);
         setSize(700, 500);
@@ -159,8 +159,14 @@ public class ChooseFacility extends JFrame implements ActionListener {
             int response = JOptionPane.showConfirmDialog(this, "Do You Want to GO on \n KYC DETAIL PAGE ?\n", "CONFIRM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 dispose();
-                new KycUpdate(applicantName);
+                try {
+                    new KycUpdate(applicantName);
+                } catch (HeadlessException | ClassNotFoundException |  SQLException exception) {
+                    Logger.getLogger(ChooseFacility.class.getName()).log(Level.SEVERE, null, exception);
+                }
             }
         }
     }
+    
+    
 }

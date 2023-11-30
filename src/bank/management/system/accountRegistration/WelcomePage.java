@@ -42,7 +42,7 @@ public class WelcomePage extends JFrame implements ActionListener {
         setResizable(false);
         setSize(920, 500);
         setLocation(200, 100);
-        setTitle("HOME PAGE");
+        setTitle("CEGIAN BANK");
 
         panelImage = new JPanel();
         add(panelImage);

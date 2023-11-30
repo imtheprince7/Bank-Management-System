@@ -47,7 +47,7 @@ public class AccountRecovery extends JFrame implements ActionListener {
         setLayout(null);
         setSize(900, 600);
         setLocation(250, 150);
-        setTitle("Account Recovery Page");
+        setTitle("ACCOUNT RECOVERY WINDOW");
 
         imagePanel = new JPanel();
         add(imagePanel);
